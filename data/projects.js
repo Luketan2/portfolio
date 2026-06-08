@@ -761,28 +761,21 @@ window.PROJECTS = [
       "Thermal Engineering",
       "CAD"
     ],
-    stats: [],
-    thumb: "images/Water_cooled_bed/DSC08469_Edited.jpg",
+    stats: [
+      {
+        v: "",
+        l: ""
+      }
+    ],
+    thumb: "images/water-cooled-bed/IMG_0071.JPEG",
     media: [
       {
         type: "image",
-        src: "images/Water_cooled_bed/097A3183.jpg"
+        src: "images/Water_cooled_bed/IMG_0188.JPEG"
       },
       {
         type: "image",
-        src: "images/Water_cooled_bed/097A3213.jpg"
-      },
-      {
-        type: "image",
-        src: "images/Water_cooled_bed/097A9983.JPG"
-      },
-      {
-        type: "image",
-        src: "images/Water_cooled_bed/_DSC0233.JPG"
-      },
-      {
-        type: "image",
-        src: "images/Water_cooled_bed/DSCF0332.jpg"
+        src: "images/Water_cooled_bed/IMG_0190.JPEG"
       }
     ],
     body: "<p>A water-cooled bed frame built to combat Australian summer heat.</p>"
