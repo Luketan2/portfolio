@@ -640,6 +640,34 @@ function dragEnd() {
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('drag-over', 'dragging'));
 }
 
+// ── Gallery drag-to-reorder ───────────────────────────
+let galDragSrc = null;
+
+function galDragStart(e, i) {
+  galDragSrc = i;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+}
+function galDragOver(e, i) {
+  e.preventDefault();
+  document.querySelectorAll('.gal-item').forEach(el => el.classList.remove('drag-over'));
+  if (i !== galDragSrc) e.currentTarget.classList.add('drag-over');
+}
+function galDragDrop(e, i) {
+  e.preventDefault();
+  if (galDragSrc === null || galDragSrc === i) return;
+  const media = cur().media;
+  const item = media.splice(galDragSrc, 1)[0];
+  media.splice(i, 0, item);
+  galDragSrc = null;
+  setStatus('Unsaved changes');
+  renderEditor();
+}
+function galDragEnd() {
+  galDragSrc = null;
+  document.querySelectorAll('.gal-item').forEach(el => el.classList.remove('drag-over', 'dragging'));
+}
+
 // ── Resume editor ─────────────────────────────────────
 function openResumeEditor() {
   activeId = '__resume__';
@@ -1040,9 +1068,11 @@ function renderEditor() {
             ? `<p class="no-imgs">Gallery empty — add images below.</p>`
             : (p.media || []).map((m, i) => {
                 const isLast = i === (p.media.length - 1);
+                const dragAttrs = `draggable="true" ondragstart="galDragStart(event,${i})" ondragover="galDragOver(event,${i})" ondrop="galDragDrop(event,${i})" ondragend="galDragEnd()"`;
                 if (m.type === 'section-heading') {
                   return `
-                    <div class="gal-item gal-item--heading">
+                    <div class="gal-item gal-item--heading" ${dragAttrs}>
+                      <span class="gal-drag-handle">⠿</span>
                       <div class="gal-heading-icon">§</div>
                       <div class="gal-info">
                         <input class="gal-heading-in" type="text" value="${(m.label||'').replace(/"/g,'&quot;')}"
@@ -1050,8 +1080,6 @@ function renderEditor() {
                                oninput="setSectionHeadingLabel(${i}, this.value)" />
                       </div>
                       <div class="gal-actions">
-                        <button class="btn btn-sm" onclick="moveMedia(${i},-1)" ${i===0?'disabled':''}>↑</button>
-                        <button class="btn btn-sm" onclick="moveMedia(${i}, 1)" ${isLast?'disabled':''}>↓</button>
                         <button class="btn btn-sm btn-danger" onclick="removeMedia(${i})">✕</button>
                       </div>
                     </div>
@@ -1061,7 +1089,8 @@ function renderEditor() {
                 const imgUrl = fname && imgs[fname] ? imgs[fname].url : null;
                 const span   = m.span || 1;
                 return `
-                  <div class="gal-item">
+                  <div class="gal-item" ${dragAttrs}>
+                    <span class="gal-drag-handle">⠿</span>
                     <div class="gal-thumb">
                       ${imgUrl ? `<img src="${imgUrl}" />`
                         : m.type === 'embed' ? `<div class="gal-embed">▶</div>`
@@ -1076,8 +1105,6 @@ function renderEditor() {
                       </div>
                     </div>
                     <div class="gal-actions">
-                      <button class="btn btn-sm" onclick="moveMedia(${i},-1)" ${i===0?'disabled':''}>↑</button>
-                      <button class="btn btn-sm" onclick="moveMedia(${i}, 1)" ${isLast?'disabled':''}>↓</button>
                       <button class="btn btn-sm btn-danger" onclick="removeMedia(${i})">✕</button>
                     </div>
                   </div>

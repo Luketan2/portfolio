@@ -221,7 +221,13 @@ function showDetail(id) {
         return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
       }
       if (m.type === 'embed') {
-        const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
+        // Normalise youtu.be/ID and youtube.com/watch?v=ID → youtube.com/embed/ID
+        let embedSrc = m.src;
+        const ytShort = embedSrc.match(/youtu\.be\/([^?&]+)/);
+        const ytWatch = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+        if (ytShort) embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
+        else if (ytWatch) embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+        const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
         if (ytMatch) {
           const vid = ytMatch[1];
           const thumb = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
@@ -233,7 +239,7 @@ function showDetail(id) {
             </div>
           </div>`;
         }
-        return `<div class="media-item media-item--embed" style="${spanStyle}"><iframe src="${m.src}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+        return `<div class="media-item media-item--embed" style="${spanStyle}"><iframe src="${embedSrc}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
       }
       return '';
     }).join('');

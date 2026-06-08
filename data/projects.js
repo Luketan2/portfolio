@@ -46,6 +46,31 @@ window.PROJECTS = [
       },
       {
         type: "image",
+        src: "images/urc2026/097A9983.JPG",
+        span: 2
+      },
+      {
+        type: "image",
+        src: "images/urc2026/_DSC0233.JPG"
+      },
+      {
+        type: "embed",
+        src: "https://www.youtube.com/embed/ORvh338rJ5Y"
+      },
+      {
+        type: "section-heading",
+        label: "On-Rover in Comp images + Data "
+      },
+      {
+        type: "image",
+        src: "images/urc2026/Screenshot From 2026-05-29 08-54-26.png"
+      },
+      {
+        type: "image",
+        src: "images/urc2026/Screenshot From 2026-05-29 07-20-07.png"
+      },
+      {
+        type: "image",
         src: "images/urc2026/Screenshot From 2026-05-29 07-17-15.png"
       },
       {
@@ -59,32 +84,6 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/urc2026/Screenshot From 2026-05-29 08-54-23.png"
-      },
-      {
-        type: "image",
-        src: "images/urc2026/Screenshot From 2026-05-29 07-20-07.png"
-      },
-      {
-        type: "image",
-        src: "images/urc2026/Screenshot From 2026-05-29 08-54-26.png"
-      },
-      {
-        type: "image",
-        src: "images/urc2026/097A0007.jpg",
-        span: 2
-      },
-      {
-        type: "image",
-        src: "images/urc2026/097A9983.JPG",
-        span: 2
-      },
-      {
-        type: "image",
-        src: "images/urc2026/_DSC0233.JPG"
-      },
-      {
-        type: "embed",
-        src: "https://youtu.be/ORvh338rJ5Y"
       }
     ],
     body: `
@@ -194,7 +193,7 @@ window.PROJECTS = [
   },
   {
     id: "sabertooth",
-    featured: false,
+    featured: true,
     year: "2025",
     eyebrow: "2025 · Nova Rover · University Rover Challenge",
     title: "Sabertooth — URC Life Detection Payload",
@@ -575,6 +574,73 @@ window.PROJECTS = [
     `
   },
   {
+    id: "capstone-lunar",
+    featured: true,
+    inProgress: true,
+    year: "2026",
+    eyebrow: "2026 · Monash University · Engineering Capstone",
+    title: "Engineering Capstone: Lunar Regolith Research",
+    summary: "Final-year capstone investigating lunar regolith properties and their implications for in-situ resource utilisation.",
+    tags: [
+      "Capstone",
+      "Lunar regolith",
+      "ISRU",
+      "Research",
+      "Monash University"
+    ],
+    stats: [
+      {
+        v: "2026",
+        l: "Year"
+      },
+      {
+        v: "Capstone",
+        l: "Project type"
+      },
+      {
+        v: "In Progress",
+        l: "Status"
+      }
+    ],
+    thumb: "images/capstone-lunar/Screenshot 2026-06-09 080804.png",
+    media: [
+      {
+        type: "embed",
+        src: "https://youtu.be/r9aAi74a11s",
+        span: 2
+      },
+      {
+        type: "image",
+        src: "images/capstone-lunar/Screenshot 2026-06-09 080751.png"
+      },
+      {
+        type: "image",
+        src: "images/capstone-lunar/Screenshot 2026-06-09 080804.png"
+      },
+      {
+        type: "section-heading",
+        label: "Collected data under ambient conditions "
+      },
+      {
+        type: "image",
+        src: "images/capstone-lunar/unnamed (2).png"
+      },
+      {
+        type: "image",
+        src: "images/capstone-lunar/unnamed (1).png"
+      }
+    ],
+    body: `
+      <p>This final-year engineering capstone project investigates the physical and chemical properties of lunar regolith simulants and their relevance to in-situ resource utilisation (ISRU) on the Moon.</p>
+      <h5>Research focus</h5>
+      <ul>
+        <li>Characterising regolith simulant properties (grain size, density, cohesion)</li>
+        <li>Evaluating extraction and processing techniques for ISRU applications</li>
+        <li>Assessing implications for future lunar surface operations</li>
+      </ul>
+    `
+  },
+  {
     id: "bridge",
     featured: false,
     year: "2023",
@@ -854,33 +920,6 @@ window.PROJECTS = [
         <li>RC F-22 Raptor — scratch-built foam airframe</li>
         <li>RC glider — optimised for long-duration flight</li>
         <li>RC monowheel — single-wheel balancing vehicle</li>
-      </ul>
-    `
-  },
-
-  {
-    id: 'capstone-lunar',
-    featured: false,
-    inProgress: true,
-    year: '2026',
-    eyebrow: '2026 · Monash University · Engineering Capstone',
-    title: 'Engineering Capstone: Lunar Regolith Research',
-    summary: 'Final-year capstone investigating lunar regolith properties and their implications for in-situ resource utilisation.',
-    tags: ['Capstone', 'Lunar regolith', 'ISRU', 'Research', 'Monash University'],
-    stats: [
-      { v: '2026', l: 'Year' },
-      { v: 'Capstone', l: 'Project type' },
-      { v: 'In Progress', l: 'Status' }
-    ],
-    thumb: '',
-    media: [],
-    body: `
-      <p>This final-year engineering capstone project investigates the physical and chemical properties of lunar regolith simulants and their relevance to in-situ resource utilisation (ISRU) on the Moon.</p>
-      <h5>Research focus</h5>
-      <ul>
-        <li>Characterising regolith simulant properties (grain size, density, cohesion)</li>
-        <li>Evaluating extraction and processing techniques for ISRU applications</li>
-        <li>Assessing implications for future lunar surface operations</li>
       </ul>
     `
   }
