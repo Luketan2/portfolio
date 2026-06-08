@@ -774,60 +774,83 @@ function openProfile() {
 function renderProfileEditor() {
   const imgs = imgCache['__profile__'] || {};
   const files = Object.keys(imgs);
-  const currentPath = siteConfig.photo || '';
-  const currentFile = currentPath ? currentPath.split('/').pop() : '';
+
+  const siteFile = (siteConfig.photo || '').split('/').pop();
+  const cvFile   = (siteConfig.cvPhoto || '').split('/').pop();
+
+  function photoGrid(activeFile, setFn) {
+    if (files.length === 0)
+      return `<p class="no-imgs">No images found. Drop photos in <code>images/profile/</code> then click ↻ Refresh.</p>`;
+    return `<div class="img-grid">
+      ${files.map(f => `
+        <div class="img-cell is-round ${activeFile === f ? 'is-thumb' : ''}" onclick="${setFn}('${f}')" title="${f}">
+          <img src="${imgs[f].url}" loading="lazy" />
+          <div class="img-cell-lbl">
+            ${activeFile === f ? '<span class="badge-th">active</span>' : ''}
+            <span class="img-nm">${f}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
 
   setEditorContent(`
     <div>
-      <div class="ed-title">Profile Photo</div>
+      <div class="ed-title">Profile Photos</div>
 
       <div class="ed-sec">
-        <div class="sec-title">Current photo</div>
+        <div class="sec-title">Site photo <span class="sec-hint">— home &amp; about pages</span></div>
         <div class="profile-preview">
-          ${currentFile && imgs[currentFile]
-            ? `<img src="${imgs[currentFile].url}" />`
-            : `<div class="profile-empty">No photo set</div>`
-          }
+          ${siteFile && imgs[siteFile]
+            ? `<img src="${imgs[siteFile].url}" />`
+            : `<div class="profile-empty">No photo set</div>`}
         </div>
-        ${currentFile && imgs[currentFile]
-          ? `<button class="btn" onclick="openCropProfile()">✂&nbsp; Crop to circle</button>`
-          : ''
-        }
+        ${siteFile && imgs[siteFile]
+          ? `<button class="btn" onclick="openCropProfile('site')">✂&nbsp; Crop to circle</button>`
+          : ''}
+        ${photoGrid(siteFile, 'setSitePhoto')}
       </div>
 
-      <div class="ed-sec">
-        <div class="sec-title">Images in images/profile/ <span class="sec-hint">— click to set</span></div>
-        ${files.length === 0
-          ? `<p class="no-imgs">No images found. Create a folder <code>images/profile/</code>, drop your photo in, then click ↻ Refresh.</p>`
-          : `<div class="img-grid">
-               ${files.map(f => `
-                 <div class="img-cell is-round ${currentFile === f ? 'is-thumb' : ''}" onclick="setProfilePhoto('${f}')" title="${f}">
-                   <img src="${imgs[f].url}" loading="lazy" />
-                   <div class="img-cell-lbl">
-                     ${currentFile === f ? '<span class="badge-th">active</span>' : ''}
-                     <span class="img-nm">${f}</span>
-                   </div>
-                 </div>
-               `).join('')}
-             </div>`
-        }
+      <div class="ed-sec" style="margin-top:1.5rem">
+        <div class="sec-title">CV / Resume photo <span class="sec-hint">— appears on the CV page only</span></div>
+        <div class="profile-preview">
+          ${cvFile && imgs[cvFile]
+            ? `<img src="${imgs[cvFile].url}" />`
+            : `<div class="profile-empty">No CV photo set — using site photo</div>`}
+        </div>
+        ${cvFile && imgs[cvFile]
+          ? `<button class="btn" onclick="openCropProfile('cv')">✂&nbsp; Crop to circle</button>`
+          : ''}
+        ${photoGrid(cvFile, 'setCvPhoto')}
       </div>
     </div>
   `);
 }
 
-function setProfilePhoto(filename) {
+function setSitePhoto(filename) {
   siteConfig.photo = `images/profile/${filename}`;
   setStatus('Unsaved changes');
   renderProfileEditor();
 }
 
-function openCropProfile() {
-  const currentFile = siteConfig.photo ? siteConfig.photo.split('/').pop() : null;
+function setCvPhoto(filename) {
+  siteConfig.cvPhoto = `images/profile/${filename}`;
+  setStatus('Unsaved changes');
+  renderProfileEditor();
+}
+
+function setProfilePhoto(filename) {
+  setSitePhoto(filename);
+}
+
+function openCropProfile(which) {
+  which = which || 'site';
+  const path = which === 'cv' ? siteConfig.cvPhoto : siteConfig.photo;
+  const currentFile = path ? path.split('/').pop() : null;
   if (!currentFile) return;
   const entry = (imgCache['__profile__'] || {})[currentFile];
   if (!entry) return;
-  cropTarget = 'profile';
+  cropTarget = which === 'cv' ? 'cv-photo' : 'profile';
   openCropModal(entry.url);
 }
 
@@ -1078,9 +1101,10 @@ function applyCrop() {
   if (!cropper) return;
   const canvas = cropper.getCroppedCanvas({ maxWidth: 1400, maxHeight: 1400 });
   canvas.toBlob(blob => {
-    if (cropTarget === 'profile') {
-      const filename = 'profile-crop.jpg';
-      siteConfig.photo = `images/profile/${filename}`;
+    if (cropTarget === 'profile' || cropTarget === 'cv-photo') {
+      const filename = cropTarget === 'cv-photo' ? 'cv-photo-crop.jpg' : 'profile-crop.jpg';
+      if (cropTarget === 'cv-photo') siteConfig.cvPhoto = `images/profile/${filename}`;
+      else                           siteConfig.photo   = `images/profile/${filename}`;
       const url = URL.createObjectURL(blob);
       if (!imgCache['__profile__']) imgCache['__profile__'] = {};
       imgCache['__profile__'][filename] = { url };

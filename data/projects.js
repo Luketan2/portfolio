@@ -750,7 +750,7 @@ window.PROJECTS = [
   },
   {
     id: "water-cooled-bed",
-    imageFolder: "Water_cooled_bed",
+    imageFolder: "water_cooled_bed",
     featured: false,
     year: "2025",
     eyebrow: "2025 · Personal Project",
@@ -767,15 +767,15 @@ window.PROJECTS = [
         l: ""
       }
     ],
-    thumb: "images/water-cooled-bed/IMG_0071.JPEG",
+    thumb: "images/water_cooled_bed/IMG_0071.JPEG",
     media: [
       {
         type: "image",
-        src: "images/Water_cooled_bed/IMG_0188.JPEG"
+        src: "images/water_cooled_bed/IMG_0188.JPEG"
       },
       {
         type: "image",
-        src: "images/Water_cooled_bed/IMG_0190.JPEG"
+        src: "images/water_cooled_bed/IMG_0190.JPEG"
       }
     ],
     body: "<p>A water-cooled bed frame built to combat Australian summer heat.</p>"

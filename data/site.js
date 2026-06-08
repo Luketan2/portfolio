@@ -1,6 +1,6 @@
 window.SITE = {
   "photo": "images/profile/097A9983.JPG",
-  "cvPhoto": "images/profile/097A9983.JPG",
+  "cvPhoto": "images/profile/proffesinal photo.jpg",
   "heroBg": "images/hero/1-097A0322.jpg",
   "aboutPhotos": [
     "images/about/097A0007.jpg",
