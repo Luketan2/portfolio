@@ -253,12 +253,51 @@
         <span class="sidebar-special-icon">👤</span>
         <span class="sidebar-special-label">Profile Photo</span>
       </div>
-      <div class="sidebar-hd" style="margin-top:4px">Projects <span style="font-weight:400;letter-spacing:0;text-transform:none">— drag to reorder</span></div>
+      <div class="sidebar-hd" style="margin-top:4px;display:flex;align-items:center;justify-content:space-between">
+        <span>Projects <span style="font-weight:400;letter-spacing:0;text-transform:none">— drag to reorder</span></span>
+        <button class="btn btn-sm btn-primary" style="margin-right:.5rem;padding:2px 8px;font-size:10px" onclick="openNewProjectModal()">+ New</button>
+      </div>
       <div id="proj-list"></div>
     </aside>
     <main id="editor" style="display:flex;align-items:center;justify-content:center;color:var(--muted)">
       Select a project →
     </main>
+  </div>
+</div>
+
+<!-- ── New project modal ────────────────────────────── -->
+<div class="modal-overlay" id="new-proj-modal" style="display:none" onclick="if(event.target===this)closeNewProjectModal()">
+  <div class="modal-box" style="width:380px">
+    <div class="modal-hd">
+      <h3>New project</h3>
+      <button class="btn btn-sm" onclick="closeNewProjectModal()">✕</button>
+    </div>
+    <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.75rem">
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:3px">Title</label>
+        <input id="np-title" class="field-in" type="text" placeholder="e.g. My New Project" style="width:100%" oninput="npAutoId()" />
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:3px">ID <span style="font-weight:400">(used in URL — letters, numbers, hyphens only)</span></label>
+        <input id="np-id" class="field-in" type="text" placeholder="e.g. my-new-project" style="width:100%" />
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:3px">Category</label>
+        <select id="np-category" class="field-in" style="width:100%">
+          <option value="engineering">Engineering</option>
+          <option value="arts">Arts + Making</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:3px">Year</label>
+        <input id="np-year" class="field-in" type="text" placeholder="e.g. 2026" style="width:100px" />
+      </div>
+      <p id="np-error" style="color:var(--danger);font-size:11px;display:none"></p>
+    </div>
+    <div style="padding:.75rem 1.25rem 1rem;display:flex;gap:.5rem;justify-content:flex-end">
+      <button class="btn" onclick="closeNewProjectModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmNewProject()">Create project</button>
+    </div>
   </div>
 </div>
 
@@ -995,6 +1034,13 @@ function renderEditor() {
           <input class="field-in" type="text" value="${(p.year||'').replace(/"/g,'&quot;')}" oninput="setField('year',this.value)" style="width:80px;flex:none" />
         </div>
         <div class="field-row">
+          <span class="field-lbl">Category</span>
+          <select class="field-in" style="width:180px;flex:none" onchange="setField('category',this.value)">
+            <option value="engineering" ${(p.category||'engineering')==='engineering'?'selected':''}>Engineering</option>
+            <option value="arts" ${p.category==='arts'?'selected':''}>Arts + Making</option>
+          </select>
+        </div>
+        <div class="field-row">
           <span class="field-lbl">Summary</span>
           <textarea class="field-ta" rows="2" oninput="setField('summary',this.value)">${p.summary||''}</textarea>
         </div>
@@ -1333,6 +1379,60 @@ function serVal(v, depth) {
 
 function serialize(ps) {
   return 'window.PROJECTS = [\n' + ps.map(p => '  ' + serVal(p, 1)).join(',\n') + '\n];\n';
+}
+
+// ── New project modal ─────────────────────────────────
+function openNewProjectModal() {
+  document.getElementById('np-title').value = '';
+  document.getElementById('np-id').value = '';
+  document.getElementById('np-year').value = new Date().getFullYear();
+  document.getElementById('np-category').value = 'engineering';
+  document.getElementById('np-error').style.display = 'none';
+  document.getElementById('new-proj-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('np-title').focus(), 50);
+}
+
+function closeNewProjectModal() {
+  document.getElementById('new-proj-modal').style.display = 'none';
+}
+
+function npAutoId() {
+  const title = document.getElementById('np-title').value;
+  const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  document.getElementById('np-id').value = id;
+}
+
+async function confirmNewProject() {
+  const title    = document.getElementById('np-title').value.trim();
+  const id       = document.getElementById('np-id').value.trim();
+  const category = document.getElementById('np-category').value;
+  const year     = document.getElementById('np-year').value.trim() || String(new Date().getFullYear());
+  const errEl    = document.getElementById('np-error');
+
+  if (!title) { errEl.textContent = 'Title is required.'; errEl.style.display = 'block'; return; }
+  if (!id || !/^[a-z0-9-]+$/.test(id)) { errEl.textContent = 'ID must be lowercase letters, numbers, and hyphens only.'; errEl.style.display = 'block'; return; }
+  if (projects.find(p => p.id === id)) { errEl.textContent = 'A project with that ID already exists.'; errEl.style.display = 'block'; return; }
+
+  // Create images folder on disk if we have a folder handle
+  if (dirHandle) {
+    try {
+      const imagesDir = await dirHandle.getDirectoryHandle('images', { create: true });
+      await imagesDir.getDirectoryHandle(id, { create: true });
+    } catch(e) { console.warn('Could not create images folder:', e); }
+  }
+
+  const newProj = {
+    id, category, featured: false, inProgress: false,
+    year, eyebrow: year + ' · ',
+    title, summary: '',
+    tags: [], stats: [], thumb: '', media: [], body: '<p></p>'
+  };
+
+  projects.push(newProj);
+  closeNewProjectModal();
+  setStatus('Unsaved changes');
+  renderSidebar();
+  openProject(id);
 }
 
 function setStatus(msg) { document.getElementById('status').textContent = msg; }

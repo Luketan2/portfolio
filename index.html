@@ -64,8 +64,10 @@
 
 <!-- ─── PROJECTS ──────────────────────────────────────── -->
 <main id="page-projects" class="page">
-  <p class="section-label" style="padding-top:2rem">All projects</p>
-  <div class="proj-grid" id="proj-grid"></div>
+  <p class="section-label" style="padding-top:2rem">Engineering</p>
+  <div class="proj-grid" id="proj-grid-eng"></div>
+  <p class="section-label" id="arts-label" style="padding-top:2.5rem">Arts + Making</p>
+  <div class="proj-grid" id="proj-grid-arts"></div>
 </main>
 
 <!-- ─── PROJECT DETAIL ────────────────────────────────── -->
@@ -137,7 +139,7 @@
 </main>
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
-<script src="data/projects.js?v=6"></script>
+<script src="data/projects.js?v=7"></script>
 <script src="data/resume.js?v=5"></script>
 <script>
 
@@ -155,19 +157,22 @@ window.SKILLS = [
 
 // ── Education & experience — edit here ───────────────────
 window.ABOUT = {
-  education: [
-    { title: 'Monash University — Clayton',
-      sub:   'BE (Hons) Robotics & Mechatronics, AI stream · 2022–2026 · High Distinction average' },
-    { title: 'Ballarat Grammar',
-      sub:   'VCE · Systems Engineering 50 (Top Design Award) · 2021–2022' },
-  ],
-  experience: [
-    { title: 'Nova Rover — Science Lead',
-      sub:   'Monash University Rover Challenge team · 2024–present' },
-    { title: 'Worley — Engineering Intern',
-      sub:   'Rail engineering, NTG project · 2023' },
-    { title: 'Starfire Snowboards — Engineering Intern',
-      sub:   'CAD and prototype design for electric snowboards · 2023' },
+  items: [
+    { type: 'edu', sortYear: 2023, period: '2023 – present',
+      title: 'Monash University',
+      sub:   'BE (Hons) Robotics & Mechatronics · AI stream · HD average' },
+    { type: 'exp', sortYear: 2024, period: '2024 – present',
+      title: 'Nova Rover — Science Lead',
+      sub:   'Monash University Rover Challenge team' },
+    { type: 'exp', sortYear: 2024, period: 'Nov 2024 – Aug 2025',
+      title: 'Starfire Snowboards — Engineering Intern',
+      sub:   'CAD and prototype design for electric snowboards' },
+    { type: 'exp', sortYear: 2023, period: '2023 – present',
+      title: 'Worley — Engineering Intern',
+      sub:   'Rail engineering, NTG project' },
+    { type: 'edu', sortYear: 2010, period: '2010 – 2022',
+      title: 'Ballarat Grammar',
+      sub:   'VCE · Systems Engineering 50 · ATAR 98.15' },
   ]
 };
 
@@ -318,8 +323,8 @@ function renderFeatured() {
 }
 
 function renderAllProjects() {
-  document.getElementById('proj-grid').innerHTML = window.PROJECTS.map(p => `
-    <div class="proj-card" onclick="showDetail('${p.id}')">
+  function cardHtml(p) {
+    return `<div class="proj-card" onclick="showDetail('${p.id}')">
       ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
       <div class="pc-content">
         <p class="pc-year">${p.year}</p>
@@ -327,8 +332,15 @@ function renderAllProjects() {
         <p class="pc-summary">${p.summary}</p>
         <div class="pc-tags">${p.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }
+  const eng  = window.PROJECTS.filter(p => (p.category || 'engineering') === 'engineering');
+  const arts = window.PROJECTS.filter(p => p.category === 'arts');
+  document.getElementById('proj-grid-eng').innerHTML  = eng.map(cardHtml).join('');
+  document.getElementById('proj-grid-arts').innerHTML = arts.map(cardHtml).join('');
+  const artsLabel = document.getElementById('arts-label');
+  if (artsLabel) artsLabel.style.display = arts.length ? '' : 'none';
+  document.getElementById('proj-grid-arts').style.display = arts.length ? '' : 'none';
 }
 
 function renderCollage() {
@@ -352,13 +364,18 @@ function renderCollage() {
 }
 
 function renderAbout() {
-  const items = [...window.ABOUT.education, ...window.ABOUT.experience];
-  document.getElementById('edu-list').innerHTML = items.map(e => `
-    <div class="edu-item">
-      <p class="edu-title">${e.title}</p>
-      <p class="edu-sub">${e.sub}</p>
+  const raw = window.ABOUT.items
+    || [...(window.ABOUT.education||[]).map(e=>({...e,type:'edu'})),
+        ...(window.ABOUT.experience||[]).map(e=>({...e,type:'exp'}))];
+  const items = [...raw].sort((a, b) => (b.sortYear||0) - (a.sortYear||0));
+  document.getElementById('edu-list').innerHTML = `<div class="timeline">` + items.map(e => `
+    <div class="tl-item ${e.type === 'exp' ? 'tl-exp' : ''}">
+      ${e.period ? `<div class="tl-period">${e.period}</div>` : ''}
+      <span class="tl-badge ${e.type === 'edu' ? 'tl-badge--edu' : 'tl-badge--exp'}">${e.type === 'edu' ? 'Education' : 'Experience'}</span>
+      <div class="tl-title">${e.title}</div>
+      ${e.sub ? `<div class="tl-sub">${e.sub}</div>` : ''}
     </div>
-  `).join('');
+  `).join('') + `</div>`;
 }
 
 function renderCV() {

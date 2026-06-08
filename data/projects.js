@@ -3,38 +3,35 @@ window.PROJECTS = [
     id: "urc2026",
     featured: true,
     year: "2026",
-    eyebrow: "2026 · Nova Rover · University Rover Challenge",
+    eyebrow: "2026 · Nova Rover · University Rover Challenge · Utah, USA",
     title: "URC 2026 Science Payload",
-    summary: "Science Lead for Monash Nova Rover's 2026 University Rover Challenge entry, Utah.",
+    summary: "Engineering Co-Lead on the science payload that scored 100/100 in the URC 2026 science task, placing Monash Nova Rover 2nd overall from 116 teams across 18 countries.",
     tags: [
-      "Science Lead",
+      "Engineering Co-Lead",
+      "Life detection",
+      "Dual-auger sampling",
+      "Custom spectrometer",
       "CAN bus",
       "Embedded systems",
       "Utah, USA",
-      "URC",
-      "NOVA",
-      "Mechatronics",
-      "Reasearch and Development",
-      "Electrical + software intergration",
-      "Machining",
       "3D printing"
     ],
     stats: [
       {
-        v: "#1",
-        l: "World ranking for the science task "
-      },
-      {
-        v: "URC",
-        l: "Competition"
-      },
-      {
-        v: "Science Lead",
-        l: "My role"
+        v: "100/100",
+        l: "Science task score"
       },
       {
         v: "#2",
-        l: "World ranking rover overall "
+        l: "Overall world ranking"
+      },
+      {
+        v: "116",
+        l: "Teams competing"
+      },
+      {
+        v: "35",
+        l: "Spectrometer cuvettes"
       }
     ],
     thumb: "images/urc2026/097A0007.jpg",
@@ -87,21 +84,20 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>As Science Lead for Monash Nova Rover's 2026 University Rover Challenge entry, I was responsible for the full science subsystem — from concept through to competition in Utah.</p>
-      <h5>My role</h5>
+      <p>Competing against 116 teams from 18 countries at the Mars Desert Research Station in Utah, Monash Nova Rover placed 2nd overall and achieved a perfect score of 100/100 in the science task. I was Engineering Co-Lead on the science payload alongside James Pettifer, who led the chemistry and science side — my focus was the engineering: the mechanical systems, payload architecture, embedded integration, and reliability.</p>
+      <p>The task is Martian life detection. Our payload drills below 10 cm using a dual-auger regolith extraction system, building on the 2025 Sabertooth design with upgraded augers, chute, sheaths, and caches for larger, cleaner samples. Each auger targets an independent site to prevent cross-contamination. The judges called our samples "some of the most impressive they had seen."</p>
+      <h5>Analysis systems</h5>
       <ul>
-        <li>Led the science sub-team as Science Lead</li>
-        <li>Designed and integrated the 2026 science payload architecture</li>
-        <li>Managed CAN bus communication across science subsystem boards</li>
-        <li>Oversaw life detection and geochemistry analysis hardware</li>
+        <li><strong>Dual-ring visible spectrometer</strong> — a novel design with 35 cuvettes across two rotating rings, required because 4 reagents run in triplicate demand more cuvette space than a single ring allows in the rover's tight envelope. Ran Molisch's (carbohydrates), NADH/NADPH fluorescence (metabolic activity), Nile Red (lipids), and Ninhydrin (amino acids)</li>
+        <li><strong>Electrochemical cell</strong> — custom device detecting redox activity in the sample</li>
+        <li><strong>NIR probe</strong> — custom-built, detects thymine and N–H bond signatures non-invasively</li>
+        <li><strong>Multi-parameter test strips</strong> — calcium, hardness, ammonia, nitrite, nitrate, and pH for habitability assessment</li>
+        <li><strong>Moisture probe</strong> — in-situ moisture content, salinity, and temperature</li>
+        <li><strong>Microscope</strong> — high-definition imaging of sample sites</li>
+        <li><strong>BME sensor</strong> — ambient temperature, humidity, and pressure</li>
       </ul>
-      <h5>Tech stack</h5>
-      <ul>
-        <li>ESP32 / STM32 embedded firmware</li>
-        <li>CAN bus (QCMD boards, science cards)</li>
-        <li>Electrochemistry, potentiostat, and in-situ sensing</li>
-        <li>Fusion 360 for mechanical design</li>
-      </ul>
+      <h5>Engineering the reliability</h5>
+      <p>The perfect score on competition day was no fluke. A loose EP2.5 connector knocked out electrochemistry during pre-task checks at 5am. Caught and fixed before the judges arrived. A camera inside the vis-spec saturated from low-angle sunrise light during final checks. Identified, understood, confirmed non-issue. When the first drill site proved too hard, we lifted and relocated within the task window. Everything that could be tested was tested; everything that could fail had a plan.</p>
     `
   },
   {
@@ -110,24 +106,25 @@ window.PROJECTS = [
     year: "2026",
     eyebrow: "2026 · Nova Rover · Australian Rover Challenge",
     title: "ARCh 2026 Science Payload",
-    summary: "Science payload for the Australian Rover Challenge — onboard analysis and sample handling.",
+    summary: "Engineering Co-Lead on the ARCh 2026 Space Resources payload. 86% water recovery from frozen regolith. Scored 3rd in the science task in the first 5 minutes before an unrelated electrical fault disabled the rover.",
     tags: [
-      "Nova Rover",
-      "Science payload",
-      "Australia"
+      "Engineering Co-Lead",
+      "Water extraction",
+      "Frozen regolith",
+      "Custom NIR probe",
+      "Machine learning",
+      "Kiln & condenser",
+      "3D printing",
+      "Nova Rover"
     ],
     stats: [
       {
-        v: "2026",
-        l: "Year"
+        v: "86%",
+        l: "Water recovery"
       },
       {
-        v: "ARCh",
-        l: "Competition"
-      },
-      {
-        v: "Science Lead",
-        l: "My role"
+        v: "3rd",
+        l: "Placing at ARCh "
       }
     ],
     thumb: "images/arch2026/097A3218.jpg",
@@ -179,15 +176,26 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/arch2026/097A4047.jpg"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/z991EWwfprE"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/5zV1323UPA0"
       }
     ],
     body: `
-      <p>The Australian Rover Challenge (ARCh) 2026 science payload, designed and built as part of the Monash Nova Rover team. I led the science subsystem targeting onboard sample analysis and autonomous science tasks.</p>
-      <h5>Key contributions</h5>
+      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on a planetary surface. Our payload had two goals: extract water from frozen regolith, and quantify ilmenite content for resource assessment. I was Engineering Co-Lead, responsible for the mechanical systems, sensor integration, and payload architecture.</p>
+      <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. The payload worked.</p>
+      <h5>Water extraction system</h5>
+      <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom aluminium kiln. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>, surpassing the 70% requirement.</p>
+      <h5>Analysis systems</h5>
       <ul>
-        <li>Science payload design for Australian conditions and ARCh task requirements</li>
-        <li>Onboard sensing and sample handling integration</li>
-        <li>Coordinated science sub-team build and testing schedule</li>
+        <li><strong>Custom NIR probe</strong> — dual-LED near-infrared sensor measuring water content of frozen regolith non-invasively; validated to 2% precision under controlled conditions across 0–30% water content range</li>
+        <li><strong>ML microscope</strong> — digital microscope with light-isolation shroud; trained algorithms predict ilmenite concentration within 2% of true value from depth images; brush system designed to improve sample homogeneity for the camera</li>
+        <li><strong>Analysis Arm</strong> — houses both sensors; aluminium CHS frame replaced with carbon fibre tube after load testing revealed deformation, resulting in a lighter and stronger assembly</li>
       </ul>
     `
   },
@@ -320,6 +328,14 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/prosthetic/swimming.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/-6uBET54-YQ?feature=share"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/a0kPTfXAhls?feature=share"
       }
     ],
     body: `
@@ -383,22 +399,28 @@ window.PROJECTS = [
     id: "gimbal",
     featured: false,
     year: "2025",
-    eyebrow: "2025 · Nova Rover",
-    title: "Gimbal-Mounted Camera System",
-    summary: "Modular gimbal-mounted camera system designed for field reliability and quick servicing.",
+    eyebrow: "2025 · Nova Rover · Recruit Project",
+    title: "Nova Rover — Gimbal Camera System",
+    summary: "Two-axis servo gimbal for site survey and rock analysis. Built as my Nova recruit project, used across 4 competitions with zero faults and never disassembled.",
     tags: [
       "Mechanical design",
-      "Modular",
-      "Field reliability"
+      "Fusion 360",
+      "Servo actuation",
+      "Modular mounting",
+      "Nova Rover"
     ],
     stats: [
       {
-        v: "2025",
-        l: "Year"
+        v: "4",
+        l: "Competitions used"
       },
       {
-        v: "Nova Rover",
-        l: "Team"
+        v: "0",
+        l: "Faults recorded"
+      },
+      {
+        v: "2025",
+        l: "Year built"
       }
     ],
     thumb: "images/gimbal/hero.png",
@@ -413,12 +435,14 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>I developed a gimbal-mounted camera system for Nova Rover designed around strength, reliability, and ease of maintenance in competition conditions.</p>
+      <p>This two-axis servo gimbal was my recruit project when I joined Nova Rover. It aims a camera to give operators site context during competition: surveying terrain, analysing rocks and ground composition, and providing visual reference for science task decisions.</p>
+      <p>Since its first assembly in 2025 it has run through four competitions (ARCh 2025, URC 2025, ARCh 2026, and URC 2026) without a single fault and without ever being disassembled. That reliability record across desert environments in Utah and Australia is the result I'm most proud of.</p>
       <h5>Design highlights</h5>
       <ul>
-        <li>Modular mounting system for quick field replacement</li>
-        <li>Simplified construction to reduce assembly time</li>
-        <li>Designed for the physical demands of desert rover competition</li>
+        <li>Dual-servo pan/tilt mechanism for full scene coverage</li>
+        <li>V-slot modular mounting, swappable to different payload locations without tools</li>
+        <li>Cable routing designed for continuous rotation without binding or fatigue</li>
+        <li>Kept deliberately simple to eliminate failure points in the field</li>
       </ul>
     `
   },
@@ -560,6 +584,10 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/motorbike/Screenshot 2026-06-07 160533.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/wewPCjfXm88?feature=share"
       }
     ],
     body: `
@@ -741,37 +769,42 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/fabrication/esky-cart.png",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/rocket-stove.jpeg",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/floating-table-1.png",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/floating-table-2.png",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/workbench.png",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/bed-frame.png",
-        span: "full"
+        span: 2
       },
       {
         type: "image",
         src: "images/fabrication/bed-cad.png",
-        span: "full"
+        span: 2
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/bZlbz9-xJcs?feature=share",
+        span: 2
       }
     ],
     body: `<h5>Builds</h5>
@@ -828,7 +861,16 @@ window.PROJECTS = [
     ],
     stats: [],
     thumb: "",
-    media: [],
+    media: [
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/WRtODIOvwuk?feature=share"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/3Hp2048U4FI?feature=share"
+      }
+    ],
     body: "<p>Autonomous robot built as part of the Monash University ECE4076 unit.</p>"
   },
   {
@@ -922,5 +964,107 @@ window.PROJECTS = [
         <li>RC monowheel — single-wheel balancing vehicle</li>
       </ul>
     `
+  },
+  {
+    id: "knives",
+    category: "arts",
+    featured: false,
+    inProgress: false,
+    year: "2023–2026",
+    eyebrow: "2023–2026 · Hand-forged",
+    title: "Hand-Forged Knives",
+    summary: "A series of hand-forged and stock-removal knives exploring steel types, handle materials, and heat treatment.",
+    tags: [
+      "Knifemaking",
+      "Metalwork",
+      "Hand-forged",
+      "Fabrication"
+    ],
+    stats: [],
+    thumb: "",
+    media: [],
+    body: `
+      <p>A collection of knives crafted over several years, experimenting with different steel types, handle materials, and heat treatment processes.</p>
+      <h5>Techniques</h5>
+      <ul>
+        <li>Stock removal and forging</li>
+        <li>Handle work — wood, G10, resin</li>
+        <li>Heat treatment and tempering</li>
+        <li>Belt grinding and hand finishing</li>
+      </ul>
+    `
+  },
+  {
+    id: "ski-wall-mounts",
+    category: "arts",
+    featured: false,
+    inProgress: false,
+    year: "2024",
+    eyebrow: "2024 · Design + Fabrication",
+    title: "Ski Wall Mounts",
+    summary: "Aesthetic wall-mounted ski holders — designed and fabricated to display skis as statement pieces.",
+    tags: [
+      "Fabrication",
+      "Design",
+      "Woodwork"
+    ],
+    stats: [],
+    thumb: "",
+    media: [],
+    body: `
+      <p>Custom wall-mounted ski holders designed for both function and aesthetics. Clean, minimal brackets that let the skis become part of the room rather than just stored equipment.</p>
+    `
+  },
+  {
+    id: "mountain-lamps",
+    category: "arts",
+    featured: false,
+    inProgress: false,
+    year: "2024",
+    eyebrow: "2024 · Design + Electronics",
+    title: "Glowing Mountain Lamps",
+    summary: "Handcrafted mountain silhouette lamps with LED edge lighting — each one unique in shape and grain.",
+    tags: [
+      "Woodwork",
+      "LED",
+      "Design",
+      "Lighting"
+    ],
+    stats: [],
+    thumb: "",
+    media: [],
+    body: `
+      <p>Handcrafted lamps featuring mountain silhouettes cut from timber, with LED edge lighting that illuminates the profile. Each piece is unique in shape, wood grain, and character.</p>
+    `
+  },
+  {
+    id: "thawed-art-final",
+    category: "arts",
+    featured: false,
+    inProgress: false,
+    year: "2023",
+    eyebrow: "2023",
+    title: "Thawed - Art final",
+    summary: "",
+    tags: [],
+    stats: [],
+    thumb: "",
+    media: [],
+    body: "<p></p>"
+  },
+  {
+    id: "printmaking-art-final",
+    category: "arts",
+    featured: false,
+    inProgress: false,
+    year: "2023",
+    eyebrow: "2023 · ",
+    title: "Printmaking Art final",
+    summary: "",
+    tags: [],
+    stats: [],
+    thumb: "",
+    media: [],
+    body: "<p></p>"
   }
 ];
