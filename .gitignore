@@ -1,0 +1,18 @@
+# Large video/raw files — not needed for the website
+*.mov
+*.MOV
+*.MP4
+*.mp4
+*.CR2
+*.cr2
+
+# Documents
+*.pptx
+*.zip
+~$*
+
+# Videos folder
+videos/
+
+# Admin tool (optional — remove this line if you want it on GitHub)
+# admin.html
