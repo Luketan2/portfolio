@@ -842,6 +842,16 @@ a { color: inherit; }
   transition: background 0.15s;
 }
 #vm-close:hover { background: rgba(255,255,255,0.25); }
+#vm-yt-link {
+  position: relative;
+  z-index: 2;
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+#vm-yt-link:hover { color: #fff; }
 
 /* ── Print ────────────────────────────────────────── */
 @media print {

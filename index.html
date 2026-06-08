@@ -705,6 +705,7 @@ function adminToggleHeroPhoto(enabled) {
   <div id="vm-wrap">
     <iframe id="vm-iframe" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
   </div>
+  <a id="vm-yt-link" href="" target="_blank" rel="noopener">&#9654; Watch on YouTube</a>
 </div>
 
 <!-- ─── LIGHTBOX ──────────────────────────────────────── -->
@@ -724,13 +725,9 @@ function openAboutLightbox(imgs, idx) {
 
 // ── YouTube modal player ──────────────────────────────────
 function loadYT(vid, embedUrl) {
-  if (location.protocol === 'file:') {
-    window.open('https://www.youtube.com/watch?v=' + vid, '_blank');
-    return;
-  }
   document.getElementById('vm-iframe').src = embedUrl;
-  const modal = document.getElementById('video-modal');
-  modal.style.display = 'flex';
+  document.getElementById('vm-yt-link').href = 'https://www.youtube.com/watch?v=' + vid;
+  document.getElementById('video-modal').style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
