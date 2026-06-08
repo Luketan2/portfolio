@@ -145,6 +145,9 @@
     .body-ta { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 11px; font-family: monospace; outline: none; background: var(--bg); resize: vertical; }
     .body-ta:focus { border-color: var(--accent); }
 
+    /* ── Resume editor items ── */
+    .res-item { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem; margin-bottom: .6rem; }
+
     /* ── Stats editor ── */
     .stat-row { display: flex; gap: .5rem; margin-bottom: .4rem; align-items: center; }
     .stat-val-in { width: 90px; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-family: inherit; font-weight: 600; outline: none; background: var(--bg); }
@@ -214,6 +217,10 @@
         <span class="sidebar-special-icon">🏠</span>
         <span class="sidebar-special-label">Cover Page</span>
       </div>
+      <div class="sidebar-special" id="sidebar-resume" onclick="openResumeEditor()">
+        <span class="sidebar-special-icon">📄</span>
+        <span class="sidebar-special-label">Resume / CV</span>
+      </div>
       <div class="sidebar-special" id="sidebar-profile" onclick="openProfile()">
         <span class="sidebar-special-icon">👤</span>
         <span class="sidebar-special-label">Profile Photo</span>
@@ -249,11 +256,13 @@
 
 <script src="data/projects.js"></script>
 <script src="data/site.js"></script>
+<script src="data/resume.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
 // ── State ─────────────────────────────────────────────
 let projects    = [];
 let siteConfig  = {};
+let resumeData  = {};
 let dirHandle   = null;
 let activeId    = null;
 let imgCache    = {};   // { folderId: { filename: { url } } }
@@ -332,6 +341,7 @@ async function initApp() {
 
   projects   = JSON.parse(JSON.stringify(window.PROJECTS));
   siteConfig = JSON.parse(JSON.stringify(window.SITE || {}));
+  resumeData = JSON.parse(JSON.stringify(window.RESUME || {}));
 
   await scanAllImages();
   renderSidebar();
@@ -555,6 +565,7 @@ function setHeroBgPosition(val) {
 // ── Sidebar ───────────────────────────────────────────
 function renderSidebar() {
   document.getElementById('sidebar-cover').classList.toggle('active',   activeId === '__cover__');
+  document.getElementById('sidebar-resume').classList.toggle('active',  activeId === '__resume__');
   document.getElementById('sidebar-profile').classList.toggle('active', activeId === '__profile__');
 
   document.getElementById('proj-list').innerHTML = projects.map((p, i) => `
@@ -599,6 +610,158 @@ function dragDrop(e, i) {
 function dragEnd() {
   dragSrcIdx = null;
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('drag-over', 'dragging'));
+}
+
+// ── Resume editor ─────────────────────────────────────
+function openResumeEditor() {
+  activeId = '__resume__';
+  renderSidebar();
+  renderResumeEditor();
+}
+
+function renderResumeEditor() {
+  const r = resumeData;
+  const mkList = (arr, fields, addFn, removeFn, moveFn) => {
+    return (arr||[]).map((item, i) => `
+      <div class="res-item" data-i="${i}">
+        ${fields.map(f => `
+          <div class="field-row" style="margin-bottom:.3rem">
+            <span class="field-lbl">${f.label}</span>
+            ${f.multiline
+              ? `<textarea class="field-ta" rows="3" oninput="${f.fn}(${i},this.value)">${(item[f.key]||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>`
+              : `<input class="field-in" type="text" value="${(item[f.key]||'').replace(/"/g,'&quot;')}" oninput="${f.fn}(${i},this.value)" />`}
+          </div>`).join('')}
+        <div style="display:flex;gap:4px;margin-top:.25rem">
+          <button class="btn btn-sm" onclick="${moveFn}(${i},-1)" ${i===0?'disabled':''}>↑</button>
+          <button class="btn btn-sm" onclick="${moveFn}(${i},1)" ${i===(arr.length-1)?'disabled':''}>↓</button>
+          <button class="btn btn-sm btn-danger" onclick="${removeFn}(${i})">✕ Remove</button>
+        </div>
+      </div>`).join('');
+  };
+
+  setEditorContent(`
+    <div>
+      <div class="ed-title">Resume / CV</div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Identity</div>
+        <div class="field-row"><span class="field-lbl">Name</span><input class="field-in" type="text" value="${(r.name||'').replace(/"/g,'&quot;')}" oninput="rSet('name',this.value)" /></div>
+        <div class="field-row"><span class="field-lbl">Role</span><input class="field-in" type="text" value="${(r.role||'').replace(/"/g,'&quot;')}" oninput="rSet('role',this.value)" /></div>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Contact</div>
+        <div class="field-row"><span class="field-lbl">Email</span><input class="field-in" type="text" value="${((r.contact||{}).email||'').replace(/"/g,'&quot;')}" oninput="rSetContact('email',this.value)" /></div>
+        <div class="field-row"><span class="field-lbl">Phone</span><input class="field-in" type="text" value="${((r.contact||{}).phone||'').replace(/"/g,'&quot;')}" oninput="rSetContact('phone',this.value)" /></div>
+        <div class="field-row"><span class="field-lbl">Location</span><input class="field-in" type="text" value="${((r.contact||{}).location||'').replace(/"/g,'&quot;')}" oninput="rSetContact('location',this.value)" /></div>
+        <div class="field-row"><span class="field-lbl">LinkedIn</span><input class="field-in" type="text" value="${((r.contact||{}).linkedin||'').replace(/"/g,'&quot;')}" oninput="rSetContact('linkedin',this.value)" /></div>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Summary</div>
+        <textarea class="body-ta" rows="6" oninput="rSet('summary',this.value)">${(r.summary||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Education</div>
+        ${(r.education||[]).map((e,i) => `
+          <div class="res-item">
+            <div class="field-row"><span class="field-lbl">Institution</span><input class="field-in" type="text" value="${(e.institution||'').replace(/"/g,'&quot;')}" oninput="rEdu(${i},'institution',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Degree</span><input class="field-in" type="text" value="${(e.degree||'').replace(/"/g,'&quot;')}" oninput="rEdu(${i},'degree',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Period</span><input class="field-in" type="text" value="${(e.period||'').replace(/"/g,'&quot;')}" oninput="rEdu(${i},'period',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Detail</span><input class="field-in" type="text" value="${(e.detail||'').replace(/"/g,'&quot;')}" oninput="rEdu(${i},'detail',this.value)" /></div>
+            <button class="btn btn-sm btn-danger" style="margin-top:.25rem" onclick="rRemove('education',${i})">✕ Remove</button>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('education',{institution:'',degree:'',period:'',detail:''})">+ Add education</button>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Experience</div>
+        ${(r.experience||[]).map((e,i) => `
+          <div class="res-item">
+            <div class="field-row"><span class="field-lbl">Company</span><input class="field-in" type="text" value="${(e.company||'').replace(/"/g,'&quot;')}" oninput="rExp(${i},'company',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Role</span><input class="field-in" type="text" value="${(e.role||'').replace(/"/g,'&quot;')}" oninput="rExp(${i},'role',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Period</span><input class="field-in" type="text" value="${(e.period||'').replace(/"/g,'&quot;')}" oninput="rExp(${i},'period',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Location</span><input class="field-in" type="text" value="${(e.location||'').replace(/"/g,'&quot;')}" oninput="rExp(${i},'location',this.value)" /></div>
+            <div class="sec-hint" style="margin:.5rem 0 .25rem">Bullet points:</div>
+            ${(e.bullets||[]).map((b,bi) => `
+              <div style="display:flex;gap:6px;margin-bottom:4px;align-items:flex-start">
+                <textarea class="field-ta" rows="2" style="flex:1" oninput="rExpBullet(${i},${bi},this.value)">${b.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>
+                <button class="btn btn-sm btn-danger" onclick="rExpRemoveBullet(${i},${bi})">✕</button>
+              </div>`).join('')}
+            <div style="display:flex;gap:4px;margin-top:.25rem">
+              <button class="btn btn-sm" onclick="rExpAddBullet(${i})">+ Bullet</button>
+              <button class="btn btn-sm btn-danger" onclick="rRemove('experience',${i})">✕ Remove entry</button>
+            </div>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('experience',{company:'',role:'',period:'',location:'',url:'',bullets:[]})">+ Add experience</button>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Certifications</div>
+        ${(r.certifications||[]).map((c,i) => `
+          <div style="display:flex;gap:6px;margin-bottom:4px;align-items:center">
+            <input class="field-in" type="text" style="flex:1" value="${(c.name||'').replace(/"/g,'&quot;')}" oninput="rCert(${i},'name',this.value)" placeholder="Name" />
+            <input class="field-in" type="text" style="width:80px;flex:none" value="${(c.year||'').replace(/"/g,'&quot;')}" oninput="rCert(${i},'year',this.value)" placeholder="Year" />
+            <button class="btn btn-sm btn-danger" onclick="rRemove('certifications',${i})">✕</button>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('certifications',{name:'',year:''})">+ Add</button>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Awards</div>
+        ${(r.awards||[]).map((a,i) => `
+          <div style="display:flex;gap:6px;margin-bottom:4px;align-items:center;flex-wrap:wrap">
+            <input class="field-in" type="text" style="flex:1;min-width:160px" value="${(a.name||'').replace(/"/g,'&quot;')}" oninput="rAward(${i},'name',this.value)" placeholder="Award name" />
+            <input class="field-in" type="text" style="width:100px;flex:none" value="${(a.org||'').replace(/"/g,'&quot;')}" oninput="rAward(${i},'org',this.value)" placeholder="Org" />
+            <input class="field-in" type="text" style="width:70px;flex:none" value="${(a.year||'').replace(/"/g,'&quot;')}" oninput="rAward(${i},'year',this.value)" placeholder="Year" />
+            <button class="btn btn-sm btn-danger" onclick="rRemove('awards',${i})">✕</button>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('awards',{name:'',org:'',year:''})">+ Add</button>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Skills</div>
+        ${(r.skills||[]).map((s,i) => `
+          <div style="display:flex;gap:6px;margin-bottom:4px;align-items:center">
+            <input class="field-in" type="text" style="flex:1" value="${s.replace(/"/g,'&quot;')}" oninput="rSkill(${i},this.value)" />
+            <button class="btn btn-sm btn-danger" onclick="rRemove('skills',${i})">✕</button>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('skills','')">+ Add skill</button>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Volunteering</div>
+        ${(r.volunteering||[]).map((v,i) => `
+          <div class="res-item">
+            <div class="field-row"><span class="field-lbl">Role</span><input class="field-in" type="text" value="${(v.role||'').replace(/"/g,'&quot;')}" oninput="rVol(${i},'role',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Org</span><input class="field-in" type="text" value="${(v.org||'').replace(/"/g,'&quot;')}" oninput="rVol(${i},'org',this.value)" /></div>
+            <div class="field-row"><span class="field-lbl">Period</span><input class="field-in" type="text" value="${(v.period||'').replace(/"/g,'&quot;')}" oninput="rVol(${i},'period',this.value)" /></div>
+            <button class="btn btn-sm btn-danger" style="margin-top:.25rem" onclick="rRemove('volunteering',${i})">✕ Remove</button>
+          </div>`).join('')}
+        <button class="btn btn-sm" onclick="rAdd('volunteering',{role:'',org:'',period:''})">+ Add</button>
+      </div>
+    </div>
+  `);
+}
+
+// ── Resume data helpers ───────────────────────────────
+function rSet(key, val) { resumeData[key] = val; setStatus('Unsaved changes'); }
+function rSetContact(key, val) { if (!resumeData.contact) resumeData.contact = {}; resumeData.contact[key] = val; setStatus('Unsaved changes'); }
+function rEdu(i, key, val) { resumeData.education[i][key] = val; setStatus('Unsaved changes'); }
+function rExp(i, key, val) { resumeData.experience[i][key] = val; setStatus('Unsaved changes'); }
+function rExpBullet(i, bi, val) { resumeData.experience[i].bullets[bi] = val; setStatus('Unsaved changes'); }
+function rExpAddBullet(i) { resumeData.experience[i].bullets.push(''); setStatus('Unsaved changes'); renderResumeEditor(); }
+function rExpRemoveBullet(i, bi) { resumeData.experience[i].bullets.splice(bi,1); setStatus('Unsaved changes'); renderResumeEditor(); }
+function rCert(i, key, val) { resumeData.certifications[i][key] = val; setStatus('Unsaved changes'); }
+function rAward(i, key, val) { resumeData.awards[i][key] = val; setStatus('Unsaved changes'); }
+function rSkill(i, val) { resumeData.skills[i] = val; setStatus('Unsaved changes'); }
+function rVol(i, key, val) { resumeData.volunteering[i][key] = val; setStatus('Unsaved changes'); }
+function rRemove(section, i) { resumeData[section].splice(i,1); setStatus('Unsaved changes'); renderResumeEditor(); }
+function rAdd(section, template) {
+  if (!resumeData[section]) resumeData[section] = [];
+  resumeData[section].push(typeof template === 'string' ? template : JSON.parse(JSON.stringify(template)));
+  setStatus('Unsaved changes'); renderResumeEditor();
 }
 
 // ── Profile photo editor ──────────────────────────────
@@ -971,6 +1134,12 @@ async function saveAll() {
     const w2  = await fh2.createWritable();
     await w2.write(`window.SITE = ${JSON.stringify(siteConfig, null, 2)};\n`);
     await w2.close();
+
+    // Write data/resume.js
+    const fh3 = await dataDir.getFileHandle('resume.js', { create: true });
+    const w3  = await fh3.createWritable();
+    await w3.write(`window.RESUME = ${JSON.stringify(resumeData, null, 2)};\n`);
+    await w3.close();
 
     btn.textContent = 'Saved ✓'; setStatus('Saved');
     setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 2000);

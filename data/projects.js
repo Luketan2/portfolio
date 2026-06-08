@@ -10,12 +10,19 @@ window.PROJECTS = [
       "Science Lead",
       "CAN bus",
       "Embedded systems",
-      "Utah, USA"
+      "Utah, USA",
+      "URC",
+      "NOVA",
+      "Mechatronics",
+      "Reasearch and Development",
+      "Electrical + software intergration",
+      "Machining",
+      "3D printing"
     ],
     stats: [
       {
-        v: "2026",
-        l: "Year competed"
+        v: "#1",
+        l: "World ranking for science"
       },
       {
         v: "URC",
@@ -24,6 +31,10 @@ window.PROJECTS = [
       {
         v: "Science Lead",
         l: "My role"
+      },
+      {
+        v: "#2",
+        l: "World ranking rover overall "
       }
     ],
     thumb: "images/urc2026/097A0007.jpg",

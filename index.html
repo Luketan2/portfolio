@@ -74,6 +74,7 @@
       </div>
       <div class="detail-stats" id="d-stats"></div>
       <div class="detail-body" id="d-body"></div>
+      <div id="d-steps"></div>
     </div>
     <!-- Right: images -->
     <div class="detail-right">
@@ -123,25 +124,50 @@
 
 <!-- ─── ADMIN ──────────────────────────────────────────── -->
 <main id="page-admin" class="page">
-  <div class="admin-panel">
-    <p class="section-label" style="padding-top:2rem">Admin</p>
-    <div class="admin-card">
-      <div class="admin-row">
-        <div class="admin-row-info">
-          <span class="admin-row-label">Hero profile photo</span>
-          <span class="admin-row-desc">Circular photo on the home page hero section</span>
+  <div class="admin-layout" id="admin-layout">
+
+    <div class="admin-panel">
+      <p class="section-label" style="padding-top:2rem">Admin</p>
+
+      <div class="admin-card">
+        <div class="admin-row">
+          <div class="admin-row-info">
+            <span class="admin-row-label">Hero profile photo</span>
+            <span class="admin-row-desc">Circular photo on the home page hero section</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-hero-photo" onchange="adminToggleHeroPhoto(this.checked)" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="toggle-hero-photo" onchange="adminToggleHeroPhoto(this.checked)" />
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-        </label>
+      </div>
+
+      <p class="admin-section-title">Image layout</p>
+      <div class="admin-card">
+        <div class="admin-row admin-row--col">
+          <div class="admin-row-info">
+            <span class="admin-row-label">Project media spans</span>
+            <span class="admin-row-desc">Control how wide each image displays — 1 col, 2 col, or full width</span>
+          </div>
+          <select id="admin-proj-select" class="admin-select" onchange="adminLoadProject(this.value)">
+            <option value="">— Select a project —</option>
+          </select>
+          <div id="admin-media-list"></div>
+        </div>
       </div>
     </div>
+
+    <div class="admin-preview-wrap" id="admin-preview-wrap" style="display:none">
+      <p class="section-label" id="admin-preview-heading" style="padding-top:2rem">Preview</p>
+      <div class="media-gallery" id="admin-preview-gallery"></div>
+    </div>
+
   </div>
 </main>
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
 <script src="data/projects.js"></script>
+<script src="data/resume.js"></script>
 <script>
 
 // ── Skills — edit labels and pct values (0–100) ──────────
@@ -185,6 +211,7 @@ function showPage(pageId) {
   window.scrollTo(0, 0);
   if (pageId !== 'detail') previousPage = pageId;
   if (pageId === 'home') animateBars();
+  if (pageId === 'admin') adminInit();
 }
 
 function showDetail(id) {
@@ -209,11 +236,15 @@ function showDetail(id) {
   const mediaEl = document.getElementById('d-media');
   if (p.media && p.media.length) {
     window._lbImages = p.media.filter(m => m.type === 'image').map(m => m.src);
+    const allSpans   = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
+    const projSpans  = allSpans[p.id] || [];
     let imgIdx = 0;
-    mediaEl.innerHTML = p.media.map(m => {
+    mediaEl.innerHTML = p.media.map((m, mediaIdx) => {
+      const span = projSpans[mediaIdx] || 1;
+      const spanStyle = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? `grid-column:span ${span};` : '';
       if (m.type === 'image') {
         const idx = imgIdx++;
-        return `<div class="media-item" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
+        return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
       }
       if (m.type === 'embed') {
         const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
@@ -221,14 +252,14 @@ function showDetail(id) {
           const vid = ytMatch[1];
           const thumb = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
           const embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
-          return `<div class="media-item media-item--embed yt-thumb-item" id="yt-${vid}" onclick="loadYT('${vid}','${embedUrl}')" style="cursor:pointer;position:relative">
+          return `<div class="media-item media-item--embed yt-thumb-item" id="yt-${vid}" onclick="loadYT('${vid}','${embedUrl}')" style="${spanStyle}cursor:pointer;position:relative">
             <img src="${thumb}" alt="YouTube video" style="width:100%;height:100%;object-fit:cover;display:block" />
             <div class="yt-play-btn" aria-label="Play video">
               <svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
             </div>
           </div>`;
         }
-        return `<div class="media-item media-item--embed"><iframe src="${m.src}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+        return `<div class="media-item media-item--embed" style="${spanStyle}"><iframe src="${m.src}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
       }
       return '';
     }).join('');
@@ -247,8 +278,44 @@ function showDetail(id) {
 
   document.getElementById('d-body').innerHTML = p.body;
 
+  // Steps walkthrough
+  const stepsEl = document.getElementById('d-steps');
+  if (p.steps && p.steps.length) {
+    stepsEl.innerHTML = renderSteps(p.id, p.steps, 0);
+  } else {
+    stepsEl.innerHTML = '';
+  }
+
   showPage('detail');
   window.location.hash = 'project/' + id;
+}
+
+// ── Steps walkthrough ───────────────────────────────────
+function renderSteps(projectId, steps, active) {
+  const nav = steps.map((s, i) => `
+    <button class="d-step-btn${i === active ? ' active' : ''}" onclick="activateStep(${i})">
+      <span class="d-step-num">${i + 1}</span>
+      <span class="d-step-lbl">${s.label}</span>
+    </button>
+  `).join('');
+  return `<div class="d-steps">
+    <p class="section-label" style="margin-bottom:1.25rem">How it works</p>
+    <div class="d-steps-nav">${nav}</div>
+    <div class="d-steps-panel" id="d-steps-panel">
+      <h5>${steps[active].label}</h5>
+      ${steps[active].detail}
+    </div>
+  </div>`;
+}
+
+function activateStep(idx) {
+  const id = window.location.hash.startsWith('#project/') ? window.location.hash.slice(9) : null;
+  if (!id) return;
+  const p = window.PROJECTS.find(x => x.id === id);
+  if (!p || !p.steps) return;
+  document.querySelectorAll('.d-step-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
+  const s = p.steps[idx];
+  document.getElementById('d-steps-panel').innerHTML = `<h5>${s.label}</h5>${s.detail}`;
 }
 
 // ── Render helpers ──────────────────────────────────────
@@ -311,81 +378,119 @@ function renderAbout() {
 }
 
 function renderCV() {
+  const r = window.RESUME || {};
   const site  = window.SITE || {};
   const photo = site.cvPhoto || site.photo || '';
-  document.getElementById('cv-doc').innerHTML = `
-    <div class="cv2-layout">
+  const c = r.contact || {};
 
-      <!-- ── LEFT SIDEBAR ── -->
-      <div class="cv2-sidebar">
-        ${photo ? `<img src="${photo}" class="cv2-photo" alt="Luke Tan" />` : ''}
-        <h1 class="cv2-name">Luke Tan</h1>
-        <p class="cv2-role">Robotics &amp; Mechatronics Engineer</p>
+  const sidebar1 = `
+    <div class="cv2-sidebar">
+      ${photo ? `<img src="${photo}" class="cv2-photo" alt="${r.name||'Luke Tan'}" />` : ''}
+      <h1 class="cv2-name">${r.name||'Luke Tan'}</h1>
+      <p class="cv2-role">${r.role||''}</p>
 
-        <div class="cv2-divider"></div>
-
-        <div class="cv2-sec">
-          <div class="cv2-sec-title">Contact</div>
-          <p class="cv2-contact-line">luke.tan04@gmail.com</p>
-          <p class="cv2-contact-line">0408 714 149</p>
-          <p class="cv2-contact-line">Melbourne, Australia</p>
-        </div>
-
-        <div class="cv2-divider"></div>
-
-        <div class="cv2-sec">
-          <div class="cv2-sec-title">Skills</div>
-          <ul class="cv2-skill-list">
-            ${window.SKILLS.map(s => `<li>${s.label}</li>`).join('')}
-          </ul>
-        </div>
-
-        <div class="cv2-divider"></div>
-
-        <div class="cv2-sec">
-          <div class="cv2-sec-title">Awards</div>
-          <ul class="cv2-skill-list">
-            <li>VCE Systems Engineering — Study Score 50</li>
-            <li>VCE Top Design Award</li>
-            <li>Selected for Top Designs Exhibition</li>
-            <li>URC 2025 — Science Task Competed</li>
-          </ul>
-        </div>
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Contact</div>
+        ${c.email    ? `<p class="cv2-contact-line">${c.email}</p>`    : ''}
+        ${c.phone    ? `<p class="cv2-contact-line">${c.phone}</p>`    : ''}
+        ${c.location ? `<p class="cv2-contact-line">${c.location}</p>` : ''}
+        ${c.linkedin ? `<p class="cv2-contact-line">${c.linkedin}</p>` : ''}
       </div>
 
-      <!-- ── RIGHT MAIN ── -->
+      ${(r.certifications||[]).length ? `
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Certifications</div>
+        <ul class="cv2-skill-list">
+          ${r.certifications.map(c => `<li>${c.name}<span class="cv2-cert-year">${c.year}</span></li>`).join('')}
+        </ul>
+      </div>` : ''}
+
+      ${(r.awards||[]).length ? `
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Awards</div>
+        <ul class="cv2-skill-list">
+          ${r.awards.map(a => `<li>${a.name}<span class="cv2-cert-year">${a.year}</span></li>`).join('')}
+        </ul>
+      </div>` : ''}
+    </div>`;
+
+  const sidebar2 = `
+    <div class="cv2-sidebar">
+      <h1 class="cv2-name" style="margin-top:2rem">${r.name||'Luke Tan'}</h1>
+      <p class="cv2-role">Page 2</p>
+      <div class="cv2-divider" style="margin-top:1rem"></div>
+      ${(r.skills||[]).length ? `
+      <div class="cv2-sec" style="margin-top:1rem">
+        <div class="cv2-sec-title">Skills</div>
+        <ul class="cv2-skill-list">
+          ${r.skills.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>` : ''}
+      <div class="cv2-divider" style="margin-top:1rem"></div>
+      <div class="cv2-sec" style="margin-top:1rem">
+        <div class="cv2-sec-title">References</div>
+        <p class="cv2-contact-line">Available upon request.</p>
+      </div>
+    </div>`;
+
+  document.getElementById('cv-doc').innerHTML = `
+
+    <!-- ── Page 1: Summary + Education + Experience ── -->
+    <div class="cv-page">
+      ${sidebar1}
       <div class="cv2-main">
+
+        ${r.summary ? `
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Summary</div>
+          ${r.summary.split('\n\n').map(p => `<p class="cv2-summary-p">${p}</p>`).join('')}
+        </div>` : ''}
 
         <div class="cv2-main-sec">
           <div class="cv2-main-title">Education</div>
-          ${window.ABOUT.education.map(e => `
+          ${(r.education||[]).map(e => `
             <div class="cv2-entry">
-              <div class="cv2-entry-title">${e.title}</div>
-              <div class="cv2-entry-sub">${e.sub}</div>
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${e.institution}</span>
+                <span class="cv2-entry-year">${e.period}</span>
+              </div>
+              <div class="cv2-entry-sub">${e.degree}</div>
+              ${e.detail ? `<div class="cv2-entry-sub" style="color:#888">${e.detail}</div>` : ''}
             </div>
           `).join('')}
         </div>
 
         <div class="cv2-main-sec">
           <div class="cv2-main-title">Experience</div>
-          ${window.ABOUT.experience.map(e => {
-            const parts = e.sub.split(' · ');
-            const period = parts.length > 1 ? parts[parts.length - 1] : '';
-            const desc   = parts.length > 1 ? parts.slice(0, -1).join(' · ') : e.sub;
-            return `
+          ${(r.experience||[]).map(e => `
             <div class="cv2-entry">
               <div class="cv2-entry-header">
-                <span class="cv2-entry-title">${e.title}</span>
-                ${period ? `<span class="cv2-entry-year">${period}</span>` : ''}
+                <span class="cv2-entry-title">${e.company}</span>
+                <span class="cv2-entry-year">${e.period}</span>
               </div>
-              ${desc ? `<div class="cv2-entry-sub">${desc}</div>` : ''}
-            </div>`;
-          }).join('')}
+              <div class="cv2-entry-sub">${e.role}${e.location ? ` &nbsp;·&nbsp; ${e.location}` : ''}</div>
+              ${(e.bullets||[]).length ? `
+              <ul class="cv2-bullets">
+                ${e.bullets.map(b => `<li>${b}</li>`).join('')}
+              </ul>` : ''}
+            </div>
+          `).join('')}
         </div>
 
+      </div>
+    </div>
+
+    <!-- ── Page 2: Projects + Volunteering ── -->
+    <div class="cv-page">
+      ${sidebar2}
+      <div class="cv2-main">
+
         <div class="cv2-main-sec">
-          <div class="cv2-main-title">Projects</div>
-          ${window.PROJECTS.map(p => `
+          <div class="cv2-main-title">Engineering Projects</div>
+          ${window.PROJECTS.filter(p => p.featured).map(p => `
             <div class="cv2-entry">
               <div class="cv2-entry-header">
                 <span class="cv2-entry-title">${p.title}</span>
@@ -397,6 +502,20 @@ function renderCV() {
             </div>
           `).join('')}
         </div>
+
+        ${(r.volunteering||[]).length ? `
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Volunteering</div>
+          ${r.volunteering.map(v => `
+            <div class="cv2-entry">
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${v.role}</span>
+                <span class="cv2-entry-year">${v.period}</span>
+              </div>
+              <div class="cv2-entry-sub">${v.org}</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
 
       </div>
     </div>
@@ -438,6 +557,95 @@ renderCollage();
 renderAbout();
 renderCV();
 handleHash();
+
+// ── Admin ────────────────────────────────────────────────
+function adminInit() {
+  const sel = document.getElementById('admin-proj-select');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— Select a project —</option>' +
+    window.PROJECTS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+  if (current) { sel.value = current; adminLoadProject(current); }
+}
+
+function adminLoadProject(id) {
+  const list = document.getElementById('admin-media-list');
+  if (!id) { list.innerHTML = ''; return; }
+  const p = window.PROJECTS.find(x => x.id === id);
+  if (!p || !p.media || !p.media.length) {
+    list.innerHTML = '<p class="admin-empty">No media items for this project.</p>';
+    return;
+  }
+  const allSpans  = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
+  const projSpans = allSpans[id] || [];
+  list.innerHTML = p.media.map((m, i) => {
+    const span = projSpans[i] || 1;
+    const isYT  = m.type === 'embed' && m.src.includes('youtube');
+    const ytId  = isYT ? (m.src.match(/embed\/([^?&]+)/) || [])[1] : null;
+    const thumb = m.type === 'image'
+      ? `<img src="${m.src}" class="admin-media-thumb" />`
+      : ytId
+        ? `<img src="https://img.youtube.com/vi/${ytId}/default.jpg" class="admin-media-thumb" />`
+        : `<div class="admin-media-thumb admin-media-thumb--embed">&#9654;</div>`;
+    const label = m.type === 'image' ? m.src.split('/').pop() : 'Video embed';
+    return `<div class="admin-media-row">
+      ${thumb}
+      <span class="admin-media-label" title="${m.src}">${label}</span>
+      <div class="admin-span-btns">
+        <button class="${span===1?'active':''}"      onclick="adminSetSpan('${id}',${i},1)">1</button>
+        <button class="${span===2?'active':''}"      onclick="adminSetSpan('${id}',${i},2)">2</button>
+        <button class="${span==='full'?'active':''}" onclick="adminSetSpan('${id}',${i},'full')">Full</button>
+      </div>
+    </div>`;
+  }).join('');
+  adminRenderPreview(id);
+}
+
+function adminSetSpan(projectId, idx, span) {
+  const all = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
+  if (!all[projectId]) all[projectId] = [];
+  all[projectId][idx] = span;
+  localStorage.setItem('mediaSpans', JSON.stringify(all));
+  adminLoadProject(projectId);
+  adminRenderPreview(projectId);
+}
+
+function adminRenderPreview(id) {
+  const wrap    = document.getElementById('admin-preview-wrap');
+  const gallery = document.getElementById('admin-preview-gallery');
+  const heading = document.getElementById('admin-preview-heading');
+  if (!id) { wrap.style.display = 'none'; return; }
+  const p = window.PROJECTS.find(x => x.id === id);
+  if (!p || !p.media || !p.media.length) { wrap.style.display = 'none'; return; }
+
+  const allSpans  = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
+  const projSpans = allSpans[id] || [];
+  window._lbImages = p.media.filter(m => m.type === 'image').map(m => m.src);
+
+  let imgIdx = 0;
+  gallery.innerHTML = p.media.map((m, mediaIdx) => {
+    const span = projSpans[mediaIdx] || 1;
+    const spanStyle = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? `grid-column:span ${span};` : '';
+    if (m.type === 'image') {
+      const idx = imgIdx++;
+      return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})">
+        <img src="${m.src}" alt="" loading="lazy" />
+        <div class="admin-preview-badge">${span === 'full' ? 'Full' : span}</div>
+      </div>`;
+    }
+    if (m.type === 'embed') {
+      const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
+      const thumb = ytMatch ? `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg` : null;
+      return `<div class="media-item media-item--embed" style="${spanStyle}">
+        ${thumb ? `<img src="${thumb}" alt="Video" style="width:100%;height:100%;object-fit:cover;display:block" />` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#888;font-size:.85rem">Embed</div>'}
+        <div class="admin-preview-badge">${span === 'full' ? 'Full' : span}</div>
+      </div>`;
+    }
+    return '';
+  }).join('');
+
+  heading.textContent = p.title + ' — Preview';
+  wrap.style.display = 'block';
+}
 
 // ── Admin: hero photo toggle ─────────────────────────────
 function adminToggleHeroPhoto(enabled) {
