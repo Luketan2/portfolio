@@ -981,7 +981,14 @@ function buildGalPreview(media, imgs) {
         + '</div>';
     }
     if (m.type === 'embed') {
-      const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
+      let normSrc = m.src;
+      const _s = normSrc.match(/youtu\.be\/([^?&]+)/);
+      const _w = normSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+      const _sh = normSrc.match(/youtube\.com\/shorts\/([^?&]+)/);
+      if (_s) normSrc = 'https://www.youtube.com/embed/' + _s[1];
+      else if (_w) normSrc = 'https://www.youtube.com/embed/' + _w[1];
+      else if (_sh) normSrc = 'https://www.youtube.com/embed/' + _sh[1];
+      const ytMatch = normSrc.match(/youtube\.com\/embed\/([^?&]+)/);
       const ytThumb = ytMatch ? 'https://img.youtube.com/vi/' + ytMatch[1] + '/mqdefault.jpg' : null;
       const inner   = ytThumb
         ? '<img src="' + ytThumb + '" style="width:100%;height:100%;object-fit:cover;display:block"/>'
@@ -1175,7 +1182,7 @@ function renderEditor() {
           </div>
         ` : ''}
         <div class="embed-row">
-          <input class="embed-in" id="embed-in" type="text" placeholder="YouTube embed URL — youtube.com/embed/VIDEO_ID" />
+          <input class="embed-in" id="embed-in" type="text" placeholder="Any YouTube URL — embed, watch, shorts, or youtu.be links all work" />
           <button class="btn" onclick="addEmbed()">+ Add video</button>
           <button class="btn" onclick="addSectionHeading()" title="Add a section divider heading to the gallery">§ Add heading</button>
         </div>

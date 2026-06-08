@@ -139,7 +139,7 @@
 </main>
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
-<script src="data/projects.js?v=7"></script>
+<script src="data/projects.js?v=8"></script>
 <script src="data/resume.js?v=5"></script>
 <script>
 
@@ -226,12 +226,14 @@ function showDetail(id) {
         return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
       }
       if (m.type === 'embed') {
-        // Normalise youtu.be/ID and youtube.com/watch?v=ID → youtube.com/embed/ID
+        // Normalise all YouTube URL formats → youtube.com/embed/ID
         let embedSrc = m.src;
-        const ytShort = embedSrc.match(/youtu\.be\/([^?&]+)/);
-        const ytWatch = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
-        if (ytShort) embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
-        else if (ytWatch) embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+        const ytShort  = embedSrc.match(/youtu\.be\/([^?&]+)/);
+        const ytWatch  = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+        const ytShorts = embedSrc.match(/youtube\.com\/shorts\/([^?&]+)/);
+        if (ytShort)  embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
+        else if (ytWatch)  embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+        else if (ytShorts) embedSrc = `https://www.youtube.com/embed/${ytShorts[1]}`;
         const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
         if (ytMatch) {
           const vid = ytMatch[1];

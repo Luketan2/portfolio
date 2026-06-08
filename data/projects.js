@@ -832,15 +832,17 @@ window.PROJECTS = [
       "Nova Rover"
     ],
     stats: [],
-    thumb: "",
+    thumb: "images/2026_ARC_folding_mast/Screenshot 2026-06-09 094204.png",
     media: [
       {
         type: "embed",
-        src: "https://youtu.be/uN-OdPfy1i4"
+        src: "https://youtu.be/uN-OdPfy1i4",
+        span: 2
       },
       {
         type: "embed",
-        src: "https://youtu.be/u6varZqdYPw"
+        src: "https://youtu.be/u6varZqdYPw",
+        span: 2
       }
     ],
     body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
