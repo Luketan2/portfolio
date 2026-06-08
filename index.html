@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luke Tan — Engineering Portfolio</title>
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=5" />
   <script src="data/site.js?v=3"></script>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -131,50 +131,14 @@
 
 <!-- ─── ADMIN ──────────────────────────────────────────── -->
 <main id="page-admin" class="page">
-  <div class="admin-layout" id="admin-layout">
-
-    <div class="admin-panel">
-      <p class="section-label" style="padding-top:2rem">Admin</p>
-
-      <div class="admin-card">
-        <div class="admin-row">
-          <div class="admin-row-info">
-            <span class="admin-row-label">Hero profile photo</span>
-            <span class="admin-row-desc">Circular photo on the home page hero section</span>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="toggle-hero-photo" onchange="adminToggleHeroPhoto(this.checked)" />
-            <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          </label>
-        </div>
-      </div>
-
-      <p class="admin-section-title">Image layout</p>
-      <div class="admin-card">
-        <div class="admin-row admin-row--col">
-          <div class="admin-row-info">
-            <span class="admin-row-label">Project media spans</span>
-            <span class="admin-row-desc">Control how wide each image displays — 1 col, 2 col, or full width</span>
-          </div>
-          <select id="admin-proj-select" class="admin-select" onchange="adminLoadProject(this.value)">
-            <option value="">— Select a project —</option>
-          </select>
-          <div id="admin-media-list"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="admin-preview-wrap" id="admin-preview-wrap" style="display:none">
-      <p class="section-label" id="admin-preview-heading" style="padding-top:2rem">Preview</p>
-      <div class="media-gallery" id="admin-preview-gallery"></div>
-    </div>
-
+  <div style="padding:3rem var(--pad);text-align:center;color:#999;font-size:14px">
+    Use <strong>admin.html</strong> to manage your portfolio.
   </div>
 </main>
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
-<script src="data/projects.js?v=4"></script>
-<script src="data/resume.js?v=4"></script>
+<script src="data/projects.js?v=6"></script>
+<script src="data/resume.js?v=5"></script>
 <script>
 
 // ── Skills — edit labels and pct values (0–100) ──────────
@@ -227,7 +191,9 @@ function showDetail(id) {
 
   document.getElementById('d-eyebrow').textContent = p.eyebrow;
   document.getElementById('d-title').textContent   = p.title;
-  document.getElementById('d-tags').innerHTML = p.tags.map(t => `<span class="dtag">${t}</span>`).join('');
+  document.getElementById('d-tags').innerHTML =
+    (p.inProgress ? `<span class="dtag dtag--wip">In Progress</span>` : '') +
+    p.tags.map(t => `<span class="dtag">${t}</span>`).join('');
 
   // Hero
   const hero    = document.getElementById('d-hero');
@@ -243,11 +209,12 @@ function showDetail(id) {
   const mediaEl = document.getElementById('d-media');
   if (p.media && p.media.length) {
     window._lbImages = p.media.filter(m => m.type === 'image').map(m => m.src);
-    const allSpans   = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
-    const projSpans  = allSpans[p.id] || [];
     let imgIdx = 0;
     mediaEl.innerHTML = p.media.map((m, mediaIdx) => {
-      const span = projSpans[mediaIdx] || 1;
+      if (m.type === 'section-heading') {
+        return `<div class="media-section-heading">${m.label}</div>`;
+      }
+      const span = m.span || 1;
       const spanStyle = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? `grid-column:span ${span};` : '';
       if (m.type === 'image') {
         const idx = imgIdx++;
@@ -326,11 +293,15 @@ function activateStep(idx) {
 }
 
 // ── Render helpers ──────────────────────────────────────
+function inProgressBadge(p) {
+  return p.inProgress ? `<span class="badge-wip">In Progress</span>` : '';
+}
+
 function renderFeatured() {
-  const featured = window.PROJECTS.filter(p => p.featured).slice(0, 4);
+  const featured = window.PROJECTS.filter(p => p.featured).slice(0, 6);
   document.getElementById('featured-grid').innerHTML = featured.map(p => `
     <div class="proj-card" onclick="showDetail('${p.id}')">
-      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" /></div>` : ''}
+      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
       <div class="pc-content">
         <p class="pc-year">${p.year}</p>
         <h4>${p.title}</h4>
@@ -343,7 +314,7 @@ function renderFeatured() {
 function renderAllProjects() {
   document.getElementById('proj-grid').innerHTML = window.PROJECTS.map(p => `
     <div class="proj-card" onclick="showDetail('${p.id}')">
-      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" /></div>` : ''}
+      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
       <div class="pc-content">
         <p class="pc-year">${p.year}</p>
         <h4>${p.title}</h4>
@@ -565,101 +536,6 @@ renderAbout();
 renderCV();
 handleHash();
 
-// ── Admin ────────────────────────────────────────────────
-function adminInit() {
-  const sel = document.getElementById('admin-proj-select');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">— Select a project —</option>' +
-    window.PROJECTS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
-  if (current) { sel.value = current; adminLoadProject(current); }
-}
-
-function adminLoadProject(id) {
-  const list = document.getElementById('admin-media-list');
-  if (!id) { list.innerHTML = ''; return; }
-  const p = window.PROJECTS.find(x => x.id === id);
-  if (!p || !p.media || !p.media.length) {
-    list.innerHTML = '<p class="admin-empty">No media items for this project.</p>';
-    return;
-  }
-  const allSpans  = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
-  const projSpans = allSpans[id] || [];
-  list.innerHTML = p.media.map((m, i) => {
-    const span = projSpans[i] || 1;
-    const isYT  = m.type === 'embed' && m.src.includes('youtube');
-    const ytId  = isYT ? (m.src.match(/embed\/([^?&]+)/) || [])[1] : null;
-    const thumb = m.type === 'image'
-      ? `<img src="${m.src}" class="admin-media-thumb" />`
-      : ytId
-        ? `<img src="https://img.youtube.com/vi/${ytId}/default.jpg" class="admin-media-thumb" />`
-        : `<div class="admin-media-thumb admin-media-thumb--embed">&#9654;</div>`;
-    const label = m.type === 'image' ? m.src.split('/').pop() : 'Video embed';
-    return `<div class="admin-media-row">
-      ${thumb}
-      <span class="admin-media-label" title="${m.src}">${label}</span>
-      <div class="admin-span-btns">
-        <button class="${span===1?'active':''}"      onclick="adminSetSpan('${id}',${i},1)">1</button>
-        <button class="${span===2?'active':''}"      onclick="adminSetSpan('${id}',${i},2)">2</button>
-        <button class="${span==='full'?'active':''}" onclick="adminSetSpan('${id}',${i},'full')">Full</button>
-      </div>
-    </div>`;
-  }).join('');
-  adminRenderPreview(id);
-}
-
-function adminSetSpan(projectId, idx, span) {
-  const all = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
-  if (!all[projectId]) all[projectId] = [];
-  all[projectId][idx] = span;
-  localStorage.setItem('mediaSpans', JSON.stringify(all));
-  adminLoadProject(projectId);
-  adminRenderPreview(projectId);
-}
-
-function adminRenderPreview(id) {
-  const wrap    = document.getElementById('admin-preview-wrap');
-  const gallery = document.getElementById('admin-preview-gallery');
-  const heading = document.getElementById('admin-preview-heading');
-  if (!id) { wrap.style.display = 'none'; return; }
-  const p = window.PROJECTS.find(x => x.id === id);
-  if (!p || !p.media || !p.media.length) { wrap.style.display = 'none'; return; }
-
-  const allSpans  = JSON.parse(localStorage.getItem('mediaSpans') || '{}');
-  const projSpans = allSpans[id] || [];
-  window._lbImages = p.media.filter(m => m.type === 'image').map(m => m.src);
-
-  let imgIdx = 0;
-  gallery.innerHTML = p.media.map((m, mediaIdx) => {
-    const span = projSpans[mediaIdx] || 1;
-    const spanStyle = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? `grid-column:span ${span};` : '';
-    if (m.type === 'image') {
-      const idx = imgIdx++;
-      return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})">
-        <img src="${m.src}" alt="" loading="lazy" />
-        <div class="admin-preview-badge">${span === 'full' ? 'Full' : span}</div>
-      </div>`;
-    }
-    if (m.type === 'embed') {
-      const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
-      const thumb = ytMatch ? `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg` : null;
-      return `<div class="media-item media-item--embed" style="${spanStyle}">
-        ${thumb ? `<img src="${thumb}" alt="Video" style="width:100%;height:100%;object-fit:cover;display:block" />` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#888;font-size:.85rem">Embed</div>'}
-        <div class="admin-preview-badge">${span === 'full' ? 'Full' : span}</div>
-      </div>`;
-    }
-    return '';
-  }).join('');
-
-  heading.textContent = p.title + ' — Preview';
-  wrap.style.display = 'block';
-}
-
-// ── Admin: hero photo toggle ─────────────────────────────
-function adminToggleHeroPhoto(enabled) {
-  localStorage.setItem('heroPhotoVisible', enabled ? '1' : '0');
-  const wrap = document.getElementById('hero-photo-wrap');
-  if (wrap) wrap.style.display = enabled ? 'flex' : 'none';
-}
 
 // Site config — profile photo + hero background
 (function() {

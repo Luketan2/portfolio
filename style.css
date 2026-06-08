@@ -379,6 +379,27 @@ a { color: inherit; }
   border-radius: 20px;
   color: var(--gray4);
 }
+.dtag--wip {
+  background: #fff8ec;
+  border-color: #f5c842;
+  color: #8a6000;
+  font-weight: 600;
+}
+
+.badge-wip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  background: #fff8ec;
+  border: 1px solid #f5c842;
+  color: #8a6000;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.pc-thumb { position: relative; }
 
 .d-hero-wrap { margin-bottom: 8px; }
 .d-hero-wrap img {
@@ -1157,4 +1178,29 @@ a { color: inherit; }
   font-size: 13.5px;
   color: var(--gray4);
   margin-bottom: .2rem;
+}
+
+/* ── Media section headings ───────────────────────── */
+.media-section-heading {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray3);
+  padding: 1rem 0 0.25rem;
+  border-top: 1px solid var(--gray2);
+  margin-top: 0.25rem;
+}
+.media-section-heading:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+.admin-section-divider {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray3);
+  padding: 0.75rem 0 0.25rem;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.25rem;
 }

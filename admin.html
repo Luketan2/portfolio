@@ -114,12 +114,40 @@
 
     /* ── Gallery list ── */
     .gal-list { display: flex; flex-direction: column; gap: 4px; }
-    .gal-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); }
-    .gal-preview { width: 56px; height: 38px; border-radius: 4px; overflow: hidden; background: var(--border); flex-shrink: 0; }
-    .gal-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .gal-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); cursor: default; }
+    .gal-item--heading { background: #f0f6ff; border-color: #bfdbfe; }
+    .gal-item.dragging  { opacity: .35; }
+    .gal-item.drag-over { border-top: 2px solid var(--accent); background: #eff6ff; }
+    .gal-drag-handle { color: #ccc; font-size: 14px; flex-shrink: 0; cursor: grab; line-height: 1; padding: 0 1px; user-select: none; }
+    .gal-drag-handle:hover { color: #aaa; }
+    .gal-drag-handle:active { cursor: grabbing; }
+    .gal-heading-icon { font-size: 13px; color: var(--accent); flex-shrink: 0; width: 56px; display: flex; align-items: center; justify-content: center; }
+    .gal-heading-in { flex: 1; padding: 4px 8px; border: 1px solid #bfdbfe; border-radius: 6px; font-size: 11px; font-family: inherit; outline: none; background: #fff; font-weight: 600; color: var(--accent); letter-spacing: .03em; }
+    .gal-heading-in:focus { border-color: var(--accent); }
+    .gal-thumb { width: 56px; height: 38px; border-radius: 4px; overflow: hidden; background: var(--border); flex-shrink: 0; }
+    .gal-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .gal-embed, .gal-miss { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--muted); text-align: center; }
-    .gal-name { flex: 1; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gal-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .gal-name { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gal-span-btns { display: flex; gap: 3px; }
+    .gal-span-btns button { font-size: 10px; padding: 2px 7px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer; color: var(--muted); }
+    .gal-span-btns button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .gal-actions { display: flex; gap: 3px; flex-shrink: 0; }
+    /* ── Gallery preview — mirrors the actual project page render exactly ── */
+    .gal-preview-wrap { margin-top: .75rem; border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: #fafaf9; }
+    .gal-preview-wrap .media-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    .gal-preview-wrap .media-item {
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--border);
+      cursor: default;
+    }
+    .gal-preview-wrap .media-item img { width: 100%; height: auto; display: block; }
+    .gal-preview-wrap .media-item--embed { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 11px; }
 
     /* ── Add to gallery ── */
     .add-section { margin-top: .875rem; padding-top: .875rem; border-top: 1px solid var(--border); }
@@ -471,8 +499,8 @@ function renderCoverEditor() {
       <div class="ed-title">Cover Page</div>
 
       <div class="ed-sec">
-        <div class="sec-title">Featured projects <span class="sec-hint">— first 4 ticked appear on home</span></div>
-        <p class="cover-counter"><strong>${featured.length}</strong> of 4 slots used</p>
+        <div class="sec-title">Featured projects <span class="sec-hint">— first 6 ticked appear on home</span></div>
+        <p class="cover-counter"><strong>${featured.length}</strong> of 6 slots used</p>
         <div class="cover-grid">
           ${projects.map(p => {
             const folder  = p.id;
@@ -869,6 +897,36 @@ function openProject(id) {
 
 function cur() { return projects.find(p => p.id === activeId); }
 
+function buildGalPreview(media, imgs) {
+  if (!media || !media.length) return '';
+  const items = media.map(function(m) {
+    if (m.type === 'section-heading') {
+      return '<div style="grid-column:1/-1;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;padding:.5rem 0 .2rem;border-top:1px solid #e8e8e5;margin-top:.25rem">'
+        + (m.label || '—') + '</div>';
+    }
+    const fname   = m.type === 'image' ? m.src.split('/').pop() : null;
+    const imgUrl  = fname && imgs[fname] ? imgs[fname].url : null;
+    const span    = m.span || 1;
+    const spanSty = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? 'grid-column:span ' + span + ';' : '';
+    if (m.type === 'image') {
+      return '<div class="media-item" style="' + spanSty + '">'
+        + (imgUrl ? '<img src="' + imgUrl + '" />' : '')
+        + '</div>';
+    }
+    if (m.type === 'embed') {
+      const ytMatch = m.src.match(/youtube\.com\/embed\/([^?&]+)/);
+      const ytThumb = ytMatch ? 'https://img.youtube.com/vi/' + ytMatch[1] + '/mqdefault.jpg' : null;
+      const inner   = ytThumb
+        ? '<img src="' + ytThumb + '" style="width:100%;height:100%;object-fit:cover;display:block"/>'
+        : '&#9654; Video';
+      return '<div class="media-item media-item--embed" style="' + spanSty + '">' + inner + '</div>';
+    }
+    return '';
+  }).join('');
+  return '<div class="sec-title" style="margin-top:1rem">Preview</div>'
+    + '<div class="gal-preview-wrap"><div class="media-gallery">' + items + '</div></div>';
+}
+
 function renderEditor() {
   const p = cur();
   if (!p) return;
@@ -887,6 +945,10 @@ function renderEditor() {
         <label class="featured-lbl">
           <input type="checkbox" ${p.featured ? 'checked' : ''} onchange="toggleFeatured(this.checked)" />
           Featured on home
+        </label>
+        <label class="featured-lbl">
+          <input type="checkbox" ${p.inProgress ? 'checked' : ''} onchange="toggleInProgress(this.checked)" />
+          In Progress
         </label>
       </div>
 
@@ -972,24 +1034,50 @@ function renderEditor() {
       </div>
 
       <div class="ed-sec">
-        <div class="sec-title">Gallery <span class="sec-hint">— shown inside the project page</span></div>
+        <div class="sec-title">Gallery <span class="sec-hint">— drag to reorder · set width per item</span></div>
         <div class="gal-list">
           ${(p.media || []).length === 0
-            ? `<p class="no-imgs">Gallery empty.</p>`
+            ? `<p class="no-imgs">Gallery empty — add images below.</p>`
             : (p.media || []).map((m, i) => {
+                const isLast = i === (p.media.length - 1);
+                if (m.type === 'section-heading') {
+                  return `
+                    <div class="gal-item gal-item--heading">
+                      <div class="gal-heading-icon">§</div>
+                      <div class="gal-info">
+                        <input class="gal-heading-in" type="text" value="${(m.label||'').replace(/"/g,'&quot;')}"
+                               placeholder="Section heading…"
+                               oninput="setSectionHeadingLabel(${i}, this.value)" />
+                      </div>
+                      <div class="gal-actions">
+                        <button class="btn btn-sm" onclick="moveMedia(${i},-1)" ${i===0?'disabled':''}>↑</button>
+                        <button class="btn btn-sm" onclick="moveMedia(${i}, 1)" ${isLast?'disabled':''}>↓</button>
+                        <button class="btn btn-sm btn-danger" onclick="removeMedia(${i})">✕</button>
+                      </div>
+                    </div>
+                  `;
+                }
                 const fname  = m.type === 'image' ? m.src.split('/').pop() : null;
                 const imgUrl = fname && imgs[fname] ? imgs[fname].url : null;
+                const span   = m.span || 1;
                 return `
                   <div class="gal-item">
-                    <div class="gal-preview">
+                    <div class="gal-thumb">
                       ${imgUrl ? `<img src="${imgUrl}" />`
                         : m.type === 'embed' ? `<div class="gal-embed">▶</div>`
                         : `<div class="gal-miss">?</div>`}
                     </div>
-                    <span class="gal-name">${fname || m.src.replace('https://www.youtube.com/embed/', 'YT/')}</span>
+                    <div class="gal-info">
+                      <span class="gal-name">${fname || m.src.replace('https://www.youtube.com/embed/', 'YT/')}</span>
+                      <div class="gal-span-btns">
+                        <button class="${span===1?'active':''}"      onclick="setMediaSpan(${i},1)">1×</button>
+                        <button class="${span===2?'active':''}"      onclick="setMediaSpan(${i},2)">2×</button>
+                        <button class="${span==='full'?'active':''}" onclick="setMediaSpan(${i},'full')">Full</button>
+                      </div>
+                    </div>
                     <div class="gal-actions">
                       <button class="btn btn-sm" onclick="moveMedia(${i},-1)" ${i===0?'disabled':''}>↑</button>
-                      <button class="btn btn-sm" onclick="moveMedia(${i}, 1)" ${i===(p.media.length-1)?'disabled':''}>↓</button>
+                      <button class="btn btn-sm" onclick="moveMedia(${i}, 1)" ${isLast?'disabled':''}>↓</button>
                       <button class="btn btn-sm btn-danger" onclick="removeMedia(${i})">✕</button>
                     </div>
                   </div>
@@ -997,6 +1085,9 @@ function renderEditor() {
               }).join('')
           }
         </div>
+
+        ${buildGalPreview(p.media, imgs)}
+
         ${notInGal.length > 0 ? `
           <div class="add-section">
             <span class="sec-hint">Add from disk:</span>
@@ -1013,6 +1104,7 @@ function renderEditor() {
         <div class="embed-row">
           <input class="embed-in" id="embed-in" type="text" placeholder="YouTube embed URL — youtube.com/embed/VIDEO_ID" />
           <button class="btn" onclick="addEmbed()">+ Add video</button>
+          <button class="btn" onclick="addSectionHeading()" title="Add a section divider heading to the gallery">§ Add heading</button>
         </div>
       </div>
     </div>
@@ -1035,6 +1127,7 @@ function setStat(i, key, val) { cur().stats[i][key] = val; setStatus('Unsaved ch
 function removeStat(i) { cur().stats.splice(i,1); setStatus('Unsaved changes'); renderEditor(); }
 function addStat() { const p = cur(); if (!p.stats) p.stats = []; p.stats.push({v:'',l:''}); setStatus('Unsaved changes'); renderEditor(); }
 function toggleFeatured(val) { cur().featured = val; setStatus('Unsaved changes'); }
+function toggleInProgress(val) { cur().inProgress = val; setStatus('Unsaved changes'); }
 function removeTag(i) { cur().tags.splice(i,1); setStatus('Unsaved changes'); renderEditor(); }
 function handleTagKey(e) {
   if (e.key === 'Enter') {
@@ -1049,6 +1142,12 @@ function moveMedia(i, dir) {
   [m[i],m[j]] = [m[j],m[i]]; setStatus('Unsaved changes'); renderEditor();
 }
 function removeMedia(i) { cur().media.splice(i,1); setStatus('Unsaved changes'); renderEditor(); }
+function setMediaSpan(i, span) {
+  const m = cur().media;
+  if (!m || !m[i]) return;
+  m[i].span = span;
+  setStatus('Unsaved changes'); renderEditor();
+}
 function addToGallery(filename) {
   const p = cur(); const folder = p.imageFolder || p.id;
   if (!p.media) p.media = [];
@@ -1061,6 +1160,15 @@ function addEmbed() {
   const p = cur(); if (!p.media) p.media = [];
   p.media.push({ type: 'embed', src: url });
   input.value = ''; setStatus('Unsaved changes'); renderEditor();
+}
+function addSectionHeading() {
+  const p = cur(); if (!p.media) p.media = [];
+  p.media.push({ type: 'section-heading', label: '' });
+  setStatus('Unsaved changes'); renderEditor();
+}
+function setSectionHeadingLabel(i, val) {
+  const m = cur().media;
+  if (m && m[i]) { m[i].label = val; setStatus('Unsaved changes'); }
 }
 
 // ── Crop ──────────────────────────────────────────────

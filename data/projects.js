@@ -22,7 +22,7 @@ window.PROJECTS = [
     stats: [
       {
         v: "#1",
-        l: "World ranking for science"
+        l: "World ranking for the science task "
       },
       {
         v: "URC",
@@ -41,7 +41,8 @@ window.PROJECTS = [
     media: [
       {
         type: "embed",
-        src: "https://www.youtube.com/embed/aVBOUxibsMM"
+        src: "https://www.youtube.com/embed/aVBOUxibsMM",
+        span: 2
       },
       {
         type: "image",
@@ -69,15 +70,21 @@ window.PROJECTS = [
       },
       {
         type: "image",
-        src: "images/urc2026/097A0007.jpg"
+        src: "images/urc2026/097A0007.jpg",
+        span: 2
       },
       {
         type: "image",
-        src: "images/urc2026/097A9983.JPG"
+        src: "images/urc2026/097A9983.JPG",
+        span: 2
       },
       {
         type: "image",
         src: "images/urc2026/_DSC0233.JPG"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/ORvh338rJ5Y"
       }
     ],
     body: `
@@ -204,8 +211,8 @@ window.PROJECTS = [
         l: "Science task score"
       },
       {
-        v: "Utah",
-        l: "Competition location"
+        v: "7th ",
+        l: "World ranking "
       },
       {
         v: "2025",
@@ -333,13 +340,14 @@ window.PROJECTS = [
     featured: false,
     year: "2025",
     eyebrow: "2025 · Nova Rover · Australian Rover Challenge",
-    title: "ARCh Sweeper Mechanism",
+    title: "ARCh Ilminite Sweeper Mechanism",
     summary: "Compact ilmenite sand sweeping mechanism for ARCh's ML-based science mission.",
     tags: [
       "Mechanical design",
       "CAD",
       "ARCh",
-      "ML integration"
+      "ML integration",
+      "NOVA"
     ],
     stats: [
       {
@@ -515,6 +523,10 @@ window.PROJECTS = [
         src: "images/motorbike/floor.png"
       },
       {
+        type: "embed",
+        src: "https://youtu.be/nJI5V-I6hzU"
+      },
+      {
         type: "image",
         src: "images/motorbike/prototype-standalone.png"
       },
@@ -533,6 +545,22 @@ window.PROJECTS = [
       {
         type: "embed",
         src: "https://www.youtube.com/embed/hh_26TUK3NY"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/FiDmXbjIgno"
+      },
+      {
+        type: "image",
+        src: "images/motorbike/hero.jpg"
+      },
+      {
+        type: "image",
+        src: "images/motorbike/Screenshot 2026-06-07 160512.png"
+      },
+      {
+        type: "image",
+        src: "images/motorbike/Screenshot 2026-06-07 160533.png"
       }
     ],
     body: `
@@ -552,12 +580,13 @@ window.PROJECTS = [
     year: "2023",
     eyebrow: "2023 · Monash ENG1011",
     title: "3D Printed Competition Bridge",
-    summary: "36g bridge withstanding 2kg load. Won class competition in Monash ENG1011.",
+    summary: "36g bridge withstanding 2kg load. Won class competition in Monash ENG1011. The bridge has to be 3D printed and has been design use lightwieght string in tension as effectivly as possible. ",
     tags: [
       "Structural design",
       "3D printing",
       "Lightweight",
-      "Class winner"
+      "Class winner",
+      "Monash Engineering"
     ],
     stats: [
       {
@@ -573,7 +602,7 @@ window.PROJECTS = [
         l: "Class placing"
       }
     ],
-    thumb: "images/bridge/hero.png",
+    thumb: "images/bridge/printed.png",
     media: [
       {
         type: "image",
@@ -640,58 +669,54 @@ window.PROJECTS = [
       "Steel",
       "DIY"
     ],
-    stats: [
-      {
-        v: "6+",
-        l: "Major builds"
-      },
-      {
-        v: "2019–2025",
-        l: "Span"
-      }
-    ],
-    thumb: "images/fabrication/hero.png",
+    stats: [],
+    thumb: "images/fabrication/rocket-stove.jpeg",
     media: [
       {
         type: "image",
-        src: "images/fabrication/esky-cart.png"
+        src: "images/fabrication/esky-cart.png",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/rocket-stove.jpeg"
+        src: "images/fabrication/rocket-stove.jpeg",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/floating-table-1.png"
+        src: "images/fabrication/floating-table-1.png",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/floating-table-2.png"
+        src: "images/fabrication/floating-table-2.png",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/workbench.png"
+        src: "images/fabrication/workbench.png",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/bed-frame.png"
+        src: "images/fabrication/bed-frame.png",
+        span: "full"
       },
       {
         type: "image",
-        src: "images/fabrication/bed-cad.png"
+        src: "images/fabrication/bed-cad.png",
+        span: "full"
       }
     ],
-    body: `
-      <h5>Builds</h5>
+    body: `<h5>Builds</h5>
       <ul>
-        <li><strong>Rocket stove</strong> (2025) — welded steel, high-efficiency combustion design</li>
-        <li><strong>Esky-cart</strong> (2023) — motorised, engine-powered cooler cart</li>
-        <li><strong>Floating table</strong> (2022) — suspended steel and timber design</li>
-        <li><strong>Workbench</strong> (2021) — heavy steel tube frame with mesh top</li>
-        <li><strong>Bed frame</strong> (2020) — timber, custom joinery, designed in CAD</li>
-        <li><strong>Bouldering wall</strong> (2019) — full indoor climbing wall with adjustable holds</li>
-      </ul>
-    `
+        <li><strong>Rocket stove</strong> (2025) — TIG-welded steel, high-efficiency combustion design, removable legs and grill, removable ash tray, swinging door</li>
+        <li><strong>Esky-cart</strong> (2023) — engine-powered esky cart</li>
+        <li><strong>Floating table</strong> (2022) — suspended steel and timber design, MIG welding</li>
+        <li><strong>Workbench</strong> (2021) — heavy steel tube frame with mesh top, MIG welding</li>
+        <li><strong>Bed frame</strong> (2020) — Tasmanian Oak timber, Red Gum live-edge bedhead, custom joinery, designed in CAD</li>
+        <li><strong>Bouldering wall</strong> (2019) — full indoor custom climbing wall with adjustable holds</li>
+      </ul>`
   },
   {
     id: "arc-folding-mast",
@@ -709,7 +734,16 @@ window.PROJECTS = [
     ],
     stats: [],
     thumb: "",
-    media: [],
+    media: [
+      {
+        type: "embed",
+        src: "https://youtu.be/uN-OdPfy1i4"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/u6varZqdYPw"
+      }
+    ],
     body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
   },
   {
@@ -820,6 +854,33 @@ window.PROJECTS = [
         <li>RC F-22 Raptor — scratch-built foam airframe</li>
         <li>RC glider — optimised for long-duration flight</li>
         <li>RC monowheel — single-wheel balancing vehicle</li>
+      </ul>
+    `
+  },
+
+  {
+    id: 'capstone-lunar',
+    featured: false,
+    inProgress: true,
+    year: '2026',
+    eyebrow: '2026 · Monash University · Engineering Capstone',
+    title: 'Engineering Capstone: Lunar Regolith Research',
+    summary: 'Final-year capstone investigating lunar regolith properties and their implications for in-situ resource utilisation.',
+    tags: ['Capstone', 'Lunar regolith', 'ISRU', 'Research', 'Monash University'],
+    stats: [
+      { v: '2026', l: 'Year' },
+      { v: 'Capstone', l: 'Project type' },
+      { v: 'In Progress', l: 'Status' }
+    ],
+    thumb: '',
+    media: [],
+    body: `
+      <p>This final-year engineering capstone project investigates the physical and chemical properties of lunar regolith simulants and their relevance to in-situ resource utilisation (ISRU) on the Moon.</p>
+      <h5>Research focus</h5>
+      <ul>
+        <li>Characterising regolith simulant properties (grain size, density, cohesion)</li>
+        <li>Evaluating extraction and processing techniques for ISRU applications</li>
+        <li>Assessing implications for future lunar surface operations</li>
       </ul>
     `
   }
