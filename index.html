@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luke Tan — Engineering Portfolio</title>
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=7" />
   <script src="data/site.js?v=3"></script>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -84,6 +84,7 @@
       <div class="detail-stats" id="d-stats"></div>
       <div class="detail-body" id="d-body"></div>
       <div id="d-steps"></div>
+      <div id="d-flowchart"></div>
     </div>
     <!-- Right: images -->
     <div class="detail-right">
@@ -138,9 +139,30 @@
   </div>
 </main>
 
+<!-- ─── INTERACTIVE PAYLOAD FLOWCHART (full page) ──────── -->
+<main id="page-flow" class="page">
+  <button class="back-btn" id="flow-back-btn" onclick="closeFlow()">&#8592; Back to project</button>
+  <div class="flow-wrap">
+    <div class="flow-head">
+      <p class="eyebrow" id="flow-eyebrow"></p>
+      <h1 id="flow-title"></h1>
+      <p id="flow-sub"></p>
+    </div>
+    <div class="flow-track" id="flow-track"></div>
+    <div class="flow-detail" id="flow-detail"></div>
+    <div class="flow-controls">
+      <button class="flow-btn" id="flow-prev-btn" onclick="flowPrev()">&#8592;&nbsp; Prev</button>
+      <span class="flow-step-count" id="flow-step-count"></span>
+      <button class="flow-btn" id="flow-next-btn" onclick="flowNext()">Next &nbsp;&#8594;</button>
+    </div>
+  </div>
+</main>
+
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
-<script src="data/projects.js?v=8"></script>
+<script src="data/projects.js?v=9"></script>
 <script src="data/resume.js?v=5"></script>
+<script src="data/flow-icons.js?v=1"></script>
+<script src="data/flowcharts.js?v=1"></script>
 <script>
 
 // ── Skills — edit labels and pct values (0–100) ──────────
@@ -176,6 +198,11 @@ window.ABOUT = {
   ]
 };
 
+// ── Interactive payload flowchart data ──────────────────
+// Icon library lives in data/flow-icons.js (window.FLOW_ICONS) and the
+// editable content in data/flowcharts.js (window.FLOWCHARTS) — both loaded
+// above, before this script, so the router can render them on first load.
+
 // ── Router ──────────────────────────────────────────────
 let previousPage = 'projects';
 
@@ -185,7 +212,7 @@ function showPage(pageId) {
   document.getElementById('page-' + pageId).classList.add('active');
   document.querySelectorAll('[data-page="' + pageId + '"]').forEach(el => el.classList.add('active'));
   window.scrollTo(0, 0);
-  if (pageId !== 'detail') previousPage = pageId;
+  if (pageId !== 'detail' && pageId !== 'flow') previousPage = pageId;
   if (pageId === 'home') animateBars();
   if (pageId === 'admin') adminInit();
 }
@@ -271,6 +298,23 @@ function showDetail(id) {
     stepsEl.innerHTML = renderSteps(p.id, p.steps, 0);
   } else {
     stepsEl.innerHTML = '';
+  }
+
+  // Interactive flowchart launcher (only for projects with a flowchart defined)
+  const flowEl = document.getElementById('d-flowchart');
+  const fc = (window.FLOWCHARTS || {})[p.id];
+  if (fc) {
+    flowEl.innerHTML = `
+      <div class="d-flow-cta">
+        <div class="d-flow-cta-text">
+          <p class="section-label" style="margin:0 0 .4rem">Interactive</p>
+          <h5>${fc.ctaTitle}</h5>
+          <p>${fc.ctaSub}</p>
+        </div>
+        <button class="btn-primary flow-launch-btn" onclick="openFlow('${p.id}')">${fc.ctaButton}</button>
+      </div>`;
+  } else {
+    flowEl.innerHTML = '';
   }
 
   showPage('detail');
@@ -548,6 +592,7 @@ function handleHash() {
   if (hash === 'cv')            { showPage('cv'); return; }
   if (hash === 'about')         { showPage('about'); return; }
   if (hash.startsWith('project/')) { showDetail(hash.replace('project/', '')); return; }
+  if (hash.startsWith('flow/'))    { showFlow(hash.replace('flow/', '')); return; }
   if (hash === 'admin') { showPage('admin'); return; }
 }
 
@@ -676,6 +721,121 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowLeft')  lbNav(-1);
     if (e.key === 'ArrowRight') lbNav(1);
   }
+});
+
+// ── Interactive payload flowchart (full page) ─────────────
+// Reached ONLY via the launcher button on a project detail page → showFlow(id).
+// Data lives in the head script so it exists before the router runs.
+// 'openFlow' kept as an alias for backwards-compatibility with the button.
+function openFlow(id) { showFlow(id); }
+
+function showFlow(id) {
+  const fc = (window.FLOWCHARTS || {})[id];
+  if (!fc) { showPage('home'); window.location.hash = ''; return; }
+  window._flow = { id, fc, stages: fc.stages, active: 0 };
+  const proj = (window.PROJECTS || []).find(p => p.id === id);
+  document.getElementById('flow-eyebrow').textContent = proj ? proj.title : '';
+  document.getElementById('flow-title').innerHTML = fc.title;
+  document.getElementById('flow-sub').innerHTML   = fc.subtitle;
+  flowRender();
+  showPage('flow');
+  window.location.hash = 'flow/' + id;
+}
+
+function closeFlow() {
+  const id = window._flow && window._flow.id;
+  if (id) showDetail(id);
+  else { showPage('projects'); window.location.hash = 'projects'; }
+}
+
+// Render a stage's media (images → lightbox, videos → player) — mirrors the
+// project gallery so adding media to a stage behaves identically.
+function flowMediaHTML(media) {
+  let imgIdx = 0;
+  return media.map(m => {
+    if (m.type === 'image') {
+      const idx = imgIdx++;
+      return `<div class="flow-media-item" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
+    }
+    if (m.type === 'embed') {
+      let embedSrc = m.src;
+      const ytShort  = embedSrc.match(/youtu\.be\/([^?&]+)/);
+      const ytWatch  = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+      const ytShorts = embedSrc.match(/youtube\.com\/shorts\/([^?&]+)/);
+      if (ytShort)       embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
+      else if (ytWatch)  embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+      else if (ytShorts) embedSrc = `https://www.youtube.com/embed/${ytShorts[1]}`;
+      const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
+      if (ytMatch) {
+        const vid      = ytMatch[1];
+        const thumb    = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+        const embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+        return `<div class="flow-media-item flow-media-item--embed" onclick="loadYT('${vid}','${embedUrl}')">
+          <img src="${thumb}" alt="" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${vid}/hqdefault.jpg'" />
+          <div class="yt-play-btn" aria-label="Play video"><svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+        </div>`;
+      }
+      return `<div class="flow-media-item flow-media-item--embed"><iframe src="${embedSrc}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+    return '';
+  }).join('');
+}
+
+function flowRender() {
+  const f = window._flow; if (!f) return;
+  const stages = f.stages;
+
+  // Stage track — static connectors (styled in CSS)
+  document.getElementById('flow-track').innerHTML = stages.map((s, i) => {
+    const cls  = i === f.active ? ' active' : (i < f.active ? ' done' : '');
+    const conn = i > 0 ? `<div class="flow-conn"></div>` : '';
+    const icon = (window.FLOW_ICONS || {})[s.iconKey] || '';
+    return `${conn}<button class="flow-node${cls}" onclick="flowGo(${i})" aria-label="${s.title}">
+      <span class="flow-node-num">${i + 1}</span>
+      <span class="flow-node-icon">${icon}</span>
+      <span class="flow-node-title">${s.title}</span>
+    </button>`;
+  }).join('');
+
+  // Active stage detail + media
+  const s = stages[f.active];
+  const media = s.media || [];
+  window._lbImages = media.filter(m => m.type === 'image').map(m => m.src);
+  const detailEl = document.getElementById('flow-detail');
+  detailEl.className = 'flow-detail' + (media.length ? '' : ' flow-detail--nomedia');
+  detailEl.innerHTML = `
+    <div class="flow-detail-text">
+      <span class="flow-detail-badge">Step ${f.active + 1} of ${stages.length}</span>
+      <h2>${s.title}</h2>
+      <p class="flow-detail-short">${s.short}</p>
+      <div class="flow-detail-body">${s.detail}</div>
+    </div>
+    ${media.length ? `<div class="flow-detail-media">${flowMediaHTML(media)}</div>` : ''}`;
+
+  // Controls
+  document.getElementById('flow-prev-btn').disabled = f.active === 0;
+  document.getElementById('flow-next-btn').disabled = f.active === stages.length - 1;
+  document.getElementById('flow-step-count').textContent = `${f.active + 1} / ${stages.length}`;
+}
+
+function flowGo(i) {
+  const f = window._flow; if (!f) return;
+  f.active = Math.max(0, Math.min(f.stages.length - 1, i));
+  flowRender();
+  const node = document.querySelectorAll('.flow-node')[f.active];
+  if (node) node.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+}
+
+function flowNext() { const f = window._flow; if (f) flowGo(f.active + 1); }
+function flowPrev() { const f = window._flow; if (f) flowGo(f.active - 1); }
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('page-flow').classList.contains('active')) return;
+  // Don't hijack arrows while a lightbox or video player is open over the page
+  if (document.getElementById('lightbox').style.display === 'flex') return;
+  if (document.getElementById('video-modal').style.display === 'flex') return;
+  if (e.key === 'ArrowRight') flowNext();
+  if (e.key === 'ArrowLeft')  flowPrev();
 });
 </script>
 </body>

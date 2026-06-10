@@ -26,12 +26,12 @@ window.PROJECTS = [
         l: "Overall world ranking"
       },
       {
-        v: "116",
-        l: "Teams competing"
+        v: "#1",
+        l: "Science world ranking "
       },
       {
-        v: "35",
-        l: "Spectrometer cuvettes"
+        v: "116",
+        l: "Teams competing"
       }
     ],
     thumb: "images/urc2026/097A0007.jpg",
@@ -97,7 +97,7 @@ window.PROJECTS = [
         <li><strong>BME sensor</strong> — ambient temperature, humidity, and pressure</li>
       </ul>
       <h5>Engineering the reliability</h5>
-      <p>The perfect score on competition day was no fluke. A loose EP2.5 connector knocked out electrochemistry during pre-task checks at 5am. Caught and fixed before the judges arrived. A camera inside the vis-spec saturated from low-angle sunrise light during final checks. Identified, understood, confirmed non-issue. When the first drill site proved too hard, we lifted and relocated within the task window. Everything that could be tested was tested; everything that could fail had a plan.</p>
+      <p>The result came down to the work the team put in throughout the year. Strong engineering practices, rigorous testing, and clear communication across subsystems all mattered. Every system was tested individually and then together as a full payload. Failure modes were understood in advance, and handoffs between the engineering and science sides were clear. By the time of comp, we trusted the system because we'd done the work to earn that trust.</p>
     `
   },
   {
@@ -187,10 +187,10 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on a planetary surface. Our payload had two goals: extract water from frozen regolith, and quantify ilmenite content for resource assessment. I was Engineering Co-Lead, responsible for the mechanical systems, sensor integration, and payload architecture.</p>
+      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on the lunar surface. Our payload had two goals: extract water from frozen regolith, and quantify ilmenite content for resource assessment. I was Engineering Co-Lead, responsible for the mechanical systems, sensor integration, and payload architecture.</p>
       <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. The payload worked.</p>
       <h5>Water extraction system</h5>
-      <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom aluminium kiln. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>, surpassing the 70% requirement.</p>
+      <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom aluminium kiln. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>. In testing leading up to competition, the system was consistently collecting more than double the water recovered by the previous year's record.</p>
       <h5>Analysis systems</h5>
       <ul>
         <li><strong>Custom NIR probe</strong> — dual-LED near-infrared sensor measuring water content of frozen regolith non-invasively; validated to 2% precision under controlled conditions across 0–30% water content range</li>
@@ -204,13 +204,13 @@ window.PROJECTS = [
     featured: true,
     year: "2025",
     eyebrow: "2025 · Nova Rover · University Rover Challenge",
-    title: "Sabertooth — URC Life Detection Payload",
+    title: "URC 2025 Science Payload",
     summary: "Dual-auger regolith sampling platform. Scored 88/100 at URC 2025 in Utah.",
     tags: [
-      "Payload Lead",
-      "Dual-auger",
       "Regolith sampling",
-      "88/100"
+      "88/100",
+      "Project Lead",
+      "NOVA"
     ],
     stats: [
       {
@@ -273,20 +273,7 @@ window.PROJECTS = [
       "PETG",
       "Carbon fibre"
     ],
-    stats: [
-      {
-        v: "3D scanned",
-        l: "Fit method"
-      },
-      {
-        v: "v2",
-        l: "Iterations built"
-      },
-      {
-        v: "2024",
-        l: "Year"
-      }
-    ],
+    stats: [],
     thumb: "images/prosthetic/luke-holding.png",
     media: [
       {
@@ -298,8 +285,16 @@ window.PROJECTS = [
         src: "images/prosthetic/fitted.png"
       },
       {
+        type: "embed",
+        src: "https://youtube.com/shorts/lgmK-I6POmw?feature=share"
+      },
+      {
         type: "image",
-        src: "images/prosthetic/running.png"
+        src: "images/prosthetic/cad-scan.png"
+      },
+      {
+        type: "image",
+        src: "images/prosthetic/jilly-portrait.jpg"
       },
       {
         type: "image",
@@ -315,19 +310,7 @@ window.PROJECTS = [
       },
       {
         type: "image",
-        src: "images/prosthetic/cad-scan.png"
-      },
-      {
-        type: "image",
         src: "images/prosthetic/cad-leg.png"
-      },
-      {
-        type: "image",
-        src: "images/prosthetic/jilly-portrait.jpg"
-      },
-      {
-        type: "image",
-        src: "images/prosthetic/swimming.png"
       },
       {
         type: "embed",
@@ -339,59 +322,15 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>A family approached me with a rescue dog — Jilly — who needed a prosthetic leg to prevent long-term arthritis and spinal issues. I 3D scanned the dog and designed a custom-fitted brace and leg in Fusion 360.</p>
-      <p>The full leg is 3D printed except for a carbon fibre shaft. After 6 months of use, Jilly outgrew the first leg, so I designed an updated version with improved adjustability and PETG parts for durability.</p>
-      <h5>Key design decisions</h5>
+      <p>A family posted on Facebook looking for someone to build a prosthetic for their rescue dog Jilly, who was missing a front leg. Without support she was at risk of long-term arthritis and spinal problems. I reached out and took it on.</p>
+      <p>Getting an accurate 3D model of her was the main challenge. Scanning a live dog directly doesn't really work — she's too energetic, and the fur throws off depth sensors. We ended up taking a physical cast of her body first, then scanning the cast, which gave a clean geometry to work from. I tested individual parts before assembling the full leg, and the first complete version has been in daily use ever since.</p>
+      <p>After a few months Jilly outgrew the first leg. V2 added an adjustable length connector to give more room to grow.</p>
+      <h5>Design details</h5>
       <ul>
-        <li>TPU-95A shock-absorbing foot for comfort on varied terrain</li>
-        <li>Custom brace geometry from 3D scan data</li>
-        <li>Adjustable length connector so Jilly won't outgrow it again</li>
-        <li>Lightweight priority throughout</li>
-      </ul>
-    `
-  },
-  {
-    id: "sweeper",
-    featured: false,
-    year: "2025",
-    eyebrow: "2025 · Nova Rover · Australian Rover Challenge",
-    title: "ARCh Ilminite Sweeper Mechanism",
-    summary: "Compact ilmenite sand sweeping mechanism for ARCh's ML-based science mission.",
-    tags: [
-      "Mechanical design",
-      "CAD",
-      "ARCh",
-      "ML integration",
-      "NOVA"
-    ],
-    stats: [
-      {
-        v: "2025",
-        l: "Year"
-      },
-      {
-        v: "ARCh",
-        l: "Competition"
-      }
-    ],
-    thumb: "images/sweeper/hero.png",
-    media: [
-      {
-        type: "image",
-        src: "images/sweeper/livestream.png"
-      },
-      {
-        type: "image",
-        src: "images/sweeper/cad.png"
-      }
-    ],
-    body: `
-      <p>I designed a compact sweeping mechanism for Nova Rover's ARCh science payload. The sweeper removes layers of ilmenite sand to expose fresh sample for a microscope, which captures depth images used by a machine learning pipeline to determine ilmenite content percentage.</p>
-      <h5>Design goals</h5>
-      <ul>
-        <li>Sweep a large area with a compact, lightweight mechanism</li>
-        <li>Reliable motion in sandy, outdoor competition conditions</li>
-        <li>Integrate cleanly with the existing ARCh science payload structure</li>
+        <li>TPU brace wraps around her body and fastens with elastic velcro straps</li>
+        <li>Carbon fibre shaft keeps the leg light and rigid</li>
+        <li>Quick-change foot system — swap between treads and a rubber base for indoor or outdoor terrain</li>
+        <li>Adjustable length connector in v2 so the fit can be tuned as she grows</li>
       </ul>
     `
   },
@@ -443,55 +382,6 @@ window.PROJECTS = [
         <li>V-slot modular mounting, swappable to different payload locations without tools</li>
         <li>Cable routing designed for continuous rotation without binding or fatigue</li>
         <li>Kept deliberately simple to eliminate failure points in the field</li>
-      </ul>
-    `
-  },
-  {
-    id: "warman",
-    featured: false,
-    year: "2024",
-    eyebrow: "2024 · Monash MEC2024",
-    title: "Warman Competition Robot",
-    summary: "Mecanum wheel robot with harmonic-drive arm. Deposited 5/6 balls, scored 9/10.",
-    tags: [
-      "Mecanum wheels",
-      "Harmonic drive",
-      "Ultrasonic sensing",
-      "9/10"
-    ],
-    stats: [
-      {
-        v: "9/10",
-        l: "Score"
-      },
-      {
-        v: "5/6",
-        l: "Balls deposited"
-      },
-      {
-        v: "2024",
-        l: "Year"
-      }
-    ],
-    thumb: "images/warman/hero.png",
-    media: [
-      {
-        type: "image",
-        src: "images/warman/action.png"
-      },
-      {
-        type: "image",
-        src: "images/warman/cad.png"
-      }
-    ],
-    body: `
-      <p>I took part in the Warman competition as part of Monash's MEC2024 unit. I was responsible for CAD design, 3D printing, physical build, coding, and refinement of the robot.</p>
-      <h5>Technical highlights</h5>
-      <ul>
-        <li>Harmonic-drive gearbox with linkages for the arm mechanism</li>
-        <li>Mecanum wheels for omnidirectional movement</li>
-        <li>Ultrasonic sensors for position calibration</li>
-        <li>Full 3D printed structure with Arduino-based firmware</li>
       </ul>
     `
   },
@@ -700,20 +590,18 @@ window.PROJECTS = [
     media: [
       {
         type: "image",
-        src: "images/bridge/printed.png"
+        src: "images/bridge/drawing.jpeg",
+        span: 2
       },
       {
         type: "image",
-        src: "images/bridge/team.jpg"
-      },
-      {
-        type: "image",
-        src: "images/bridge/drawing.jpeg"
+        src: "images/bridge/team.jpg",
+        span: 2
       }
     ],
     body: `
-      <p>Designed and 3D printed as part of a Monash ENG1011 competition. The brief: maximum load capacity, minimum weight, printed within 2 hours.</p>
-      <p>Our bridge won the class competition at 36g while supporting a 2kg load — requiring careful truss geometry and material placement decisions.</p>
+      <p>Designed and 3D printed as part of a Monash ENG1011 competition. The brief: maximum load capacity, minimum weight, printed within a 2-hour window.</p>
+      <p>The bridge was carefully designed to make efficient use of lightweight tension members, with the truss geometry chosen to route forces through string where possible and minimise the material needed in compression. The result was a 36g structure capable of supporting a 2kg load, placing first in the class competition.</p>
     `
   },
   {
@@ -751,6 +639,100 @@ window.PROJECTS = [
     `
   },
   {
+    id: "sweeper",
+    featured: false,
+    year: "2025",
+    eyebrow: "2025 · Nova Rover · Australian Rover Challenge",
+    title: "ARCh Ilminite Sweeper Mechanism",
+    summary: "Compact ilmenite sand sweeping mechanism for ARCh's ML-based science mission.",
+    tags: [
+      "Mechanical design",
+      "CAD",
+      "ARCh",
+      "ML integration",
+      "NOVA"
+    ],
+    stats: [
+      {
+        v: "2025",
+        l: "Year"
+      },
+      {
+        v: "ARCh",
+        l: "Competition"
+      }
+    ],
+    thumb: "images/sweeper/hero.png",
+    media: [
+      {
+        type: "image",
+        src: "images/sweeper/livestream.png"
+      },
+      {
+        type: "image",
+        src: "images/sweeper/cad.png"
+      }
+    ],
+    body: `
+      <p>I designed a compact sweeping mechanism for Nova Rover's ARCh science payload. The sweeper removes layers of ilmenite sand to expose fresh sample for a microscope, which captures depth images used by a machine learning pipeline to determine ilmenite content percentage.</p>
+      <h5>Design goals</h5>
+      <ul>
+        <li>Sweep a large area with a compact, lightweight mechanism</li>
+        <li>Reliable motion in sandy, outdoor competition conditions</li>
+        <li>Integrate cleanly with the existing ARCh science payload structure</li>
+      </ul>
+    `
+  },
+  {
+    id: "warman",
+    featured: false,
+    year: "2024",
+    eyebrow: "2024 · Monash MEC2024",
+    title: "Warman Competition Robot",
+    summary: "Mecanum wheel robot with harmonic-drive arm. Deposited 5/6 balls, scored 9/10.",
+    tags: [
+      "Mecanum wheels",
+      "Harmonic drive",
+      "Ultrasonic sensing",
+      "9/10"
+    ],
+    stats: [
+      {
+        v: "9/10",
+        l: "Score"
+      },
+      {
+        v: "5/6",
+        l: "Balls deposited"
+      },
+      {
+        v: "2024",
+        l: "Year"
+      }
+    ],
+    thumb: "images/warman/hero.png",
+    media: [
+      {
+        type: "image",
+        src: "images/warman/action.png"
+      },
+      {
+        type: "image",
+        src: "images/warman/cad.png"
+      }
+    ],
+    body: `
+      <p>I took part in the Warman competition as part of Monash's MEC2024 unit. I was responsible for CAD design, 3D printing, physical build, coding, and refinement of the robot.</p>
+      <h5>Technical highlights</h5>
+      <ul>
+        <li>Harmonic-drive gearbox with linkages for the arm mechanism</li>
+        <li>Mecanum wheels for omnidirectional movement</li>
+        <li>Ultrasonic sensors for position calibration</li>
+        <li>Full 3D printed structure with Arduino-based firmware</li>
+      </ul>
+    `
+  },
+  {
     id: "fabrication",
     featured: false,
     year: "2019–2025",
@@ -768,22 +750,27 @@ window.PROJECTS = [
     media: [
       {
         type: "image",
+        src: "images/fabrication/rocket-stove.jpeg",
+        span: 2
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/bZlbz9-xJcs?feature=share",
+        span: 2
+      },
+      {
+        type: "image",
         src: "images/fabrication/esky-cart.png",
         span: 2
       },
       {
         type: "image",
-        src: "images/fabrication/rocket-stove.jpeg",
+        src: "images/fabrication/floating-table-2.png",
         span: 2
       },
       {
         type: "image",
         src: "images/fabrication/floating-table-1.png",
-        span: 2
-      },
-      {
-        type: "image",
-        src: "images/fabrication/floating-table-2.png",
         span: 2
       },
       {
@@ -802,8 +789,8 @@ window.PROJECTS = [
         span: 2
       },
       {
-        type: "embed",
-        src: "https://youtube.com/shorts/bZlbz9-xJcs?feature=share",
+        type: "image",
+        src: "images/fabrication/hero.png",
         span: 2
       }
     ],
@@ -832,7 +819,7 @@ window.PROJECTS = [
       "Nova Rover"
     ],
     stats: [],
-    thumb: "images/2026_ARC_folding_mast/Screenshot 2026-06-09 094204.png",
+    thumb: "images/arc-folding-mast/Screenshot 2026-06-09 094204.png",
     media: [
       {
         type: "embed",
@@ -846,6 +833,38 @@ window.PROJECTS = [
       }
     ],
     body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
+  },
+  {
+    id: "water-cooled-bed",
+    imageFolder: "water_cooled_bed",
+    featured: false,
+    year: "2025",
+    eyebrow: "2025 · Personal Project",
+    title: "Water-Cooled Bed",
+    summary: "A water-cooled bed frame built for Australian summers.",
+    tags: [
+      "Fabrication",
+      "Thermal Engineering",
+      "CAD"
+    ],
+    stats: [
+      {
+        v: "",
+        l: ""
+      }
+    ],
+    thumb: "images/water_cooled_bed/IMG_0071.JPEG",
+    media: [
+      {
+        type: "image",
+        src: "images/water_cooled_bed/IMG_0188.JPEG"
+      },
+      {
+        type: "image",
+        src: "images/water_cooled_bed/IMG_0190.JPEG"
+      }
+    ],
+    body: "<p>A water-cooled bed frame built to combat Australian summer heat.</p>"
   },
   {
     id: "autonomous-robot",
@@ -891,38 +910,6 @@ window.PROJECTS = [
     thumb: "",
     media: [],
     body: "<p>Custom lighting project.</p>"
-  },
-  {
-    id: "water-cooled-bed",
-    imageFolder: "water_cooled_bed",
-    featured: false,
-    year: "2025",
-    eyebrow: "2025 · Personal Project",
-    title: "Water-Cooled Bed",
-    summary: "A water-cooled bed frame built for Australian summers.",
-    tags: [
-      "Fabrication",
-      "Thermal Engineering",
-      "CAD"
-    ],
-    stats: [
-      {
-        v: "",
-        l: ""
-      }
-    ],
-    thumb: "images/water_cooled_bed/IMG_0071.JPEG",
-    media: [
-      {
-        type: "image",
-        src: "images/water_cooled_bed/IMG_0188.JPEG"
-      },
-      {
-        type: "image",
-        src: "images/water_cooled_bed/IMG_0190.JPEG"
-      }
-    ],
-    body: "<p>A water-cooled bed frame built to combat Australian summer heat.</p>"
   },
   {
     id: "older",

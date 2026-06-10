@@ -212,6 +212,10 @@
     .aspect-btns { display: flex; gap: 4px; margin-right: auto; }
     .aspect-btn { padding: 3px 9px; font-size: 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer; font-family: inherit; transition: background .1s; }
     .aspect-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── Flowchart editor ── */
+    .fc-icon-prev { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); flex-shrink: 0; }
+    .fc-icon-prev svg { width: 20px; height: 20px; }
   </style>
 </head>
 <body>
@@ -252,6 +256,10 @@
       <div class="sidebar-special" id="sidebar-profile" onclick="openProfile()">
         <span class="sidebar-special-icon">👤</span>
         <span class="sidebar-special-label">Profile Photo</span>
+      </div>
+      <div class="sidebar-special" id="sidebar-flow" onclick="openFlowEditor()">
+        <span class="sidebar-special-icon">🔬</span>
+        <span class="sidebar-special-label">Payload Flowchart</span>
       </div>
       <div class="sidebar-hd" style="margin-top:4px;display:flex;align-items:center;justify-content:space-between">
         <span>Projects <span style="font-weight:400;letter-spacing:0;text-transform:none">— drag to reorder</span></span>
@@ -324,12 +332,16 @@
 <script src="data/projects.js"></script>
 <script src="data/site.js"></script>
 <script src="data/resume.js"></script>
+<script src="data/flow-icons.js"></script>
+<script src="data/flowcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
 // ── State ─────────────────────────────────────────────
 let projects    = [];
 let siteConfig  = {};
 let resumeData  = {};
+let flowData    = {};   // window.FLOWCHARTS — keyed by project id
+let flowProjId  = null; // which project's flowchart is open in the editor
 let dirHandle   = null;
 let activeId    = null;
 let imgCache    = {};   // { folderId: { filename: { url } } }
@@ -409,6 +421,7 @@ async function initApp() {
   projects   = JSON.parse(JSON.stringify(window.PROJECTS));
   siteConfig = JSON.parse(JSON.stringify(window.SITE || {}));
   resumeData = JSON.parse(JSON.stringify(window.RESUME || {}));
+  flowData   = JSON.parse(JSON.stringify(window.FLOWCHARTS || {}));
 
   await scanAllImages();
   renderSidebar();
@@ -516,6 +529,7 @@ async function refreshImages() {
   await scanAllImages();
   if (activeId === '__cover__')   renderCoverEditor();
   else if (activeId === '__profile__') renderProfileEditor();
+  else if (activeId === '__flow__') renderFlowEditor();
   else if (activeId) renderEditor();
 }
 
@@ -634,6 +648,7 @@ function renderSidebar() {
   document.getElementById('sidebar-cover').classList.toggle('active',   activeId === '__cover__');
   document.getElementById('sidebar-resume').classList.toggle('active',  activeId === '__resume__');
   document.getElementById('sidebar-profile').classList.toggle('active', activeId === '__profile__');
+  document.getElementById('sidebar-flow').classList.toggle('active',    activeId === '__flow__');
 
   document.getElementById('proj-list').innerHTML = projects.map((p, i) => `
     <div class="proj-item ${p.id === activeId ? 'active' : ''}"
@@ -1311,6 +1326,222 @@ function applyCrop() {
   }, 'image/jpeg', 0.9);
 }
 
+// ── Payload flowchart editor ──────────────────────────
+function openFlowEditor() {
+  activeId = '__flow__';
+  if (!flowProjId || !flowData[flowProjId]) {
+    flowProjId = Object.keys(flowData)[0] || (projects[0] && projects[0].id) || null;
+  }
+  renderSidebar();
+  renderFlowEditor();
+}
+
+function fcCur() { return flowData[flowProjId]; }
+function fcStageFolder() {
+  const p = projects.find(x => x.id === flowProjId);
+  return p ? (p.imageFolder || p.id) : flowProjId;
+}
+
+function renderFlowEditor() {
+  const iconKeys = Object.keys(window.FLOW_ICONS || {});
+  const labels   = window.FLOW_ICON_LABELS || {};
+  const fc       = fcCur();
+  const folder   = fcStageFolder();
+  const imgs     = imgCache[folder] || {};
+
+  const projSelector = `
+    <div class="ed-sec">
+      <div class="sec-title">Flowchart for project</div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+        <select class="field-in" style="width:auto;flex:none" onchange="fcSelectProject(this.value)">
+          ${projects.map(p => `<option value="${p.id}" ${p.id === flowProjId ? 'selected' : ''}>${p.title}${flowData[p.id] ? '  ✓ has flowchart' : ''}</option>`).join('')}
+        </select>
+        ${fc ? `<a class="btn btn-sm" href="index.html#flow/${flowProjId}" target="_blank">Preview on site ↗</a>` : ''}
+        ${fc ? `<button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="fcRemoveFlowchart()">Remove flowchart</button>` : ''}
+      </div>
+      <p class="sec-hint" style="margin-top:.5rem;color:var(--muted)">A project shows its “Open flowchart” button only when it has a flowchart here.</p>
+    </div>`;
+
+  if (!fc) {
+    const p = projects.find(x => x.id === flowProjId);
+    setEditorContent(`
+      <div>
+        <div class="ed-title">Payload Flowchart</div>
+        ${projSelector}
+        <div class="ed-sec" style="text-align:center;padding:2rem">
+          <p style="color:var(--muted);margin-bottom:1rem">${p ? p.title : 'This project'} has no flowchart yet.</p>
+          <button class="btn btn-primary" onclick="fcCreateForProject()">+ Create flowchart for this project</button>
+        </div>
+      </div>
+    `);
+    return;
+  }
+
+  const stagesHTML = (fc.stages || []).map((s, i) => {
+    const media = s.media || [];
+    const inSet = new Set(media.filter(m => m.type === 'image').map(m => m.src.split('/').pop()));
+    const avail = Object.keys(imgs).filter(f => !inSet.has(f));
+    const mediaList = media.length === 0
+      ? `<p class="no-imgs">No media yet — add images or a video below.</p>`
+      : media.map((m, j) => {
+          const fname  = m.type === 'image' ? m.src.split('/').pop() : null;
+          const imgUrl = fname && imgs[fname] ? imgs[fname].url : null;
+          return `
+            <div class="gal-item">
+              <span class="gal-drag-handle" style="cursor:default;width:16px;text-align:center">${j + 1}</span>
+              <div class="gal-thumb">
+                ${imgUrl ? `<img src="${imgUrl}" />`
+                  : m.type === 'embed' ? `<div class="gal-embed">▶</div>`
+                  : `<div class="gal-miss">?</div>`}
+              </div>
+              <div class="gal-info">
+                <span class="gal-name">${fname || m.src.replace('https://www.youtube.com/embed/', 'YT/')}</span>
+              </div>
+              <div class="gal-actions">
+                <button class="btn btn-sm" onclick="fcMoveStageMedia(${i},${j},-1)" ${j === 0 ? 'disabled' : ''}>↑</button>
+                <button class="btn btn-sm" onclick="fcMoveStageMedia(${i},${j},1)" ${j === media.length - 1 ? 'disabled' : ''}>↓</button>
+                <button class="btn btn-sm btn-danger" onclick="fcRemoveStageMedia(${i},${j})">✕</button>
+              </div>
+            </div>`;
+        }).join('');
+
+    return `
+      <div class="res-item">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem">
+          <strong style="font-size:12px">Stage ${i + 1}</strong>
+          <div style="margin-left:auto;display:flex;gap:4px">
+            <button class="btn btn-sm" onclick="fcMoveStage(${i},-1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="btn btn-sm" onclick="fcMoveStage(${i},1)" ${i === fc.stages.length - 1 ? 'disabled' : ''}>↓</button>
+            <button class="btn btn-sm btn-danger" onclick="fcRemoveStage(${i})">✕ Remove stage</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <span class="field-lbl">Icon</span>
+          <select class="field-in" style="width:auto;flex:none" onchange="fcSetStage(${i},'iconKey',this.value)">
+            ${iconKeys.map(k => `<option value="${k}" ${s.iconKey === k ? 'selected' : ''}>${labels[k] || k}</option>`).join('')}
+          </select>
+          <span class="fc-icon-prev">${(window.FLOW_ICONS || {})[s.iconKey] || ''}</span>
+        </div>
+        <div class="field-row">
+          <span class="field-lbl">Title</span>
+          <input class="field-in" type="text" value="${(s.title || '').replace(/"/g, '&quot;')}" oninput="fcSetStage(${i},'title',this.value)" />
+        </div>
+        <div class="field-row">
+          <span class="field-lbl">Subtitle</span>
+          <input class="field-in" type="text" value="${(s.short || '').replace(/"/g, '&quot;')}" oninput="fcSetStage(${i},'short',this.value)" />
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <span class="field-lbl">Detail</span>
+          <textarea class="body-ta" rows="7" oninput="fcSetStageDetail(${i},this.value)">${(s.detail || '').trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+        </div>
+        <div class="sec-hint" style="margin:.25rem 0 .4rem">Media for this stage:</div>
+        <div class="gal-list">${mediaList}</div>
+        ${avail.length ? `
+          <div class="add-section">
+            <span class="sec-hint">Add image from images/${folder}/:</span>
+            <div class="add-grid">
+              ${avail.map(f => `
+                <div class="add-cell" onclick="fcAddStageMedia(${i}, this.dataset.f)" data-f="${f.replace(/"/g, '&quot;')}" title="${f}">
+                  <img src="${imgs[f].url}" />
+                  <div class="add-plus">+</div>
+                </div>`).join('')}
+            </div>
+          </div>` : `<p class="sec-hint" style="margin:.4rem 0">No more images in images/${folder}/ — drop files there and click ↻ Refresh.</p>`}
+        <div class="embed-row">
+          <input class="embed-in" id="fc-embed-${i}" type="text" placeholder="Any YouTube URL — embed, watch, shorts, or youtu.be" />
+          <button class="btn" onclick="fcAddStageEmbed(${i})">+ Add video</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  setEditorContent(`
+    <div>
+      <div class="ed-title">Payload Flowchart</div>
+      ${projSelector}
+
+      <div class="ed-sec">
+        <div class="sec-title">Launcher button <span class="sec-hint">— the card shown on the project's detail page</span></div>
+        <div class="field-row"><span class="field-lbl">Heading</span><input class="field-in" type="text" value="${(fc.ctaTitle || '').replace(/"/g, '&quot;')}" oninput="fcSetMeta('ctaTitle',this.value)" /></div>
+        <div class="field-row" style="align-items:flex-start"><span class="field-lbl">Subtext</span><textarea class="field-ta" rows="2" oninput="fcSetMeta('ctaSub',this.value)">${(fc.ctaSub || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></div>
+        <div class="field-row"><span class="field-lbl">Button</span><input class="field-in" type="text" value="${(fc.ctaButton || '').replace(/"/g, '&quot;')}" oninput="fcSetMeta('ctaButton',this.value)" /></div>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Flowchart page header</div>
+        <div class="field-row"><span class="field-lbl">Title</span><input class="field-in" type="text" value="${(fc.title || '').replace(/"/g, '&quot;')}" oninput="fcSetMeta('title',this.value)" /></div>
+        <div class="field-row" style="align-items:flex-start"><span class="field-lbl">Subtitle</span><textarea class="field-ta" rows="2" oninput="fcSetMeta('subtitle',this.value)">${(fc.subtitle || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></div>
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Stages <span class="sec-hint">— shown in order · HTML in Detail: &lt;p&gt; &lt;ul&gt; &lt;li&gt; &lt;strong&gt;</span></div>
+        ${stagesHTML}
+        <button class="btn btn-sm" style="margin-top:.5rem" onclick="fcAddStage()">+ Add stage</button>
+      </div>
+    </div>
+  `);
+}
+
+function fcSelectProject(id) { flowProjId = id; renderFlowEditor(); }
+function fcCreateForProject() {
+  const k = Object.keys(window.FLOW_ICONS || {})[0] || 'gear';
+  flowData[flowProjId] = {
+    ctaTitle: 'How it works', ctaSub: '', ctaButton: 'Open flowchart →',
+    title: '', subtitle: '',
+    stages: [{ iconKey: k, title: 'New stage', short: '', detail: '<p></p>', media: [] }]
+  };
+  setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcRemoveFlowchart() {
+  if (!confirm('Remove the entire flowchart for this project? Its launcher button will disappear from the site.')) return;
+  delete flowData[flowProjId];
+  setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcSetMeta(key, val) { const f = fcCur(); if (f) { f[key] = val; setStatus('Unsaved changes'); } }
+function fcSetStage(i, key, val) {
+  const f = fcCur(); if (!f || !f.stages[i]) return;
+  f.stages[i][key] = val; setStatus('Unsaved changes');
+  if (key === 'iconKey' || key === 'title') renderFlowEditor();
+}
+function fcSetStageDetail(i, val) {
+  const f = fcCur(); if (!f || !f.stages[i]) return;
+  f.stages[i].detail = val.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  setStatus('Unsaved changes');
+}
+function fcAddStage() {
+  const f = fcCur(); if (!f) return;
+  const k = Object.keys(window.FLOW_ICONS || {})[0] || 'gear';
+  f.stages.push({ iconKey: k, title: 'New stage', short: '', detail: '<p></p>', media: [] });
+  setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcRemoveStage(i) { const f = fcCur(); if (!f) return; f.stages.splice(i, 1); setStatus('Unsaved changes'); renderFlowEditor(); }
+function fcMoveStage(i, dir) {
+  const f = fcCur(); if (!f) return;
+  const j = i + dir; if (j < 0 || j >= f.stages.length) return;
+  [f.stages[i], f.stages[j]] = [f.stages[j], f.stages[i]];
+  setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcAddStageMedia(i, filename) {
+  const f = fcCur(); if (!f) return;
+  const st = f.stages[i]; if (!st.media) st.media = [];
+  st.media.push({ type: 'image', src: `images/${fcStageFolder()}/${filename}` });
+  setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcAddStageEmbed(i) {
+  const inp = document.getElementById('fc-embed-' + i);
+  const url = inp.value.trim(); if (!url) return;
+  const f = fcCur(); if (!f) return;
+  const st = f.stages[i]; if (!st.media) st.media = [];
+  st.media.push({ type: 'embed', src: url });
+  inp.value = ''; setStatus('Unsaved changes'); renderFlowEditor();
+}
+function fcRemoveStageMedia(i, j) { const f = fcCur(); if (!f) return; f.stages[i].media.splice(j, 1); setStatus('Unsaved changes'); renderFlowEditor(); }
+function fcMoveStageMedia(i, j, dir) {
+  const f = fcCur(); if (!f) return;
+  const m = f.stages[i].media; const k = j + dir;
+  if (k < 0 || k >= m.length) return;
+  [m[j], m[k]] = [m[k], m[j]]; setStatus('Unsaved changes'); renderFlowEditor();
+}
+
 // ── Save ──────────────────────────────────────────────
 async function saveAll() {
   if (!dirHandle) return;
@@ -1352,6 +1583,12 @@ async function saveAll() {
     const w3  = await fh3.createWritable();
     await w3.write(`window.RESUME = ${JSON.stringify(resumeData, null, 2)};\n`);
     await w3.close();
+
+    // Write data/flowcharts.js (icon library in flow-icons.js is left untouched)
+    const fh4 = await dataDir.getFileHandle('flowcharts.js', { create: true });
+    const w4  = await fh4.createWritable();
+    await w4.write(`window.FLOWCHARTS = ${JSON.stringify(flowData, null, 2)};\n`);
+    await w4.close();
 
     btn.textContent = 'Saved ✓'; setStatus('Saved');
     setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 2000);
