@@ -179,13 +179,50 @@ window.PROJECTS = [
       {
         type: "embed",
         src: "https://youtu.be/5zV1323UPA0"
+      },
+      {
+        type: "section-heading",
+        label: "The Kiln + Condenser"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/YvJrGehzt-M",
+        span: "full"
+      },
+      {
+        type: "image",
+        src: "images/arch2026/Screenshot 2026-06-09 084011.png"
+      },
+      {
+        type: "image",
+        src: "images/arch2026/Screenshot 2026-06-09 084001.png"
+      },
+      {
+        type: "image",
+        src: "images/arch2026/Screenshot 2026-06-09 084031.png"
+      },
+      {
+        type: "image",
+        src: "images/arch2026/Screenshot 2026-06-09 084020.png"
+      },
+      {
+        type: "image",
+        src: "images/arch2026/Screenshot 2026-06-09 083955.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/IIYKB4Hbm2c"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/IC6YCLLEaTM"
       }
     ],
     body: `
       <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on the lunar surface. Our payload had two goals: extract water from frozen regolith, and quantify ilmenite content for resource assessment. I was Engineering Co-Lead, responsible for the mechanical systems, sensor integration, and payload architecture.</p>
       <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. The payload worked.</p>
       <h5>Water extraction system</h5>
-      <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom aluminium kiln. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>. In testing leading up to competition, the system was consistently collecting more than double the water recovered by the previous year's record.</p>
+      <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom <strong>3D-printed aluminium kiln</strong>, its internal geometry optimised for vapour flow and for injecting heat directly into the sample. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>. In testing leading up to competition, the system was consistently collecting more than double the water recovered by the previous year's record.</p>
       <h5>Analysis systems</h5>
       <ul>
         <li><strong>Custom NIR probe</strong> — dual-LED near-infrared sensor measuring water content of frozen regolith non-invasively; validated to 2% precision under controlled conditions across 0–30% water content range</li>
@@ -243,6 +280,7 @@ window.PROJECTS = [
     body: `
       <p>As Payload Lead for the Nova Rover Science sub-team, I led the design, construction, and integration of Sabertooth — Nova Rover's 2025 URC life-detection science system.</p>
       <p>Sabertooth is a sheathed dual-auger platform designed to extract regolith samples from depths beyond 10 cm while avoiding cross-site contamination. Each auger collects a sample at an independent site; once drilled, regolith is funnelled into a cache, mixed with buffer fluid, and pumped into the rover for onboard spectroscopic analysis targeting biosignatures.</p>
+      <p>The defining challenge of this payload was time. Late, unforeseen changes meant the rover had to be shipped to the US earlier than planned, which left us to design, build, and integrate the entire payload in roughly <strong>two weeks</strong>. Despite that compressed timeline it worked at competition — and just as importantly, it gave us a proven frame to build on for the following year's system.</p>
       <h5>Systems I built under time pressure</h5>
       <ul>
         <li>Payload actuation and auger actuation</li>
@@ -316,18 +354,16 @@ window.PROJECTS = [
         src: "https://youtube.com/shorts/a0kPTfXAhls?feature=share"
       }
     ],
-    body: `
-      <p>A family posted on Facebook looking for someone to build a prosthetic for their rescue dog Jilly, who was missing a front leg. Without support she was at risk of long-term arthritis and spinal problems. I reached out and took it on.</p>
-      <p>Getting an accurate 3D model of her was the main challenge. Scanning a live dog directly doesn't really work — she's too energetic, and the fur throws off depth sensors. We ended up taking a physical cast of her body first, then scanning the cast, which gave a clean geometry to work from. I tested individual parts before assembling the full leg, and the first complete version has been in daily use ever since.</p>
-      <p>After a few months Jilly outgrew the first leg. V2 added an adjustable length connector to give more room to grow.</p>
+    body: `<p>A family posted on Facebook looking for someone to build a prosthetic for their rescue dog Jilly, who was missing a front leg. Without support she was at risk of long-term arthritis and spinal problems. I reached out and gratefully took it on!</p>
+      <p>Getting an accurate 3D model of her was the main challenge. It's just very hard to capture an accurate model of a live dog, since she's too energetic and the fur throws off 3D scanners. We ended up taking a physical cast of her body first, then scanning the cast, which gave a clean geometry to work from. I tested individual parts before assembling the full leg, and the first complete version has been in use ever since.</p>
+      <p>After a few months Jilly outgrew the first leg. For V2 I simply extended the carbon fibre section, lengthening the leg to give her more room to grow.</p>
       <h5>Design details</h5>
       <ul>
         <li>TPU brace wraps around her body and fastens with elastic velcro straps</li>
         <li>Carbon fibre shaft keeps the leg light and rigid</li>
         <li>Quick-change foot system — swap between treads and a rubber base for indoor or outdoor terrain</li>
-        <li>Adjustable length connector in v2 so the fit can be tuned as she grows</li>
-      </ul>
-    `
+        <li>V2 lengthened the carbon fibre section to give more room to grow as she got bigger</li>
+      </ul>`
   },
   {
     id: "motorbike",
@@ -355,6 +391,10 @@ window.PROJECTS = [
       {
         v: "2022",
         l: "Year"
+      },
+      {
+        v: "Premiers Award",
+        l: "Award"
       }
     ],
     thumb: "images/motorbike/hero.jpg",
@@ -372,28 +412,8 @@ window.PROJECTS = [
         src: "images/motorbike/studio-alt.jpg"
       },
       {
-        type: "image",
-        src: "images/motorbike/workshop.png"
-      },
-      {
-        type: "image",
-        src: "images/motorbike/floor.png"
-      },
-      {
         type: "embed",
         src: "https://youtu.be/nJI5V-I6hzU"
-      },
-      {
-        type: "image",
-        src: "images/motorbike/prototype-standalone.png"
-      },
-      {
-        type: "image",
-        src: "images/motorbike/prototype-reaction-wheel.png"
-      },
-      {
-        type: "image",
-        src: "images/motorbike/prototype-frame.png"
       },
       {
         type: "image",
@@ -425,11 +445,26 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>My VCE Systems Engineering major project — a self-balancing motorbike using a PID controller and reaction wheel. The motorbike uses an accelerometer and gyroscope coupled with a variable setpoint PID system to stay upright.</p>
-      <p>Before building the final bike, I developed a prototyping system to validate the PID controller and reaction wheel concept. The prototype could resist external forces and balance on changing angles.</p>
+      <p>My VCE Systems Engineering major project, a self-balancing RC motorbike that uses a PID controller and a reaction flywheel to stay upright.</p>
+
+      <h5>How it balances</h5>
+      <p>The lean angle is estimated by fusing the accelerometer and gyroscope through a <strong>complementary filter</strong>. The gyroscope gives fast, smooth motion data while the accelerometer corrects its long-term drift, producing a clean, reliable tilt angle for the controller to act on.</p>
+      <p>That angle feeds into a <strong>PID controller</strong> that spins the reaction wheel to push the bike back upright. The catch with a reaction wheel is saturation: left alone, it slowly spins up toward one side until it runs out of speed, and therefore torque. To solve this I made the balance <strong>setpoint variable</strong>, deliberately biasing it to <strong>&ldquo;unspool&rdquo; the flywheel</strong>, gently bleeding off its accumulated speed and bringing it back toward neutral, so there is always torque in reserve to catch a lean in either direction.</p>
+
+      <h5>Mechanical design</h5>
+      <ul>
+        <li>Every component was designed with its <strong>mass and centre of mass</strong> in mind, so that when they all came together their contributions balanced out, keeping the overall centre of gravity centred and <strong>as low as possible</strong>, since a lower CoM falls more slowly and is easier for the reaction wheel to control</li>
+        <li><strong>Radio-controlled</strong> via a trigger-style remote, so it drives forwards and backwards and steers left and right, all while keeping itself balanced</li>
+        <li>The final bike was sized to carry a <strong>scale model passenger</strong> as a proof of concept</li>
+      </ul>
+
+      <h5>Prototype first</h5>
+      <p>The final bike wasn't the starting point. I first built a prototyping rig to validate the PID controller and reaction flywheel concept, and it became the stepping stone for the full design. It could resist being pushed and balance on changing angles, which proved out the control approach before I built the final bike.</p>
+
       <h5>Awards</h5>
       <ul>
         <li>VCE Systems Engineering Top Design Award</li>
+        <li>Premier's VCE Award</li>
         <li>Perfect study score of 50</li>
         <li>Selected for Top Designs photoshoot and exhibition</li>
       </ul>
@@ -442,7 +477,7 @@ window.PROJECTS = [
     year: "2026",
     eyebrow: "2026 · Monash University · Engineering Capstone",
     title: "Engineering Capstone: Lunar Regolith Research",
-    summary: "Final-year capstone investigating lunar regolith properties and their implications for in-situ resource utilisation.",
+    summary: "Final-year capstone on the geotechnics of lunar regolith. I designed and built a custom direct shear apparatus to measure how vacuum and ice change the strength of LHS-1 lunar simulant, supporting the design of ISRU and surface systems.",
     tags: [
       "Capstone",
       "Lunar regolith",
@@ -492,15 +527,30 @@ window.PROJECTS = [
         src: "images/capstone-lunar/unnamed (1).png"
       }
     ],
-    body: `
-      <p>This final-year engineering capstone project investigates the physical and chemical properties of lunar regolith simulants and their relevance to in-situ resource utilisation (ISRU) on the Moon.</p>
-      <h5>Research focus</h5>
+    body: `<p>My final-year engineering capstone is a geotechnical study of lunar regolith: how it behaves mechanically under the conditions found on the Moon, and what that means for the machines we send there. Future missions are increasingly aimed at the Moon's permanently shadowed regions, where water ice is believed to sit within the regolith. How that soil holds together, both dry and ice-bearing, under vacuum is still poorly understood, which limits how reliably we can design excavation tools, rovers, and surface infrastructure for it. It is a team capstone of four, and my focus has been the testing apparatus and the direct shear experiments described below.</p>
+
+      <h5>The gap we are addressing</h5>
+      <p>Most existing geotechnical data on lunar soil was gathered using dry simulant tested in normal atmospheric conditions. Very little work looks at how a vacuum changes that behaviour, or at how the shape and bonding of ice within the regolith affects its strength. No icy lunar samples have ever been returned, so there is no in-situ benchmark to work from. My project investigates how three factors, pressure conditions, ice content, and ice morphology, change the key geotechnical properties of a lunar simulant: shear strength, friction angle, and cohesion.</p>
+
+      <h5>What we built: a custom direct shear apparatus</h5>
+      <p>The core of the project is a direct shear box I designed and built from scratch, because off-the-shelf geotechnical rigs could not reach the normal stresses I needed or integrate with a vacuum chamber for testing under near-lunar pressure.</p>
       <ul>
-        <li>Characterising regolith simulant properties (grain size, density, cohesion)</li>
-        <li>Evaluating extraction and processing techniques for ISRU applications</li>
-        <li>Assessing implications for future lunar surface operations</li>
+        <li>Two stacked aluminium shear-box halves with a 60 x 60 mm interior, machined to the ASTM D3080 standard for direct shear testing, with the shearing faces smoothed to minimise box friction</li>
+        <li>Mounted to V-slot rail and driven by a NEMA 23 stepper motor through a TMC5160 driver, with a leadscrew and linear rail shearing the sample at a controlled 1 mm/min</li>
+        <li>A 5 kN S-type load cell read by an ESP32 captures the shear force, logged live through a custom GUI</li>
+        <li>Sized to drop into a small vacuum chamber, so the same test can run at both atmospheric and vacuum pressure</li>
       </ul>
-    `
+
+      <h5>Testing and method</h5>
+      <p>Testing uses LHS-1, a Lunar Highlands Simulant from Exolith Lab matched to Apollo 16 sample 67461. Samples are oven-baked dry, loaded to a controlled bulk density, and sheared. To go beyond dry soil, the project also covers several ice-bearing preparations that mimic how lunar ice actually forms: low-saturation ice-cemented samples (pendular bonding between grains), frozen slurry (water mixed with regolith then frozen), and vapour-deposited ice.</p>
+      <ul>
+        <li>Shear strength is modelled with the Mohr-Coulomb failure criterion to extract friction angle and cohesion</li>
+        <li>Every test runs in triplicate, with raw data smoothed by a Savitzky-Golay filter and uncertainty reported as 95% confidence intervals</li>
+        <li>Blank runs with an empty box confirmed the apparatus's own friction was negligible</li>
+      </ul>
+
+      <h5>Results so far</h5>
+      <p>Preliminary testing of dry LHS-1 at a bulk density of 1.7 g/cm³, which sits within the real lunar range, shows a clean linear Mohr-Coulomb response with low scatter between repeats, and the values line up well with published studies. That validates the rig and the method. From here the work extends across the full density range of LHS-1, then into vacuum, and finally into the ice-bearing samples to measure how ice content and morphology shift friction and cohesion.</p>`
   },
   {
     id: "arc-folding-mast",
@@ -508,8 +558,8 @@ window.PROJECTS = [
     featured: false,
     year: "2026",
     eyebrow: "2026 · Nova Rover · Australian Rover Challenge",
-    title: "ARCh 2026 — Folding Mast",
-    summary: "Deployable folding mast mechanism for the ARCh 2026 rover.",
+    title: "ARCh 2026 — Self-Deploying Mast",
+    summary: "A self-deploying mast for the ARCh 2026 rover, built in three days to deploy with 100% reliability and hold steady once raised.",
     tags: [
       "Mechanisms",
       "CAD",
@@ -521,16 +571,29 @@ window.PROJECTS = [
     media: [
       {
         type: "embed",
-        src: "https://youtu.be/uN-OdPfy1i4",
+        src: "https://youtu.be/u6varZqdYPw",
         span: 2
       },
       {
         type: "embed",
-        src: "https://youtu.be/u6varZqdYPw",
+        src: "https://youtu.be/uN-OdPfy1i4",
         span: 2
       }
     ],
-    body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
+    body: `
+      <p>A self-deploying mast for Monash Nova Rover's ARCh 2026 rover, standing roughly 1.6 m tall when deployed. It carries the rover's communications radios (2.4 GHz, 5 GHz and 900 MHz) and the main mast cameras the team drives with, which makes it competition critical: if it doesn't go up and stay steady, the rover can't be driven properly.</p>
+      <h5>Why it folds</h5>
+      <p>New size restrictions in the competition rules tightened the envelope the rover had to fit within. At full height our mast would have been too tall to comply, so it had to fold down for stowage and then raise itself once the rover was deployed in the field.</p>
+      <h5>How it works</h5>
+      <p>A gas strut drives the mast up. While stowed, it is held down by a latching mechanism, and a servo releases that latch to let the strut swing the mast into the upright position. Once up, a set of 3D printed clips lock it in place and hold it rigid, and those same clips can be released so the mast folds back down to stow.</p>
+      <ul>
+        <li><strong>Gas strut</strong> raises the mast automatically once it is released</li>
+        <li><strong>Servo-released latch</strong> holds the mast stowed and triggers deployment on command</li>
+        <li><strong>3D printed locking clips</strong> hold it steady when raised, and release to stow it again</li>
+      </ul>
+      <h5>Three-day build, zero failures</h5>
+      <p>This was a part that could not fail in the field: it had to deploy with 100% reliability and stay completely steady once raised. Due to unforeseen circumstances the whole mast had to come together in just three days. I designed it, and a team of around three of us built it. We tested it many, many times and it never failed once.</p>
+    `
   },
   {
     id: "bridge",
