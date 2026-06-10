@@ -9,12 +9,9 @@ window.PROJECTS = [
     tags: [
       "Engineering Co-Lead",
       "Life detection",
-      "Dual-auger sampling",
       "Custom spectrometer",
-      "CAN bus",
-      "Embedded systems",
       "Utah, USA",
-      "3D printing"
+      "NOVA"
     ],
     stats: [
       {
@@ -110,11 +107,9 @@ window.PROJECTS = [
     tags: [
       "Engineering Co-Lead",
       "Water extraction",
-      "Frozen regolith",
       "Custom NIR probe",
       "Machine learning",
       "Kiln & condenser",
-      "3D printing",
       "Nova Rover"
     ],
     stats: [
@@ -281,13 +276,12 @@ window.PROJECTS = [
         src: "images/prosthetic/luke-with-jilly.png"
       },
       {
-        type: "embed",
-        src: "https://youtube.com/shorts/lgmK-I6POmw?feature=share",
-        span: 2
-      },
-      {
         type: "image",
         src: "images/prosthetic/fitted.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/lgmK-I6POmw?feature=share"
       },
       {
         type: "image",
@@ -332,57 +326,6 @@ window.PROJECTS = [
         <li>Carbon fibre shaft keeps the leg light and rigid</li>
         <li>Quick-change foot system — swap between treads and a rubber base for indoor or outdoor terrain</li>
         <li>Adjustable length connector in v2 so the fit can be tuned as she grows</li>
-      </ul>
-    `
-  },
-  {
-    id: "gimbal",
-    featured: false,
-    year: "2025",
-    eyebrow: "2025 · Nova Rover · Recruit Project",
-    title: "Nova Rover — Gimbal Camera System",
-    summary: "Two-axis servo gimbal for site survey and rock analysis. Built as my Nova recruit project, used across 4 competitions with zero faults and never disassembled.",
-    tags: [
-      "Mechanical design",
-      "Fusion 360",
-      "Servo actuation",
-      "Modular mounting",
-      "Nova Rover"
-    ],
-    stats: [
-      {
-        v: "4",
-        l: "Competitions used"
-      },
-      {
-        v: "0",
-        l: "Faults recorded"
-      },
-      {
-        v: "2025",
-        l: "Year built"
-      }
-    ],
-    thumb: "images/gimbal/hero.png",
-    media: [
-      {
-        type: "image",
-        src: "images/gimbal/cad-mounted.png"
-      },
-      {
-        type: "image",
-        src: "images/gimbal/cad-head.png"
-      }
-    ],
-    body: `
-      <p>This two-axis servo gimbal was my recruit project when I joined Nova Rover. It aims a camera to give operators site context during competition: surveying terrain, analysing rocks and ground composition, and providing visual reference for science task decisions.</p>
-      <p>Since its first assembly in 2025 it has run through four competitions (ARCh 2025, URC 2025, ARCh 2026, and URC 2026) without a single fault and without ever being disassembled. That reliability record across desert environments in Utah and Australia is the result I'm most proud of.</p>
-      <h5>Design highlights</h5>
-      <ul>
-        <li>Dual-servo pan/tilt mechanism for full scene coverage</li>
-        <li>V-slot modular mounting, swappable to different payload locations without tools</li>
-        <li>Cable routing designed for continuous rotation without binding or fatigue</li>
-        <li>Kept deliberately simple to eliminate failure points in the field</li>
       </ul>
     `
   },
@@ -560,6 +503,36 @@ window.PROJECTS = [
     `
   },
   {
+    id: "arc-folding-mast",
+    imageFolder: "2026_ARC_folding_mast",
+    featured: false,
+    year: "2026",
+    eyebrow: "2026 · Nova Rover · Australian Rover Challenge",
+    title: "ARCh 2026 — Folding Mast",
+    summary: "Deployable folding mast mechanism for the ARCh 2026 rover.",
+    tags: [
+      "Mechanisms",
+      "CAD",
+      "Fabrication",
+      "Nova Rover"
+    ],
+    stats: [],
+    thumb: "images/arc-folding-mast/Screenshot 2026-06-09 094204.png",
+    media: [
+      {
+        type: "embed",
+        src: "https://youtu.be/uN-OdPfy1i4",
+        span: 2
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/u6varZqdYPw",
+        span: 2
+      }
+    ],
+    body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
+  },
+  {
     id: "bridge",
     featured: false,
     year: "2023",
@@ -627,7 +600,7 @@ window.PROJECTS = [
         l: "Year"
       }
     ],
-    thumb: "images/ewb/hero.jpeg",
+    thumb: "images/ewb/Screenshot 2026-06-10 165327.png",
     media: [
       {
         type: "image",
@@ -681,6 +654,57 @@ window.PROJECTS = [
         <li>Sweep a large area with a compact, lightweight mechanism</li>
         <li>Reliable motion in sandy, outdoor competition conditions</li>
         <li>Integrate cleanly with the existing ARCh science payload structure</li>
+      </ul>
+    `
+  },
+  {
+    id: "gimbal",
+    featured: false,
+    year: "2025",
+    eyebrow: "2025 · Nova Rover · Recruit Project",
+    title: "Nova Rover — Gimbal Camera System",
+    summary: "Two-axis servo gimbal for site survey and rock analysis. Built as my Nova recruit project, used across 4 competitions with zero faults and never disassembled.",
+    tags: [
+      "Mechanical design",
+      "Fusion 360",
+      "Servo actuation",
+      "Modular mounting",
+      "Nova Rover"
+    ],
+    stats: [
+      {
+        v: "4",
+        l: "Competitions used"
+      },
+      {
+        v: "0",
+        l: "Faults recorded"
+      },
+      {
+        v: "2025",
+        l: "Year built"
+      }
+    ],
+    thumb: "images/gimbal/hero.png",
+    media: [
+      {
+        type: "image",
+        src: "images/gimbal/cad-mounted.png"
+      },
+      {
+        type: "image",
+        src: "images/gimbal/cad-head.png"
+      }
+    ],
+    body: `
+      <p>This two-axis servo gimbal was my recruit project when I joined Nova Rover. It aims a camera to give operators site context during competition: surveying terrain, analysing rocks and ground composition, and providing visual reference for science task decisions.</p>
+      <p>Since its first assembly in 2025 it has run through four competitions (ARCh 2025, URC 2025, ARCh 2026, and URC 2026) without a single fault and without ever being disassembled. That reliability record across desert environments in Utah and Australia is the result I'm most proud of.</p>
+      <h5>Design highlights</h5>
+      <ul>
+        <li>Dual-servo pan/tilt mechanism for full scene coverage</li>
+        <li>V-slot modular mounting, swappable to different payload locations without tools</li>
+        <li>Cable routing designed for continuous rotation without binding or fatigue</li>
+        <li>Kept deliberately simple to eliminate failure points in the field</li>
       </ul>
     `
   },
@@ -804,36 +828,6 @@ window.PROJECTS = [
         <li><strong>Bed frame</strong> (2020) — Tasmanian Oak timber, Red Gum live-edge bedhead, custom joinery, designed in CAD</li>
         <li><strong>Bouldering wall</strong> (2019) — full indoor custom climbing wall with adjustable holds</li>
       </ul>`
-  },
-  {
-    id: "arc-folding-mast",
-    imageFolder: "2026_ARC_folding_mast",
-    featured: false,
-    year: "2026",
-    eyebrow: "2026 · Nova Rover · Australian Rover Challenge",
-    title: "ARCh 2026 — Folding Mast",
-    summary: "Deployable folding mast mechanism for the ARCh 2026 rover.",
-    tags: [
-      "Mechanisms",
-      "CAD",
-      "Fabrication",
-      "Nova Rover"
-    ],
-    stats: [],
-    thumb: "images/arc-folding-mast/Screenshot 2026-06-09 094204.png",
-    media: [
-      {
-        type: "embed",
-        src: "https://youtu.be/uN-OdPfy1i4",
-        span: 2
-      },
-      {
-        type: "embed",
-        src: "https://youtu.be/u6varZqdYPw",
-        span: 2
-      }
-    ],
-    body: "<p>Deployable folding mast mechanism designed for the ARCh 2026 competition.</p>"
   },
   {
     id: "water-cooled-bed",
@@ -971,8 +965,17 @@ window.PROJECTS = [
       "Fabrication"
     ],
     stats: [],
-    thumb: "",
-    media: [],
+    thumb: "images/knives/Screenshot 2026-06-10 171022.png",
+    media: [
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-10 171014.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-10 171029.png"
+      }
+    ],
     body: `
       <p>A collection of knives crafted over several years, experimenting with different steel types, handle materials, and heat treatment processes.</p>
       <h5>Techniques</h5>
@@ -995,7 +998,8 @@ window.PROJECTS = [
     summary: "Aesthetic wall-mounted ski holders — designed and fabricated to display skis as statement pieces.",
     tags: [
       "Fabrication",
-      "Design"
+      "Design",
+      "Woodwork"
     ],
     stats: [],
     thumb: "images/ski-wall-mounts/IMG_5970.JPEG",
@@ -1029,8 +1033,13 @@ window.PROJECTS = [
       "Lighting"
     ],
     stats: [],
-    thumb: "",
-    media: [],
+    thumb: "images/mountain-lamps/CADB8EA5-92AC-4CD0-A079-AF4AC23E6367.JPEG",
+    media: [
+      {
+        type: "image",
+        src: "images/mountain-lamps/IMG_5946.JPEG"
+      }
+    ],
     body: `
       <p>Handcrafted lamps featuring mountain silhouettes cut from timber, with LED edge lighting that illuminates the profile. Each piece is unique in shape, wood grain, and character.</p>
     `
