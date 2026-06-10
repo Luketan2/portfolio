@@ -876,7 +876,7 @@ window.PROJECTS = [
       "Computer Vision"
     ],
     stats: [],
-    thumb: "",
+    thumb: "images/Autonomous_robot_4076/Screenshot 2026-06-08 202916.png",
     media: [
       {
         type: "embed",
