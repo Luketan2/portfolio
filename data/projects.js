@@ -281,12 +281,13 @@ window.PROJECTS = [
         src: "images/prosthetic/luke-with-jilly.png"
       },
       {
-        type: "image",
-        src: "images/prosthetic/fitted.png"
+        type: "embed",
+        src: "https://youtube.com/shorts/lgmK-I6POmw?feature=share",
+        span: 2
       },
       {
-        type: "embed",
-        src: "https://youtube.com/shorts/lgmK-I6POmw?feature=share"
+        type: "image",
+        src: "images/prosthetic/fitted.png"
       },
       {
         type: "image",
@@ -994,12 +995,20 @@ window.PROJECTS = [
     summary: "Aesthetic wall-mounted ski holders — designed and fabricated to display skis as statement pieces.",
     tags: [
       "Fabrication",
-      "Design",
-      "Woodwork"
+      "Design"
     ],
     stats: [],
-    thumb: "",
-    media: [],
+    thumb: "images/ski-wall-mounts/IMG_5970.JPEG",
+    media: [
+      {
+        type: "image",
+        src: "images/ski-wall-mounts/IMG_5972.JPEG"
+      },
+      {
+        type: "image",
+        src: "images/ski-wall-mounts/IMG_5971.JPEG"
+      }
+    ],
     body: `
       <p>Custom wall-mounted ski holders designed for both function and aesthetics. Clean, minimal brackets that let the skis become part of the room rather than just stored equipment.</p>
     `
