@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luke Tan — Engineering Portfolio</title>
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
   <script src="data/site.js?v=3"></script>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -42,7 +42,7 @@
     <div class="hero">
       <p class="eyebrow">Engineering Portfolio</p>
       <h1>Luke Tan</h1>
-      <p class="tagline">Final-year Robotics & Mechatronics Engineer at Monash University. I build things that work — from Mars rover science payloads to prosthetic limbs.</p>
+      <p class="tagline">Final-year Robotics & Mechatronics Engineer at Monash University.</p>
       <div class="cta-row">
         <button class="btn-primary" data-page="projects">View projects</button>
         <button class="btn-secondary" data-page="about">About me</button>
@@ -82,9 +82,9 @@
         <div class="d-tags" id="d-tags"></div>
       </div>
       <div class="detail-stats" id="d-stats"></div>
+      <div id="d-flowchart"></div>
       <div class="detail-body" id="d-body"></div>
       <div id="d-steps"></div>
-      <div id="d-flowchart"></div>
     </div>
     <!-- Right: images -->
     <div class="detail-right">
@@ -180,19 +180,19 @@ window.SKILLS = [
 // ── Education & experience — edit here ───────────────────
 window.ABOUT = {
   items: [
-    { type: 'edu', sortYear: 2023, period: '2023 – present',
-      title: 'Monash University',
-      sub:   'BE (Hons) Robotics & Mechatronics · AI stream · HD average' },
-    { type: 'exp', sortYear: 2024, period: '2024 – present',
+    { type: 'exp', current: true,  sortYear: 2024, period: '2024 – present',
       title: 'Nova Rover — Science Lead',
       sub:   'Monash University Rover Challenge team' },
-    { type: 'exp', sortYear: 2024, period: 'Nov 2024 – Aug 2025',
-      title: 'Starfire Snowboards — Engineering Intern',
-      sub:   'CAD and prototype design for electric snowboards' },
-    { type: 'exp', sortYear: 2023, period: '2023 – present',
+    { type: 'edu', current: true,  sortYear: 2023, period: '2023 – present',
+      title: 'Monash University',
+      sub:   'BE (Hons) Robotics & Mechatronics · AI stream · HD average' },
+    { type: 'exp', current: true,  sortYear: 2025, period: '2025 – present',
       title: 'Worley — Engineering Intern',
       sub:   'Rail engineering, NTG project' },
-    { type: 'edu', sortYear: 2010, period: '2010 – 2022',
+    { type: 'exp', current: false, sortYear: 2024, period: 'Nov 2024 – Aug 2025',
+      title: 'Starfire Snowboards — Engineering Intern',
+      sub:   'CAD and prototype design for electric snowboards' },
+    { type: 'edu', current: false, sortYear: 2010, period: '2010 – 2022',
       title: 'Ballarat Grammar',
       sub:   'VCE · Systems Engineering 50 · ATAR 98.15' },
   ]
@@ -264,7 +264,7 @@ function showDetail(id) {
         const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
         if (ytMatch) {
           const vid = ytMatch[1];
-          const thumb = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+          const thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
           const embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
           return `<div class="media-item media-item--embed yt-thumb-item" id="yt-${vid}" onclick="loadYT('${vid}','${embedUrl}')" style="${spanStyle}cursor:pointer;position:relative">
             <img src="${thumb}" alt="YouTube video" style="width:100%;height:100%;object-fit:cover;display:block" />
@@ -319,6 +319,18 @@ function showDetail(id) {
 
   showPage('detail');
   window.location.hash = 'project/' + id;
+
+  if (p.autoplayVideo) {
+    let src = p.autoplayVideo;
+    const _s = src.match(/youtu\.be\/([^?&]+)/);
+    const _w = src.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+    const _sh = src.match(/youtube\.com\/shorts\/([^?&]+)/);
+    if (_s)  src = `https://www.youtube.com/embed/${_s[1]}`;
+    else if (_w)  src = `https://www.youtube.com/embed/${_w[1]}`;
+    else if (_sh) src = `https://www.youtube.com/embed/${_sh[1]}`;
+    const vidId = (src.match(/youtube\.com\/embed\/([^?&]+)/) || [])[1];
+    if (vidId) setTimeout(() => loadYT(vidId, `https://www.youtube.com/embed/${vidId}?autoplay=1&rel=0`), 400);
+  }
 }
 
 // ── Steps walkthrough ───────────────────────────────────
@@ -413,7 +425,10 @@ function renderAbout() {
   const raw = window.ABOUT.items
     || [...(window.ABOUT.education||[]).map(e=>({...e,type:'edu'})),
         ...(window.ABOUT.experience||[]).map(e=>({...e,type:'exp'}))];
-  const items = [...raw].sort((a, b) => (b.sortYear||0) - (a.sortYear||0));
+  const items = [...raw].sort((a, b) => {
+    if (!!b.current !== !!a.current) return b.current ? 1 : -1;
+    return (b.sortYear||0) - (a.sortYear||0);
+  });
   document.getElementById('edu-list').innerHTML = `<div class="timeline">` + items.map(e => `
     <div class="tl-item ${e.type === 'exp' ? 'tl-exp' : ''}">
       ${e.period ? `<div class="tl-period">${e.period}</div>` : ''}

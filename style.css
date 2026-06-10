@@ -572,7 +572,7 @@ a { color: inherit; }
 .tl-item::before {
   content: '';
   position: absolute;
-  left: -1.45rem;
+  left: -1.25rem;
   top: 5px;
   width: 12px;
   height: 12px;
@@ -1249,7 +1249,7 @@ a { color: inherit; }
 /* ── Interactive Payload Flowchart ────────────────── */
 /* Launcher card on the project detail page */
 .d-flow-cta {
-  margin-top: 2.5rem;
+  margin: 1.75rem 0 2rem;
   border: 1px solid var(--gray2);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
