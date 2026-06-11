@@ -1,9 +1,9 @@
 window.FLOWCHARTS = {
   "urc2026": {
     "ctaTitle": "How the payload runs, end to end",
-    "ctaSub": "Five stages take a sample from 10&nbsp;cm underground to a life-detection verdict. Step through the sequence and see how each subsystem works.",
+    "ctaSub": "Step through the sequence and see how each subsystem works.",
     "ctaButton": "Open payload flowchart &nbsp;&#8594;",
-    "title": "URC 2026 Payload — Sample-to-Verdict Sequence",
+    "title": "URC 2026 Payload",
     "subtitle": "Click any stage, or use the ← → keys, to step through how each subsystem works.",
     "stages": [
       {

@@ -702,16 +702,24 @@ window.PROJECTS = [
     thumb: "images/sweeper/hero.png",
     media: [
       {
-        type: "image",
-        src: "images/sweeper/livestream.png"
+        type: "embed",
+        src: "https://youtu.be/jaO-TQNgs2s",
+        span: 2
       },
       {
-        type: "image",
-        src: "images/sweeper/cad.png"
+        type: "embed",
+        src: "https://youtu.be/CAfQci_dBEc",
+        span: 2
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/XKxygBNJrkA",
+        span: 2
       }
     ],
     body: `
-      <p>I designed a compact sweeping mechanism for Nova Rover's ARCh science payload. The sweeper removes layers of ilmenite sand to expose fresh sample for a microscope, which captures depth images used by a machine learning pipeline to determine ilmenite content percentage.</p>
+      <p>I designed a compact sweeping mechanism for Nova Rover's ARCh science payload. Because ilmenite is denser than the surrounding sand, it tends to sink below the surface, so the very top layer isn't representative of what's actually in the ground. The sweeper clears that top layer away to expose fresher, more representative material for a microscope, which captures images that a machine learning pipeline uses to determine the ilmenite content percentage.</p>
+      <p>It proved reliable and effective enough that it was used across two competitions in a row.</p>
       <h5>Design goals</h5>
       <ul>
         <li>Sweep a large area with a compact, lightweight mechanism</li>
@@ -752,11 +760,12 @@ window.PROJECTS = [
     media: [
       {
         type: "image",
-        src: "images/gimbal/cad-mounted.png"
+        src: "images/gimbal/cad-head.png"
       },
       {
-        type: "image",
-        src: "images/gimbal/cad-head.png"
+        type: "embed",
+        src: "https://youtu.be/zKTPk061jdk",
+        span: 2
       }
     ],
     body: `
@@ -807,6 +816,10 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/warman/cad.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/h_VznXH-oTg"
       }
     ],
     body: `
@@ -1017,9 +1030,9 @@ window.PROJECTS = [
     category: "arts",
     featured: false,
     inProgress: false,
-    year: "2023–2026",
-    eyebrow: "2023–2026 · Hand-forged",
-    title: "Hand-Forged Knives",
+    year: "2020–2026",
+    eyebrow: "2020–2026 · Hand-Made",
+    title: "Hand-Made Knives",
     summary: "A series of hand-forged and stock-removal knives exploring steel types, handle materials, and heat treatment.",
     tags: [
       "Knifemaking",
@@ -1037,18 +1050,36 @@ window.PROJECTS = [
       {
         type: "image",
         src: "images/knives/Screenshot 2026-06-10 171029.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-11 150002.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-11 150012.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-11 150049.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-11 150057.png"
+      },
+      {
+        type: "image",
+        src: "images/knives/Screenshot 2026-06-11 150041.png"
       }
     ],
-    body: `
-      <p>A collection of knives crafted over several years, experimenting with different steel types, handle materials, and heat treatment processes.</p>
-      <h5>Techniques</h5>
+    body: `<p>A collection of pieces made by hand over several years, mostly knives, experimenting with different steel sources, handle materials, and heat treatment. Several of the blades started life as old tools, files and rasps, given a second life as a finished knife.</p>
+      <h5>The pieces</h5>
       <ul>
-        <li>Stock removal and forging</li>
-        <li>Handle work — wood, G10, resin</li>
-        <li>Heat treatment and tempering</li>
-        <li>Belt grinding and hand finishing</li>
-      </ul>
-    `
+        <li><strong>Japanese-inspired knife.</strong> Made from an old file, finished with a heartwood handle.</li>
+        <li><strong>Small carving knife.</strong> Made from an old file and kept rustic and simple.</li>
+        <li><strong>Hunting knife.</strong> Made from a thick rasp, with hollow pins and a heartwood handle.</li>
+        <li><strong>Turned pen cup.</strong> Made on a wood lathe.</li>
+   `
   },
   {
     id: "ski-wall-mounts",
