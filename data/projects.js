@@ -814,12 +814,12 @@ window.PROJECTS = [
         src: "images/warman/action.png"
       },
       {
-        type: "image",
-        src: "images/warman/cad.png"
-      },
-      {
         type: "embed",
         src: "https://youtube.com/shorts/h_VznXH-oTg"
+      },
+      {
+        type: "image",
+        src: "images/warman/cad.png"
       }
     ],
     body: `

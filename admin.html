@@ -261,6 +261,10 @@
         <span class="sidebar-special-icon">🔬</span>
         <span class="sidebar-special-label">Payload Flowchart</span>
       </div>
+      <div class="sidebar-special" id="sidebar-gallery" onclick="openGalleryEditor()">
+        <span class="sidebar-special-icon">🖼️</span>
+        <span class="sidebar-special-label">Image Gallery</span>
+      </div>
       <div class="sidebar-hd" style="margin-top:4px;display:flex;align-items:center;justify-content:space-between">
         <span>Projects <span style="font-weight:400;letter-spacing:0;text-transform:none">— drag to reorder</span></span>
         <button class="btn btn-sm btn-primary" style="margin-right:.5rem;padding:2px 8px;font-size:10px" onclick="openNewProjectModal()">+ New</button>
@@ -530,6 +534,7 @@ async function refreshImages() {
   if (activeId === '__cover__')   renderCoverEditor();
   else if (activeId === '__profile__') renderProfileEditor();
   else if (activeId === '__flow__') renderFlowEditor();
+  else if (activeId === '__gallery__') renderGalleryEditor();
   else if (activeId) renderEditor();
 }
 
@@ -649,6 +654,7 @@ function renderSidebar() {
   document.getElementById('sidebar-resume').classList.toggle('active',  activeId === '__resume__');
   document.getElementById('sidebar-profile').classList.toggle('active', activeId === '__profile__');
   document.getElementById('sidebar-flow').classList.toggle('active',    activeId === '__flow__');
+  document.getElementById('sidebar-gallery').classList.toggle('active', activeId === '__gallery__');
 
   document.getElementById('proj-list').innerHTML = projects.map((p, i) => `
     <div class="proj-item ${p.id === activeId ? 'active' : ''}"
@@ -1540,6 +1546,113 @@ function fcMoveStageMedia(i, j, dir) {
   const m = f.stages[i].media; const k = j + dir;
   if (k < 0 || k >= m.length) return;
   [m[j], m[k]] = [m[k], m[j]]; setStatus('Unsaved changes'); renderFlowEditor();
+}
+
+// ── Image gallery editor (home page collage order) ────
+function openGalleryEditor() {
+  activeId = '__gallery__';
+  if (!siteConfig.galleryImages) siteConfig.galleryImages = [];
+  renderSidebar();
+  renderGalleryEditor();
+}
+
+// Every image used across all projects, with its preview URL and project title.
+function galleryAvailable() {
+  const out = [];
+  const seen = new Set();
+  projects.forEach(p => {
+    const folder = p.imageFolder || p.id;
+    const imgs = imgCache[folder] || {};
+    const add = (src) => {
+      if (!src || seen.has(src)) return;
+      seen.add(src);
+      const fname = src.split('/').pop();
+      out.push({ src, url: imgs[fname] ? imgs[fname].url : null, title: p.title });
+    };
+    if (p.thumb) add(p.thumb);
+    (p.media || []).forEach(m => { if (m.type === 'image') add(m.src); });
+  });
+  return out;
+}
+
+function renderGalleryEditor() {
+  if (!siteConfig.galleryImages) siteConfig.galleryImages = [];
+  const order = siteConfig.galleryImages;
+  const all   = galleryAvailable();
+  const urlBySrc = {};
+  all.forEach(i => { urlBySrc[i.src] = i.url; });
+  const inSet = new Set(order);
+  const available = all.filter(i => !inSet.has(i.src));
+
+  setEditorContent(`
+    <div>
+      <div class="ed-title">Image Gallery</div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Featured order <span class="sec-hint">— drag to reorder · these appear first in the home gallery, then the rest fill in</span></div>
+        ${order.length === 0
+          ? `<p class="no-imgs">Nothing pinned yet. The home gallery currently shows all project images shuffled. Add images below to choose what comes first.</p>`
+          : `<div class="gal-list">
+              ${order.map((src, i) => `
+                <div class="gal-item" draggable="true"
+                     ondragstart="galleryDragStart(event,${i})" ondragover="galleryDragOver(event,${i})"
+                     ondrop="galleryDragDrop(event,${i})" ondragend="galleryDragEnd()">
+                  <span class="gal-drag-handle">⠿</span>
+                  <div class="gal-thumb">${urlBySrc[src] ? `<img src="${urlBySrc[src]}" />` : `<div class="gal-miss">?</div>`}</div>
+                  <div class="gal-info"><span class="gal-name">${src.split('/').pop()}</span></div>
+                  <div class="gal-actions"><button class="btn btn-sm btn-danger" onclick="galleryRemove(${i})">✕ Remove</button></div>
+                </div>`).join('')}
+            </div>`}
+      </div>
+
+      <div class="ed-sec">
+        <div class="sec-title">Add images <span class="sec-hint">— click to pin to the gallery</span></div>
+        ${available.length === 0
+          ? `<p class="no-imgs">Every project image is already pinned. Add more images to projects, then click ↻ Refresh.</p>`
+          : `<div class="img-grid">
+              ${available.map(i => `
+                <div class="img-cell" onclick="galleryAdd(this.dataset.src)" data-src="${i.src.replace(/"/g,'&quot;')}" title="${i.title}">
+                  ${i.url ? `<img src="${i.url}" loading="lazy" />` : `<div class="thumb-missing" style="width:100%;height:74px">missing</div>`}
+                  <div class="img-cell-lbl"><span class="img-nm">${i.src.split('/').pop()}</span></div>
+                </div>`).join('')}
+            </div>`}
+      </div>
+    </div>
+  `);
+}
+
+function galleryAdd(src) {
+  if (!siteConfig.galleryImages) siteConfig.galleryImages = [];
+  if (!siteConfig.galleryImages.includes(src)) siteConfig.galleryImages.push(src);
+  setStatus('Unsaved changes'); renderGalleryEditor();
+}
+function galleryRemove(i) {
+  siteConfig.galleryImages.splice(i, 1);
+  setStatus('Unsaved changes'); renderGalleryEditor();
+}
+
+let galleryDragSrc = null;
+function galleryDragStart(e, i) {
+  galleryDragSrc = i; e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+}
+function galleryDragOver(e, i) {
+  e.preventDefault();
+  document.querySelectorAll('.gal-item').forEach(el => el.classList.remove('drag-over'));
+  if (i !== galleryDragSrc) e.currentTarget.classList.add('drag-over');
+}
+function galleryDragDrop(e, i) {
+  e.preventDefault();
+  if (galleryDragSrc === null || galleryDragSrc === i) return;
+  const a = siteConfig.galleryImages;
+  const item = a.splice(galleryDragSrc, 1)[0];
+  a.splice(i, 0, item);
+  galleryDragSrc = null;
+  setStatus('Unsaved changes'); renderGalleryEditor();
+}
+function galleryDragEnd() {
+  galleryDragSrc = null;
+  document.querySelectorAll('.gal-item').forEach(el => el.classList.remove('drag-over', 'dragging'));
 }
 
 // ── Save ──────────────────────────────────────────────

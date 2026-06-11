@@ -617,7 +617,7 @@ a { color: inherit; }
 
 /* ── CV page wrapper — grey desk surface ─────────── */
 .cv-doc {
-  max-width: 820px;
+  max-width: calc(210mm + 3.5rem);
   margin: 2rem auto 4rem;
   background: #c8c8c4;
   border: none;
@@ -630,10 +630,11 @@ a { color: inherit; }
   gap: 1.75rem;
 }
 
-/* ── A4 page sheet ────────────────────────────────── */
+/* ── A4 page sheet (210mm × 297mm) ────────────────── */
 .cv-page {
-  width: 100%;
-  min-height: 900px;
+  width: 210mm;
+  max-width: 100%;
+  min-height: 297mm;
   background: #fff;
   box-shadow: 0 2px 20px rgba(0,0,0,0.22);
   overflow: hidden;

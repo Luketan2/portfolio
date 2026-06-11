@@ -19,7 +19,7 @@ window.RESUME = {
       "institution": "Ballarat Grammar",
       "degree": "VCE",
       "period": "2010 – 2022",
-      "detail": "ATAR: 98.15"
+      "detail": "ATAR: 98.15 · Study Score of 50 in Systems Engineering · House Captain"
     }
   ],
   "experience": [
@@ -30,10 +30,21 @@ window.RESUME = {
       "location": "Monash",
       "url": "",
       "bullets": [
-        "2025 URC Science Payload – Designed and led development of a dual-auger system capable of drilling below 10 cm, extracting regolith, and analysing samples via spectrometry to assess potential biosignatures.",
+        "2026 URC Science Payload – As Engineering Co-Lead, designed and built a dual-auger system that drills below 10 cm to extract regolith and analyses it for biosignatures with a custom spectrometer. Scored a perfect 100/100 in the science task, placing Monash Nova Rover 2nd overall out of 116 teams from 18 countries and 1st in the world for science.",
         "2025 ARCh Science Payload – Developed and integrated a kiln–condenser system to extract liquid water from icy regolith and evaluate ilmenite content for in-situ resource utilisation.",
         "Leadership & Teamwork – Organised meetings, coordinated subteams, and managed cross-disciplinary integration to achieve project milestones.",
         "Communication – Delivered clear technical updates, maintained strong documentation, and promoted knowledge-sharing and mentorship within the team."
+      ]
+    },
+    {
+      "company": "Worley",
+      "role": "Engineering Intern",
+      "period": "Nov 2025 – Current",
+      "location": "Melbourne",
+      "url": "",
+      "bullets": [
+        "Next Generation Trams (NGT) – Assisted the Alstom engineering team on Melbourne's new G-class trams, working from the city office and on site at the Alstom factory in Dandenong.",
+        "Track Geometry & Simulation – Generated railway track geometry used for derailment simulations, which was the main focus of the day-to-day work."
       ]
     },
     {
@@ -171,8 +182,9 @@ window.RESUME = {
   ],
   "skills": [
     "Embedded systems (ESP32, STM32, CAN bus)",
-    "CAD – Fusion 360",
+    "CAD – Fusion 360, Onshape, SolidWorks",
     "3D printing & fabrication",
+    "Manual mill, lathe & CNC machining",
     "Python & firmware development",
     "Robotics & mechatronics design",
     "Problem solving under pressure",
@@ -204,6 +216,15 @@ window.RESUME = {
       "role": "Door knocker – Red Shield Appeal",
       "org": "Ballarat",
       "period": "2017 – 2018"
+    }
+  ],
+  "references": [
+    {
+      "name": "Keenan Granland, PhD",
+      "title": "Lecturer & Lead Academic Advisor, Student Teams",
+      "org": "Monash University, Mechanical & Aerospace Engineering",
+      "phone": "0425 225 778",
+      "email": "Keenan.Granland@monash.edu"
     }
   ]
 };

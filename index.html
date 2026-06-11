@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luke Tan — Engineering Portfolio</title>
-  <link rel="stylesheet" href="style.css?v=8" />
-  <script src="data/site.js?v=3"></script>
+  <link rel="stylesheet" href="style.css?v=9" />
+  <script src="data/site.js?v=4"></script>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -56,9 +56,12 @@
   <hr class="divider" />
   <p class="section-label">Featured projects</p>
   <div class="featured-grid" id="featured-grid"></div>
+  <div style="text-align:center; padding:0 var(--pad) 2.5rem;">
+    <button class="btn-secondary" data-page="projects">View all projects &#8594;</button>
+  </div>
 
   <hr class="divider" />
-  <p class="section-label">Project gallery</p>
+  <p class="section-label">Image gallery</p>
   <div class="proj-collage" id="proj-collage"></div>
 </main>
 
@@ -107,21 +110,14 @@
 
 <!-- ─── ABOUT ─────────────────────────────────────────── -->
 <main id="page-about" class="page">
-  <div class="resume-bar">
-    <span>Resume / CV</span>
-    <div class="resume-bar-actions">
-      <button class="btn-secondary" data-page="cv">View CV</button>
-      <a href="assets/cv.pdf" download class="btn-primary" style="text-decoration:none">&#8595; Download PDF</a>
-    </div>
-  </div>
   <div class="about-inner">
     <div class="about-layout">
       <div class="about-left">
         <h2>About me</h2>
         <p class="about-contact">luke.tan04@gmail.com &nbsp;·&nbsp; 0408 714 149</p>
-        <p>I'm a final-year Robotics & Mechatronics Engineering student at Monash University (AI stream), graduating in 2026 with a High Distinction average. I'm currently Science Lead on Monash Nova Rover, where I design and build science payloads for international rover competitions.</p>
-        <p>I've been building things since I was a kid — RC planes, bouldering walls, bed frames — and that maker instinct has carried into my engineering work. I care about systems that actually function under real conditions: dusty desert environments, tight competition timelines, and constrained budgets.</p>
-        <p>My technical focus is at the intersection of embedded systems, mechanical design, and robotics. I'm comfortable across the full stack — from Fusion 360 CAD through to firmware on ESP32 and STM32, CAN bus integration, and physical fabrication.</p>
+        <p>I'm a final-year Robotics and Mechatronics Engineering student at Monash University, on the AI stream, graduating in 2026 with a High Distinction average. I'm also Co-Science Lead on Monash Nova Rover, where I help design and build the science payloads we take to international rover competitions.</p>
+        <p>I've always just liked building things, and that never really stopped as I grew up, so engineering felt like a natural place to land. What I enjoy most is the hands-on side and the problem solving, especially when a project comes with unusual or awkward constraints that don't have an obvious answer and you have to think your way to something creative.</p>
+        <p>Most of my work has to hold up in the real world rather than just on paper: dusty desert competitions, tight deadlines, and limited budgets. I'm comfortable working across a lot of different engineering areas, from fabrication, CNC machining and CAD through to coding, firmware and electricals, which means I can take on a whole system from start to finish rather than just one part of it.</p>
         <div class="edu-list" id="edu-list"></div>
       </div>
       <div class="about-right">
@@ -160,7 +156,7 @@
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
 <script src="data/projects.js?v=9"></script>
-<script src="data/resume.js?v=5"></script>
+<script src="data/resume.js?v=6"></script>
 <script src="data/flow-icons.js?v=1"></script>
 <script src="data/flowcharts.js?v=1"></script>
 <script>
@@ -402,18 +398,37 @@ function renderAllProjects() {
 }
 
 function renderCollage() {
-  const imgs = [];
+  // Map every project image src -> its project, so curated entries can be linked.
+  const lookup = {};
   window.PROJECTS.forEach(p => {
-    if (p.thumb) imgs.push({ src: p.thumb, id: p.id, title: p.title });
+    if (p.thumb) lookup[p.thumb] = { id: p.id, title: p.title };
     (p.media || []).forEach(m => {
-      if (m.type === 'image' && m.src !== p.thumb)
-        imgs.push({ src: m.src, id: p.id, title: p.title });
+      if (m.type === 'image') lookup[m.src] = lookup[m.src] || { id: p.id, title: p.title };
     });
   });
-  for (let i = imgs.length - 1; i > 0; i--) {
+
+  // Curated images (set in admin → Image Gallery) come first, in chosen order.
+  const curatedSrcs = (window.SITE && window.SITE.galleryImages) || [];
+  const curatedSet = new Set(curatedSrcs);
+  const curated = curatedSrcs
+    .filter(src => lookup[src])
+    .map(src => ({ src, id: lookup[src].id, title: lookup[src].title }));
+
+  // Everything not curated fills in after, shuffled.
+  const rest = [];
+  window.PROJECTS.forEach(p => {
+    if (p.thumb && !curatedSet.has(p.thumb)) rest.push({ src: p.thumb, id: p.id, title: p.title });
+    (p.media || []).forEach(m => {
+      if (m.type === 'image' && m.src !== p.thumb && !curatedSet.has(m.src))
+        rest.push({ src: m.src, id: p.id, title: p.title });
+    });
+  });
+  for (let i = rest.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
+    [rest[i], rest[j]] = [rest[j], rest[i]];
   }
+
+  const imgs = curated.concat(rest);
   document.getElementById('proj-collage').innerHTML = imgs.map(img => `
     <div class="collage-item" onclick="showDetail('${img.id}')" title="${img.title}">
       <img src="${img.src}" alt="${img.title}" loading="lazy" />
@@ -494,7 +509,16 @@ function renderCV() {
       <div class="cv2-divider" style="margin-top:1rem"></div>
       <div class="cv2-sec" style="margin-top:1rem">
         <div class="cv2-sec-title">References</div>
-        <p class="cv2-contact-line">Available upon request.</p>
+        ${(r.references||[]).length
+          ? r.references.map(ref => `
+              <div style="margin-bottom:.6rem">
+                <p class="cv2-contact-line"><strong>${ref.name}</strong></p>
+                ${ref.title ? `<p class="cv2-contact-line">${ref.title}</p>` : ''}
+                ${ref.org   ? `<p class="cv2-contact-line">${ref.org}</p>`   : ''}
+                ${ref.phone ? `<p class="cv2-contact-line">${ref.phone}</p>` : ''}
+                ${ref.email ? `<p class="cv2-contact-line">${ref.email}</p>` : ''}
+              </div>`).join('')
+          : `<p class="cv2-contact-line">Available upon request.</p>`}
       </div>
     </div>`;
 
