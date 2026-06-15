@@ -94,7 +94,7 @@ window.PROJECTS = [
         <li><strong>BME sensor</strong> — ambient temperature, humidity, and pressure</li>
       </ul>
       <h5>Engineering the reliability</h5>
-      <p>The result came down to the work the team put in throughout the year. Strong engineering practices, rigorous testing, and clear communication across subsystems all mattered. Every system was tested individually and then together as a full payload. Failure modes were understood in advance, and handoffs between the engineering and science sides were clear. By the time of comp, we trusted the system because we'd done the work to earn that trust.</p>
+      <p>The result came down to the work the team put in throughout the year. Strong engineering practices, rigorous testing, and clear communication across subsystems all mattered. Every system was tested individually and then together as a full payload. Each part was designed to be as reliable as possible, from choosing the best materials and manufacturing methods for each component through to building in redundancy and tolerance for imperfections, so the system still functions correctly in real-world environments.</p>
     `
   },
   {
@@ -219,16 +219,18 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on the lunar surface. Our payload had two goals: extract water from frozen regolith, and quantify ilmenite content for resource assessment. I was Engineering Co-Lead, responsible for the mechanical systems, sensor integration, and payload architecture.</p>
-      <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. The payload worked.</p>
+      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on the lunar surface. The payload had a few jobs to do: measure the water content of the frozen icy samples so we could decide which of two sites to drill, extract water from that frozen regolith, and quantify ilmenite content for resource assessment. I work across the science-engineering side of the team, so on this payload I had a hand in just about everything.</p>
+      <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. Even with the issues on the day, we still managed to be one of only three teams in the whole competition to collect water samples.</p>
       <h5>Water extraction system</h5>
       <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom <strong>3D-printed aluminium kiln</strong>, its internal geometry optimised for vapour flow and for injecting heat directly into the sample. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>. In testing leading up to competition, the system was consistently collecting more than double the water recovered by the previous year's record.</p>
       <h5>Analysis systems</h5>
       <ul>
         <li><strong>Custom NIR probe</strong> — dual-LED near-infrared sensor measuring water content of frozen regolith non-invasively; validated to 2% precision under controlled conditions across 0–30% water content range</li>
         <li><strong>ML microscope</strong> — digital microscope with light-isolation shroud; trained algorithms predict ilmenite concentration within 2% of true value from depth images; brush system designed to improve sample homogeneity for the camera</li>
-        <li><strong>Analysis Arm</strong> — houses both sensors; aluminium CHS frame replaced with carbon fibre tube after load testing revealed deformation, resulting in a lighter and stronger assembly</li>
+        <li><strong>Analysis Arm</strong> — houses both sensors; the aluminium CHS frame was swapped for a carbon fibre tube after load testing revealed deformation, giving a lighter and stronger assembly. The hollow tube also let us route the cables internally, and a tool-change mechanism lets the arm move quickly between each instrument over a sample</li>
       </ul>
+      <h5>Manufacturing</h5>
+      <p>This project also pushed me on the manufacturing side. It was the first time we had 3D printed parts out of aluminium, and while the CNC work was handled by others, I got hands-on with the manual mill and lathe and taught myself to TIG weld aluminium for the earlier prototypes.</p>
     `
   },
   {
@@ -355,8 +357,9 @@ window.PROJECTS = [
       }
     ],
     body: `<p>A family posted on Facebook looking for someone to build a prosthetic for their rescue dog Jilly, who was missing a front leg. Without support she was at risk of long-term arthritis and spinal problems. I reached out and gratefully took it on!</p>
-      <p>Getting an accurate 3D model of her was the main challenge. It's just very hard to capture an accurate model of a live dog, since she's too energetic and the fur throws off 3D scanners. We ended up taking a physical cast of her body first, then scanning the cast, which gave a clean geometry to work from. I tested individual parts before assembling the full leg, and the first complete version has been in use ever since.</p>
+      <p>Getting an accurate 3D model of her was a major challenge. It's very hard to capture an accurate model of a live dog, since she's too energetic and the fur throws off 3D scanners. We ended up taking a physical cast of her body first, then scanning the cast, which gave a clean geometry to work from. I tested individual parts before assembling the full leg, and the first complete version has been in use ever since.</p>
       <p>After a few months Jilly outgrew the first leg. For V2 I simply extended the carbon fibre section, lengthening the leg to give her more room to grow.</p>
+      <p>More than anything, I'm really proud to have had such a positive impact on Jilly's life. Seeing her run around comfortably makes it easily one of the most rewarding things I've built.</p>
       <h5>Design details</h5>
       <ul>
         <li>TPU brace wraps around her body and fastens with elastic velcro straps</li>
@@ -458,8 +461,9 @@ window.PROJECTS = [
         <li>The final bike was sized to carry a <strong>scale model passenger</strong> as a proof of concept</li>
       </ul>
 
-      <h5>Prototype first</h5>
-      <p>The final bike wasn't the starting point. I first built a prototyping rig to validate the PID controller and reaction flywheel concept, and it became the stepping stone for the full design. It could resist being pushed and balance on changing angles, which proved out the control approach before I built the final bike.</p>
+      <h5>Prototyping and iterations</h5>
+      <p>The final bike wasn't the starting point. I started with a prototyping rig to validate the PID controller and reaction flywheel concept. It could resist being pushed and balance on changing angles, which proved out the control approach before I committed to a full build.</p>
+      <p>From there I built the first motorbike iteration, the white one in the images, which was designed to prioritise balancing performance above everything else. Once I was confident in how it balanced, the final design became a balancing act of its own, weighing up aesthetics, a believable scale-model user experience, and keeping that balance performance.</p>
 
       <h5>Awards</h5>
       <ul>
@@ -775,7 +779,7 @@ window.PROJECTS = [
       <ul>
         <li>Dual-servo pan/tilt mechanism for full scene coverage</li>
         <li>V-slot modular mounting, swappable to different payload locations without tools</li>
-        <li>Cable routing designed for continuous rotation without binding or fatigue</li>
+        <li>Cable routing designed for 360 degree rotation without binding or fatigue</li>
         <li>Kept deliberately simple to eliminate failure points in the field</li>
       </ul>
     `
@@ -912,7 +916,7 @@ window.PROJECTS = [
     year: "2025",
     eyebrow: "2025 · Personal Project",
     title: "Water-Cooled Bed",
-    summary: "A water-cooled bed frame built for Australian summers.",
+    summary: "A DIY closed-loop water-cooled bed I built for around $150 to get through Australian summers without aircon.",
     tags: [
       "Fabrication",
       "Thermal Engineering",
@@ -920,8 +924,16 @@ window.PROJECTS = [
     ],
     stats: [
       {
-        v: "",
-        l: ""
+        v: "~$150",
+        l: "Build cost"
+      },
+      {
+        v: "$4k+",
+        l: "Store-bought equivalent"
+      },
+      {
+        v: "0",
+        l: "Fans needed this summer"
       }
     ],
     thumb: "images/water_cooled_bed/IMG_0071.JPEG",
@@ -935,23 +947,44 @@ window.PROJECTS = [
         src: "images/water_cooled_bed/IMG_0190.JPEG"
       }
     ],
-    body: "<p>A water-cooled bed frame built to combat Australian summer heat.</p>"
+    body: `
+      <p>My place doesn't have aircon, and Australian summers always made my room pretty uncomfortable to sleep in, so I built a water-cooled bed to deal with it. A commercial version of something like this runs to at least $4,000, but I managed to put mine together for around $150.</p>
+      <h5>How it works</h5>
+      <p>It's a closed-loop water cooling system. Plastic tubing runs through the mattress topper, and a pump circulates water from an esky, through the tubing, and back again. The esky acts as an insulated cold reservoir, so on a hot night I drop a few large ice blocks in, and a knob on the control panel lets me tune the flow rate to dial in the temperature of the bed. It ends up cool to the touch. Since the pump sits right next to where I sleep, I mounted it on a mass-spring-damper, a steel mass on a TPU damper, which isolates the vibration and makes it effectively silent.</p>
+      <p>It worked better than I expected. I didn't need a fan in my room once this summer, and my sleep quality noticeably improved.</p>
+      <h5>Where it's going</h5>
+      <p>For now it's manual, I add the ice and set the flow by hand. Next I want to automate the temperature regulation with more temperature sensors embedded in the mattress, and I've picked up a heater so it can warm the bed in winter too. The longer-term goal is to grow it into a proper sleep-optimising setup.</p>
+    `
   },
   {
     id: "autonomous-robot",
     imageFolder: "Autonomous_robot_4076",
     featured: false,
-    year: "2024",
-    eyebrow: "2024 · Monash University",
+    year: "2025",
+    eyebrow: "2025 · Monash University · ECE4078 Intelligent Robotics",
     title: "Autonomous Robot",
-    summary: "Fully autonomous robot built for the Monash unit ECE4076.",
+    summary: "A vision-only PenguinPi robot that autonomously explores an arena, finds 11 types of target fruit using YOLO, and maps where each one is with SLAM. Earned an HD.",
     tags: [
       "Robotics",
-      "Embedded Systems",
-      "Python",
-      "Computer Vision"
+      "Computer Vision",
+      "YOLO",
+      "SLAM",
+      "Python"
     ],
-    stats: [],
+    stats: [
+      {
+        v: "HD",
+        l: "Unit grade"
+      },
+      {
+        v: "11",
+        l: "Fruit types"
+      },
+      {
+        v: "1",
+        l: "Camera (only sensor)"
+      }
+    ],
     thumb: "images/Autonomous_robot_4076/Screenshot 2026-06-08 202916.png",
     media: [
       {
@@ -963,11 +996,21 @@ window.PROJECTS = [
         src: "https://youtube.com/shorts/3Hp2048U4FI?feature=share"
       }
     ],
-    body: "<p>Autonomous robot built as part of the Monash University ECE4076 unit.</p>"
+    body: `
+      <p>A team project for Monash's ECE4078 Intelligent Robotics unit, working with a PenguinPi (PiBot) robot. The challenge was to get it to autonomously drive around an arena, find a set of target fruits, and mark where each one is on a map it builds as it goes. The catch was that the robot only has a single camera, so every bit of information about the world and its own position had to come from vision alone.</p>
+      <h5>How it works</h5>
+      <ul>
+        <li><strong>Fruit detection.</strong> We trained YOLO models to recognise the 11 different fruit types from the camera feed, and used those detections to estimate each fruit's position relative to the robot.</li>
+        <li><strong>Localisation and mapping.</strong> ArUco markers placed around the arena act as references. The robot runs SLAM to map the markers on the fly while working out its own pose at the same time, with an EKF fusing its motion with what the camera sees to keep that estimate accurate.</li>
+        <li><strong>Path planning.</strong> We developed strategies for the robot to explore the arena, drive to each target, and build up the fruit map.</li>
+      </ul>
+      <p>It all ran in Python onboard the PiBot, and the project earned an HD.</p>
+    `
   },
   {
     id: "floundering-light",
     imageFolder: "Floundering_light",
+    hidden: true,
     featured: false,
     year: "2025",
     eyebrow: "2025",
@@ -1146,12 +1189,12 @@ window.PROJECTS = [
     year: "2023",
     eyebrow: "2023",
     title: "Thawed - Art final",
-    summary: "",
+    summary: "Content coming soon.",
     tags: [],
     stats: [],
     thumb: "",
     media: [],
-    body: "<p></p>"
+    body: "<p>Content coming soon.</p>"
   },
   {
     id: "printmaking-art-final",
@@ -1161,11 +1204,11 @@ window.PROJECTS = [
     year: "2023",
     eyebrow: "2023 · ",
     title: "Printmaking Art final",
-    summary: "",
+    summary: "Content coming soon.",
     tags: [],
     stats: [],
     thumb: "",
     media: [],
-    body: "<p></p>"
+    body: "<p>Content coming soon.</p>"
   }
 ];

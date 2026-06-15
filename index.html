@@ -363,7 +363,7 @@ function inProgressBadge(p) {
 }
 
 function renderFeatured() {
-  const featured = window.PROJECTS.filter(p => p.featured).slice(0, 6);
+  const featured = window.PROJECTS.filter(p => p.featured && !p.hidden).slice(0, 6);
   document.getElementById('featured-grid').innerHTML = featured.map(p => `
     <div class="proj-card" onclick="showDetail('${p.id}')">
       ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
@@ -388,8 +388,8 @@ function renderAllProjects() {
       </div>
     </div>`;
   }
-  const eng  = window.PROJECTS.filter(p => (p.category || 'engineering') === 'engineering');
-  const arts = window.PROJECTS.filter(p => p.category === 'arts');
+  const eng  = window.PROJECTS.filter(p => !p.hidden && (p.category || 'engineering') === 'engineering');
+  const arts = window.PROJECTS.filter(p => !p.hidden && p.category === 'arts');
   document.getElementById('proj-grid-eng').innerHTML  = eng.map(cardHtml).join('');
   document.getElementById('proj-grid-arts').innerHTML = arts.map(cardHtml).join('');
   const artsLabel = document.getElementById('arts-label');
@@ -417,6 +417,7 @@ function renderCollage() {
   // Everything not curated fills in after, shuffled.
   const rest = [];
   window.PROJECTS.forEach(p => {
+    if (p.hidden) return;
     if (p.thumb && !curatedSet.has(p.thumb)) rest.push({ src: p.thumb, id: p.id, title: p.title });
     (p.media || []).forEach(m => {
       if (m.type === 'image' && m.src !== p.thumb && !curatedSet.has(m.src))
@@ -620,7 +621,7 @@ function animateBars() {
 document.addEventListener('click', e => {
   const pageTarget = e.target.closest('[data-page]');
   if (pageTarget) { showPage(pageTarget.dataset.page); return; }
-  if (e.target.id === 'back-btn') { showPage(previousPage); window.location.hash = ''; }
+  if (e.target.id === 'back-btn') { showPage('projects'); window.location.hash = 'projects'; }
 });
 
 // ── Hash routing ─────────────────────────────────────────
