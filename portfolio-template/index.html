@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Portfolio</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+  <script src="data/site.js?v=1"></script>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-brand" data-page="home">
+    <img id="nav-photo" class="nav-photo" src="" alt="" style="display:none" />
+    <div class="nav-brand-text">
+      <span class="logo">Your Name</span>
+      <span class="nav-contact-small">you@example.com &nbsp;·&nbsp; 0400 000 000</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a data-page="home" class="active">Home</a>
+    <a data-page="projects">Projects</a>
+    <a data-page="cv">CV</a>
+    <a data-page="about">About</a>
+  </div>
+  <button class="nav-menu" aria-label="Menu" id="mobile-menu-btn">&#9776;</button>
+</nav>
+
+<!-- ─── HOME ─────────────────────────────────────────── -->
+<main id="page-home" class="page active">
+  <section class="hero-layout" id="hero-section">
+    <img id="hero-bg" class="hero-bg-img" src="" alt="" />
+
+    <div class="hero">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Your Name</h1>
+      <p class="tagline">A short tagline about who you are and what you build.</p>
+      <div class="cta-row">
+        <button class="btn-primary" data-page="projects">View projects</button>
+        <button class="btn-secondary" data-page="about">About me</button>
+      </div>
+    </div>
+    <div class="hero-photo-wrap" id="hero-photo-wrap" style="display:none">
+      <img id="hero-photo" src="" alt="Your Name" onerror="document.getElementById('hero-photo-wrap').style.display='none'" />
+    </div>
+  </section>
+
+  <hr class="divider" />
+  <p class="section-label">Featured projects</p>
+  <div class="featured-grid" id="featured-grid"></div>
+  <div style="text-align:center; padding:0 var(--pad) 2.5rem;">
+    <button class="btn-secondary" data-page="projects">View all projects &#8594;</button>
+  </div>
+
+  <hr class="divider" />
+  <p class="section-label">Image gallery</p>
+  <div class="proj-collage" id="proj-collage"></div>
+</main>
+
+<!-- ─── PROJECTS ──────────────────────────────────────── -->
+<main id="page-projects" class="page">
+  <p class="section-label" style="padding-top:2rem">Engineering</p>
+  <div class="proj-grid" id="proj-grid-eng"></div>
+  <p class="section-label" id="arts-label" style="padding-top:2.5rem">Arts + Making</p>
+  <div class="proj-grid" id="proj-grid-arts"></div>
+</main>
+
+<!-- ─── PROJECT DETAIL ────────────────────────────────── -->
+<main id="page-detail" class="page">
+  <button class="back-btn" id="back-btn">&#8592; All projects</button>
+  <div class="detail-layout">
+    <!-- Left: text -->
+    <div class="detail-left">
+      <div class="detail-hero">
+        <p class="eyebrow" id="d-eyebrow"></p>
+        <h1 id="d-title"></h1>
+        <div class="d-tags" id="d-tags"></div>
+      </div>
+      <div class="detail-stats" id="d-stats"></div>
+      <div id="d-flowchart"></div>
+      <div class="detail-body" id="d-body"></div>
+      <div id="d-steps"></div>
+    </div>
+    <!-- Right: images -->
+    <div class="detail-right">
+      <div id="d-hero" class="d-hero-wrap" style="display:none">
+        <img id="d-hero-img" src="" alt="" />
+      </div>
+      <div id="d-media" class="media-gallery" style="display:none"></div>
+    </div>
+  </div>
+</main>
+
+<!-- ─── CV ────────────────────────────────────────────── -->
+<main id="page-cv" class="page">
+  <div class="cv-toolbar">
+    <p class="cv-toolbar-hint">Use your browser&rsquo;s Print dialog &rarr; &ldquo;Save as PDF&rdquo; to download.</p>
+    <button onclick="window.print()" class="btn-primary">&#8595;&nbsp; Save as PDF</button>
+  </div>
+  <div class="cv-doc" id="cv-doc"></div>
+</main>
+
+<!-- ─── ABOUT ─────────────────────────────────────────── -->
+<main id="page-about" class="page">
+  <div class="about-inner">
+    <div class="about-layout">
+      <div class="about-left">
+        <h2>About me</h2>
+        <p class="about-contact">you@example.com &nbsp;·&nbsp; 0400 000 000</p>
+        <p>Write a couple of paragraphs about yourself here. Who you are, what you study or do, and what you are working on right now.</p>
+        <p>This is a good place to talk about what you enjoy and what you are good at, in your own voice. Keep it relaxed and genuine.</p>
+        <p>Edit these paragraphs directly in index.html (the About content section), and edit the skills and the education / experience timeline in the SKILLS and ABOUT blocks lower down in this file.</p>
+        <div class="edu-list" id="edu-list"></div>
+      </div>
+      <div class="about-right">
+        <img id="about-profile-img" class="about-profile-img" src="" alt="Your Name" style="display:none" />
+        <div id="about-photos" class="about-photos-grid" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ─── ADMIN ──────────────────────────────────────────── -->
+<main id="page-admin" class="page">
+  <div style="padding:3rem var(--pad);text-align:center;color:#999;font-size:14px">
+    Use <strong>admin.html</strong> to manage your portfolio.
+  </div>
+</main>
+
+<!-- ─── INTERACTIVE PAYLOAD FLOWCHART (full page) ──────── -->
+<main id="page-flow" class="page">
+  <button class="back-btn" id="flow-back-btn" onclick="closeFlow()">&#8592; Back to project</button>
+  <div class="flow-wrap">
+    <div class="flow-head">
+      <p class="eyebrow" id="flow-eyebrow"></p>
+      <h1 id="flow-title"></h1>
+      <p id="flow-sub"></p>
+    </div>
+    <div class="flow-track" id="flow-track"></div>
+    <div class="flow-detail" id="flow-detail"></div>
+    <div class="flow-controls">
+      <button class="flow-btn" id="flow-prev-btn" onclick="flowPrev()">&#8592;&nbsp; Prev</button>
+      <span class="flow-step-count" id="flow-step-count"></span>
+      <button class="flow-btn" id="flow-next-btn" onclick="flowNext()">Next &nbsp;&#8594;</button>
+    </div>
+  </div>
+</main>
+
+<!-- ─── SCRIPTS ───────────────────────────────────────── -->
+<script src="data/projects.js?v=1"></script>
+<script src="data/resume.js?v=1"></script>
+<script src="data/flow-icons.js?v=1"></script>
+<script src="data/flowcharts.js?v=1"></script>
+<script>
+
+// ── Skills — edit labels and pct values (0–100) ──────────
+window.SKILLS = [
+  { label: 'Skill one',   pct: 90 },
+  { label: 'Skill two',   pct: 85 },
+  { label: 'Skill three', pct: 80 },
+  { label: 'Skill four',  pct: 75 },
+];
+
+// ── Education & experience — edit here ───────────────────
+// type: 'edu' or 'exp'. current: true marks an ongoing entry.
+// sortYear orders the timeline (highest first).
+window.ABOUT = {
+  items: [
+    { type: 'exp', current: true,  sortYear: 2025, period: '2025 – present',
+      title: 'Company — Your Role',
+      sub:   'A one-line description of what you do there' },
+    { type: 'edu', current: true,  sortYear: 2022, period: '2022 – 2026',
+      title: 'Your University',
+      sub:   'Your degree and any highlights' },
+  ]
+};
+
+// ── Interactive payload flowchart data ──────────────────
+// Icon library lives in data/flow-icons.js (window.FLOW_ICONS) and the
+// editable content in data/flowcharts.js (window.FLOWCHARTS) — both loaded
+// above, before this script, so the router can render them on first load.
+
+// ── Router ──────────────────────────────────────────────
+let previousPage = 'projects';
+
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('[data-page]').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('[data-page="' + pageId + '"]').forEach(el => el.classList.add('active'));
+  window.scrollTo(0, 0);
+  if (pageId !== 'detail' && pageId !== 'flow') previousPage = pageId;
+  if (pageId === 'home') animateBars();
+  if (pageId === 'admin') adminInit();
+}
+
+function showDetail(id) {
+  const p = window.PROJECTS.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('d-eyebrow').textContent = p.eyebrow;
+  document.getElementById('d-title').textContent   = p.title;
+  document.getElementById('d-tags').innerHTML =
+    (p.inProgress ? `<span class="dtag dtag--wip">In Progress</span>` : '') +
+    p.tags.map(t => `<span class="dtag">${t}</span>`).join('');
+
+  // Hero
+  const hero    = document.getElementById('d-hero');
+  const heroImg = document.getElementById('d-hero-img');
+  if (p.thumb) {
+    heroImg.src = p.thumb; heroImg.alt = p.title;
+    hero.style.display = 'block';
+  } else {
+    hero.style.display = 'none';
+  }
+
+  // Media gallery
+  const mediaEl = document.getElementById('d-media');
+  if (p.media && p.media.length) {
+    window._lbImages = p.media.filter(m => m.type === 'image').map(m => m.src);
+    let imgIdx = 0;
+    mediaEl.innerHTML = p.media.map((m, mediaIdx) => {
+      if (m.type === 'section-heading') {
+        return `<div class="media-section-heading">${m.label}</div>`;
+      }
+      const span = m.span || 1;
+      const spanStyle = span === 'full' ? 'grid-column:1/-1;' : span > 1 ? `grid-column:span ${span};` : '';
+      if (m.type === 'image') {
+        const idx = imgIdx++;
+        return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
+      }
+      if (m.type === 'embed') {
+        // Normalise all YouTube URL formats → youtube.com/embed/ID
+        let embedSrc = m.src;
+        const ytShort  = embedSrc.match(/youtu\.be\/([^?&]+)/);
+        const ytWatch  = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+        const ytShorts = embedSrc.match(/youtube\.com\/shorts\/([^?&]+)/);
+        if (ytShort)  embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
+        else if (ytWatch)  embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+        else if (ytShorts) embedSrc = `https://www.youtube.com/embed/${ytShorts[1]}`;
+        const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
+        if (ytMatch) {
+          const vid = ytMatch[1];
+          const thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
+          const embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+          return `<div class="media-item media-item--embed yt-thumb-item" id="yt-${vid}" onclick="loadYT('${vid}','${embedUrl}')" style="${spanStyle}cursor:pointer;position:relative">
+            <img src="${thumb}" alt="YouTube video" style="width:100%;height:100%;object-fit:cover;display:block" />
+            <div class="yt-play-btn" aria-label="Play video">
+              <svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
+            </div>
+          </div>`;
+        }
+        return `<div class="media-item media-item--embed" style="${spanStyle}"><iframe src="${embedSrc}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+      }
+      return '';
+    }).join('');
+    mediaEl.style.display = 'grid';
+  } else {
+    window._lbImages = [];
+    mediaEl.innerHTML = '';
+    mediaEl.style.display = 'none';
+  }
+
+  // Stats
+  document.getElementById('d-stats').innerHTML =
+    '<div class="stats-row">' +
+    p.stats.map(s => `<div class="stat-box"><div class="stat-v">${s.v}</div><div class="stat-l">${s.l}</div></div>`).join('') +
+    '</div>';
+
+  document.getElementById('d-body').innerHTML = p.body;
+
+  // Steps walkthrough
+  const stepsEl = document.getElementById('d-steps');
+  if (p.steps && p.steps.length) {
+    stepsEl.innerHTML = renderSteps(p.id, p.steps, 0);
+  } else {
+    stepsEl.innerHTML = '';
+  }
+
+  // Interactive flowchart launcher (only for projects with a flowchart defined)
+  const flowEl = document.getElementById('d-flowchart');
+  const fc = (window.FLOWCHARTS || {})[p.id];
+  if (fc) {
+    flowEl.innerHTML = `
+      <div class="d-flow-cta">
+        <div class="d-flow-cta-text">
+          <p class="section-label" style="margin:0 0 .4rem">Interactive</p>
+          <h5>${fc.ctaTitle}</h5>
+          <p>${fc.ctaSub}</p>
+        </div>
+        <button class="btn-primary flow-launch-btn" onclick="openFlow('${p.id}')">${fc.ctaButton}</button>
+      </div>`;
+  } else {
+    flowEl.innerHTML = '';
+  }
+
+  showPage('detail');
+  window.location.hash = 'project/' + id;
+
+  if (p.autoplayVideo) {
+    let src = p.autoplayVideo;
+    const _s = src.match(/youtu\.be\/([^?&]+)/);
+    const _w = src.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+    const _sh = src.match(/youtube\.com\/shorts\/([^?&]+)/);
+    if (_s)  src = `https://www.youtube.com/embed/${_s[1]}`;
+    else if (_w)  src = `https://www.youtube.com/embed/${_w[1]}`;
+    else if (_sh) src = `https://www.youtube.com/embed/${_sh[1]}`;
+    const vidId = (src.match(/youtube\.com\/embed\/([^?&]+)/) || [])[1];
+    if (vidId) setTimeout(() => loadYT(vidId, `https://www.youtube.com/embed/${vidId}?autoplay=1&rel=0`), 400);
+  }
+}
+
+// ── Steps walkthrough ───────────────────────────────────
+function renderSteps(projectId, steps, active) {
+  const nav = steps.map((s, i) => `
+    <button class="d-step-btn${i === active ? ' active' : ''}" onclick="activateStep(${i})">
+      <span class="d-step-num">${i + 1}</span>
+      <span class="d-step-lbl">${s.label}</span>
+    </button>
+  `).join('');
+  return `<div class="d-steps">
+    <p class="section-label" style="margin-bottom:1.25rem">How it works</p>
+    <div class="d-steps-nav">${nav}</div>
+    <div class="d-steps-panel" id="d-steps-panel">
+      <h5>${steps[active].label}</h5>
+      ${steps[active].detail}
+    </div>
+  </div>`;
+}
+
+function activateStep(idx) {
+  const id = window.location.hash.startsWith('#project/') ? window.location.hash.slice(9) : null;
+  if (!id) return;
+  const p = window.PROJECTS.find(x => x.id === id);
+  if (!p || !p.steps) return;
+  document.querySelectorAll('.d-step-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
+  const s = p.steps[idx];
+  document.getElementById('d-steps-panel').innerHTML = `<h5>${s.label}</h5>${s.detail}`;
+}
+
+// ── Render helpers ──────────────────────────────────────
+function inProgressBadge(p) {
+  return p.inProgress ? `<span class="badge-wip">In Progress</span>` : '';
+}
+
+function renderFeatured() {
+  const featured = window.PROJECTS.filter(p => p.featured && !p.hidden).slice(0, 6);
+  document.getElementById('featured-grid').innerHTML = featured.map(p => `
+    <div class="proj-card" onclick="showDetail('${p.id}')">
+      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
+      <div class="pc-content">
+        <p class="pc-year">${p.year}</p>
+        <h4>${p.title}</h4>
+        <div class="pc-tags">${p.tags.slice(0,2).map(t => `<span class="ptag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAllProjects() {
+  function cardHtml(p) {
+    return `<div class="proj-card" onclick="showDetail('${p.id}')">
+      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
+      <div class="pc-content">
+        <p class="pc-year">${p.year}</p>
+        <h4>${p.title}</h4>
+        <p class="pc-summary">${p.summary}</p>
+        <div class="pc-tags">${p.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  }
+  const eng  = window.PROJECTS.filter(p => !p.hidden && (p.category || 'engineering') === 'engineering');
+  const arts = window.PROJECTS.filter(p => !p.hidden && p.category === 'arts');
+  document.getElementById('proj-grid-eng').innerHTML  = eng.map(cardHtml).join('');
+  document.getElementById('proj-grid-arts').innerHTML = arts.map(cardHtml).join('');
+  const artsLabel = document.getElementById('arts-label');
+  if (artsLabel) artsLabel.style.display = arts.length ? '' : 'none';
+  document.getElementById('proj-grid-arts').style.display = arts.length ? '' : 'none';
+}
+
+function renderCollage() {
+  // Map every project image src -> its project, so curated entries can be linked.
+  const lookup = {};
+  window.PROJECTS.forEach(p => {
+    if (p.thumb) lookup[p.thumb] = { id: p.id, title: p.title };
+    (p.media || []).forEach(m => {
+      if (m.type === 'image') lookup[m.src] = lookup[m.src] || { id: p.id, title: p.title };
+    });
+  });
+
+  // Curated images (set in admin → Image Gallery) come first, in chosen order.
+  const curatedSrcs = (window.SITE && window.SITE.galleryImages) || [];
+  const curatedSet = new Set(curatedSrcs);
+  const curated = curatedSrcs
+    .filter(src => lookup[src])
+    .map(src => ({ src, id: lookup[src].id, title: lookup[src].title }));
+
+  // Everything not curated fills in after, shuffled.
+  const rest = [];
+  window.PROJECTS.forEach(p => {
+    if (p.hidden) return;
+    if (p.thumb && !curatedSet.has(p.thumb)) rest.push({ src: p.thumb, id: p.id, title: p.title });
+    (p.media || []).forEach(m => {
+      if (m.type === 'image' && m.src !== p.thumb && !curatedSet.has(m.src))
+        rest.push({ src: m.src, id: p.id, title: p.title });
+    });
+  });
+  for (let i = rest.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rest[i], rest[j]] = [rest[j], rest[i]];
+  }
+
+  const imgs = curated.concat(rest);
+  document.getElementById('proj-collage').innerHTML = imgs.map(img => `
+    <div class="collage-item" onclick="showDetail('${img.id}')" title="${img.title}">
+      <img src="${img.src}" alt="${img.title}" loading="lazy" />
+    </div>
+  `).join('');
+}
+
+function renderAbout() {
+  const raw = window.ABOUT.items
+    || [...(window.ABOUT.education||[]).map(e=>({...e,type:'edu'})),
+        ...(window.ABOUT.experience||[]).map(e=>({...e,type:'exp'}))];
+  const items = [...raw].sort((a, b) => {
+    if (!!b.current !== !!a.current) return b.current ? 1 : -1;
+    return (b.sortYear||0) - (a.sortYear||0);
+  });
+  document.getElementById('edu-list').innerHTML = `<div class="timeline">` + items.map(e => `
+    <div class="tl-item ${e.type === 'exp' ? 'tl-exp' : ''}">
+      ${e.period ? `<div class="tl-period">${e.period}</div>` : ''}
+      <span class="tl-badge ${e.type === 'edu' ? 'tl-badge--edu' : 'tl-badge--exp'}">${e.type === 'edu' ? 'Education' : 'Experience'}</span>
+      <div class="tl-title">${e.title}</div>
+      ${e.sub ? `<div class="tl-sub">${e.sub}</div>` : ''}
+    </div>
+  `).join('') + `</div>`;
+}
+
+function renderCV() {
+  const r = window.RESUME || {};
+  const site  = window.SITE || {};
+  const photo = site.cvPhoto || site.photo || '';
+  const c = r.contact || {};
+
+  const sidebar1 = `
+    <div class="cv2-sidebar">
+      ${photo ? `<img src="${photo}" class="cv2-photo" alt="${r.name||'Your Name'}" />` : ''}
+      <h1 class="cv2-name">${r.name||'Your Name'}</h1>
+      <p class="cv2-role">${r.role||''}</p>
+
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Contact</div>
+        ${c.email    ? `<p class="cv2-contact-line">${c.email}</p>`    : ''}
+        ${c.phone    ? `<p class="cv2-contact-line">${c.phone}</p>`    : ''}
+        ${c.location ? `<p class="cv2-contact-line">${c.location}</p>` : ''}
+        ${c.linkedin ? `<p class="cv2-contact-line">${c.linkedin}</p>` : ''}
+      </div>
+
+      ${(r.certifications||[]).length ? `
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Certifications</div>
+        <ul class="cv2-skill-list">
+          ${r.certifications.map(c => `<li>${c.name}<span class="cv2-cert-year">${c.year}</span></li>`).join('')}
+        </ul>
+      </div>` : ''}
+
+      ${(r.awards||[]).length ? `
+      <div class="cv2-divider"></div>
+      <div class="cv2-sec">
+        <div class="cv2-sec-title">Awards</div>
+        <ul class="cv2-skill-list">
+          ${r.awards.map(a => `<li>${a.name}<span class="cv2-cert-year">${a.year}</span></li>`).join('')}
+        </ul>
+      </div>` : ''}
+    </div>`;
+
+  const sidebar2 = `
+    <div class="cv2-sidebar">
+      <h1 class="cv2-name" style="margin-top:2rem">${r.name||'Your Name'}</h1>
+      <p class="cv2-role">Page 2</p>
+      <div class="cv2-divider" style="margin-top:1rem"></div>
+      ${(r.skills||[]).length ? `
+      <div class="cv2-sec" style="margin-top:1rem">
+        <div class="cv2-sec-title">Skills</div>
+        <ul class="cv2-skill-list">
+          ${r.skills.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+      </div>` : ''}
+      <div class="cv2-divider" style="margin-top:1rem"></div>
+      <div class="cv2-sec" style="margin-top:1rem">
+        <div class="cv2-sec-title">References</div>
+        ${(r.references||[]).length
+          ? r.references.map(ref => `
+              <div style="margin-bottom:.6rem">
+                <p class="cv2-contact-line"><strong>${ref.name}</strong></p>
+                ${ref.title ? `<p class="cv2-contact-line">${ref.title}</p>` : ''}
+                ${ref.org   ? `<p class="cv2-contact-line">${ref.org}</p>`   : ''}
+                ${ref.phone ? `<p class="cv2-contact-line">${ref.phone}</p>` : ''}
+                ${ref.email ? `<p class="cv2-contact-line">${ref.email}</p>` : ''}
+              </div>`).join('')
+          : `<p class="cv2-contact-line">Available upon request.</p>`}
+      </div>
+    </div>`;
+
+  document.getElementById('cv-doc').innerHTML = `
+
+    <!-- ── Page 1: Summary + Education + Experience ── -->
+    <div class="cv-page">
+      ${sidebar1}
+      <div class="cv2-main">
+
+        ${r.summary ? `
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Summary</div>
+          ${r.summary.split('\n\n').map(p => `<p class="cv2-summary-p">${p}</p>`).join('')}
+        </div>` : ''}
+
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Education</div>
+          ${(r.education||[]).map(e => `
+            <div class="cv2-entry">
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${e.institution}</span>
+                <span class="cv2-entry-year">${e.period}</span>
+              </div>
+              <div class="cv2-entry-sub">${e.degree}</div>
+              ${e.detail ? `<div class="cv2-entry-sub" style="color:#888">${e.detail}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Experience</div>
+          ${(r.experience||[]).map(e => `
+            <div class="cv2-entry">
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${e.company}</span>
+                <span class="cv2-entry-year">${e.period}</span>
+              </div>
+              <div class="cv2-entry-sub">${e.role}${e.location ? ` &nbsp;·&nbsp; ${e.location}` : ''}</div>
+              ${(e.bullets||[]).length ? `
+              <ul class="cv2-bullets">
+                ${e.bullets.map(b => `<li>${b}</li>`).join('')}
+              </ul>` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Page 2: Projects + Volunteering ── -->
+    <div class="cv-page">
+      ${sidebar2}
+      <div class="cv2-main">
+
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Engineering Projects</div>
+          ${window.PROJECTS.filter(p => p.featured).map(p => `
+            <div class="cv2-entry">
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${p.title}</span>
+                <span class="cv2-entry-year">${p.year}</span>
+              </div>
+              <div class="cv2-entry-sub">${p.summary}</div>
+              ${p.stats && p.stats.length ? `<div class="cv2-stats-row">${p.stats.slice(0,3).map(s => `<span class="cv2-stat"><strong>${s.v}</strong> ${s.l}</span>`).join('')}</div>` : ''}
+              <div class="cv2-tags">${p.tags.slice(0,5).map(t => `<span class="cv2-tag">${t}</span>`).join('')}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        ${(r.volunteering||[]).length ? `
+        <div class="cv2-main-sec">
+          <div class="cv2-main-title">Volunteering</div>
+          ${r.volunteering.map(v => `
+            <div class="cv2-entry">
+              <div class="cv2-entry-header">
+                <span class="cv2-entry-title">${v.role}</span>
+                <span class="cv2-entry-year">${v.period}</span>
+              </div>
+              <div class="cv2-entry-sub">${v.org}</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+      </div>
+    </div>
+  `;
+}
+
+function animateBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.s-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 100);
+}
+
+// ── Event delegation ────────────────────────────────────
+document.addEventListener('click', e => {
+  const pageTarget = e.target.closest('[data-page]');
+  if (pageTarget) { showPage(pageTarget.dataset.page); return; }
+  if (e.target.id === 'back-btn') { showPage('projects'); window.location.hash = 'projects'; }
+});
+
+// ── Hash routing ─────────────────────────────────────────
+function handleHash() {
+  const hash = window.location.hash.slice(1);
+  if (!hash || hash === 'home') { showPage('home'); return; }
+  if (hash === 'projects')      { showPage('projects'); return; }
+  if (hash === 'cv')            { showPage('cv'); return; }
+  if (hash === 'about')         { showPage('about'); return; }
+  if (hash.startsWith('project/')) { showDetail(hash.replace('project/', '')); return; }
+  if (hash.startsWith('flow/'))    { showFlow(hash.replace('flow/', '')); return; }
+  if (hash === 'admin') { showPage('admin'); return; }
+}
+
+window.addEventListener('hashchange', handleHash);
+
+// ── Init ─────────────────────────────────────────────────
+renderFeatured();
+renderAllProjects();
+renderCollage();
+renderAbout();
+renderCV();
+handleHash();
+
+
+// Site config — profile photo + hero background
+(function() {
+  const site = window.SITE || {};
+  const heroVisible = localStorage.getItem('heroPhotoVisible') !== '0';
+  if (site.photo) {
+    const wrap = document.getElementById('hero-photo-wrap');
+    const img  = document.getElementById('hero-photo');
+    img.src = site.photo;
+    wrap.style.display = heroVisible ? 'flex' : 'none';
+    const aboutImg = document.getElementById('about-profile-img');
+    if (aboutImg) { aboutImg.src = site.photo; aboutImg.style.display = 'block'; }
+    const navPhoto = document.getElementById('nav-photo');
+    if (navPhoto) { navPhoto.src = site.photo; navPhoto.style.display = 'block'; }
+  }
+  // Sync admin toggle checkbox state
+  const cb = document.getElementById('toggle-hero-photo');
+  if (cb) cb.checked = heroVisible;
+  if (site.aboutPhotos && site.aboutPhotos.length) {
+    const grid = document.getElementById('about-photos');
+    grid.innerHTML = site.aboutPhotos.map(src => `
+      <div class="about-photo-item" onclick="openAboutLightbox(${JSON.stringify(site.aboutPhotos)}, ${site.aboutPhotos.indexOf(src)})">
+        <img src="${src}" alt="" loading="lazy" />
+      </div>
+    `).join('');
+    grid.style.display = 'grid';
+  }
+  if (site.heroBg) {
+    const section = document.getElementById('hero-section');
+    const bg      = document.getElementById('hero-bg');
+    bg.src = site.heroBg;
+    bg.style.objectPosition = 'center ' + (site.heroBgPositionY ?? 50) + '%';
+    section.classList.add('has-bg');
+  }
+})();
+
+</script>
+
+<!-- ─── VIDEO MODAL ──────────────────────────────────── -->
+<div id="video-modal">
+  <div id="vm-overlay" onclick="closeVideoModal()"></div>
+  <button id="vm-close" onclick="closeVideoModal()" aria-label="Close">&#x2715;</button>
+  <div id="vm-wrap">
+    <iframe id="vm-iframe" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+  <a id="vm-yt-link" href="" target="_blank" rel="noopener">&#9654; Watch on YouTube</a>
+</div>
+
+<!-- ─── LIGHTBOX ──────────────────────────────────────── -->
+<div id="lightbox">
+  <div id="lb-overlay" onclick="closeLightbox()"></div>
+  <button id="lb-close" onclick="closeLightbox()" aria-label="Close">&#x2715;</button>
+  <button id="lb-prev" onclick="lbNav(-1)" aria-label="Previous">&#8249;</button>
+  <button id="lb-next" onclick="lbNav(1)" aria-label="Next">&#8250;</button>
+  <img id="lb-img" src="" alt="" />
+</div>
+
+<script>
+function openAboutLightbox(imgs, idx) {
+  window._lbImages = imgs;
+  openLightbox(idx);
+}
+
+// ── YouTube modal player ──────────────────────────────────
+function loadYT(vid, embedUrl) {
+  document.getElementById('vm-iframe').src = embedUrl;
+  document.getElementById('vm-yt-link').href = 'https://www.youtube.com/watch?v=' + vid;
+  document.getElementById('video-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal() {
+  document.getElementById('video-modal').style.display = 'none';
+  document.getElementById('vm-iframe').src = '';
+  document.body.style.overflow = '';
+}
+
+// ── Lightbox ──────────────────────────────────────────────
+window._lbImages = [];
+let _lbIdx = 0;
+
+function openLightbox(idx) {
+  _lbIdx = idx;
+  _lbShow();
+  const lb = document.getElementById('lightbox');
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function _lbShow() {
+  document.getElementById('lb-img').src = window._lbImages[_lbIdx];
+  const multi = window._lbImages.length > 1;
+  document.getElementById('lb-prev').style.display = multi ? 'flex' : 'none';
+  document.getElementById('lb-next').style.display = multi ? 'flex' : 'none';
+}
+
+function lbNav(dir) {
+  _lbIdx = (_lbIdx + dir + window._lbImages.length) % window._lbImages.length;
+  _lbShow();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (document.getElementById('video-modal').style.display !== 'none') closeVideoModal();
+    if (document.getElementById('lightbox').style.display !== 'none')    closeLightbox();
+  }
+  if (document.getElementById('lightbox').style.display !== 'none') {
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+  }
+});
+
+// ── Interactive payload flowchart (full page) ─────────────
+// Reached ONLY via the launcher button on a project detail page → showFlow(id).
+// Data lives in the head script so it exists before the router runs.
+// 'openFlow' kept as an alias for backwards-compatibility with the button.
+function openFlow(id) { showFlow(id); }
+
+function showFlow(id) {
+  const fc = (window.FLOWCHARTS || {})[id];
+  if (!fc) { showPage('home'); window.location.hash = ''; return; }
+  window._flow = { id, fc, stages: fc.stages, active: 0 };
+  const proj = (window.PROJECTS || []).find(p => p.id === id);
+  document.getElementById('flow-eyebrow').textContent = proj ? proj.title : '';
+  document.getElementById('flow-title').innerHTML = fc.title;
+  document.getElementById('flow-sub').innerHTML   = fc.subtitle;
+  flowRender();
+  showPage('flow');
+  window.location.hash = 'flow/' + id;
+}
+
+function closeFlow() {
+  const id = window._flow && window._flow.id;
+  if (id) showDetail(id);
+  else { showPage('projects'); window.location.hash = 'projects'; }
+}
+
+// Render a stage's media (images → lightbox, videos → player) — mirrors the
+// project gallery so adding media to a stage behaves identically.
+function flowMediaHTML(media) {
+  let imgIdx = 0;
+  return media.map(m => {
+    if (m.type === 'image') {
+      const idx = imgIdx++;
+      return `<div class="flow-media-item" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
+    }
+    if (m.type === 'embed') {
+      let embedSrc = m.src;
+      const ytShort  = embedSrc.match(/youtu\.be\/([^?&]+)/);
+      const ytWatch  = embedSrc.match(/youtube\.com\/watch\?.*v=([^&]+)/);
+      const ytShorts = embedSrc.match(/youtube\.com\/shorts\/([^?&]+)/);
+      if (ytShort)       embedSrc = `https://www.youtube.com/embed/${ytShort[1]}`;
+      else if (ytWatch)  embedSrc = `https://www.youtube.com/embed/${ytWatch[1]}`;
+      else if (ytShorts) embedSrc = `https://www.youtube.com/embed/${ytShorts[1]}`;
+      const ytMatch = embedSrc.match(/youtube\.com\/embed\/([^?&]+)/);
+      if (ytMatch) {
+        const vid      = ytMatch[1];
+        const thumb    = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+        const embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+        return `<div class="flow-media-item flow-media-item--embed" onclick="loadYT('${vid}','${embedUrl}')">
+          <img src="${thumb}" alt="" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${vid}/hqdefault.jpg'" />
+          <div class="yt-play-btn" aria-label="Play video"><svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+        </div>`;
+      }
+      return `<div class="flow-media-item flow-media-item--embed"><iframe src="${embedSrc}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+    return '';
+  }).join('');
+}
+
+function flowRender() {
+  const f = window._flow; if (!f) return;
+  const stages = f.stages;
+
+  // Stage track — static connectors (styled in CSS)
+  document.getElementById('flow-track').innerHTML = stages.map((s, i) => {
+    const cls  = i === f.active ? ' active' : (i < f.active ? ' done' : '');
+    const conn = i > 0 ? `<div class="flow-conn"></div>` : '';
+    const icon = (window.FLOW_ICONS || {})[s.iconKey] || '';
+    return `${conn}<button class="flow-node${cls}" onclick="flowGo(${i})" aria-label="${s.title}">
+      <span class="flow-node-num">${i + 1}</span>
+      <span class="flow-node-icon">${icon}</span>
+      <span class="flow-node-title">${s.title}</span>
+    </button>`;
+  }).join('');
+
+  // Active stage detail + media
+  const s = stages[f.active];
+  const media = s.media || [];
+  window._lbImages = media.filter(m => m.type === 'image').map(m => m.src);
+  const detailEl = document.getElementById('flow-detail');
+  detailEl.className = 'flow-detail' + (media.length ? '' : ' flow-detail--nomedia');
+  detailEl.innerHTML = `
+    <div class="flow-detail-text">
+      <span class="flow-detail-badge">Step ${f.active + 1} of ${stages.length}</span>
+      <h2>${s.title}</h2>
+      <p class="flow-detail-short">${s.short}</p>
+      <div class="flow-detail-body">${s.detail}</div>
+    </div>
+    ${media.length ? `<div class="flow-detail-media">${flowMediaHTML(media)}</div>` : ''}`;
+
+  // Controls
+  document.getElementById('flow-prev-btn').disabled = f.active === 0;
+  document.getElementById('flow-next-btn').disabled = f.active === stages.length - 1;
+  document.getElementById('flow-step-count').textContent = `${f.active + 1} / ${stages.length}`;
+}
+
+function flowGo(i) {
+  const f = window._flow; if (!f) return;
+  f.active = Math.max(0, Math.min(f.stages.length - 1, i));
+  flowRender();
+  const node = document.querySelectorAll('.flow-node')[f.active];
+  if (node) node.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+}
+
+function flowNext() { const f = window._flow; if (f) flowGo(f.active + 1); }
+function flowPrev() { const f = window._flow; if (f) flowGo(f.active - 1); }
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('page-flow').classList.contains('active')) return;
+  // Don't hijack arrows while a lightbox or video player is open over the page
+  if (document.getElementById('lightbox').style.display === 'flex') return;
+  if (document.getElementById('video-modal').style.display === 'flex') return;
+  if (e.key === 'ArrowRight') flowNext();
+  if (e.key === 'ArrowLeft')  flowPrev();
+});
+</script>
+</body>
+</html>
