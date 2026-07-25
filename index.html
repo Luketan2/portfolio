@@ -102,9 +102,9 @@
       <div class="about-left">
         <h2>About me</h2>
         <p class="about-contact">luke.tan04@gmail.com &nbsp;·&nbsp; 0408 714 149</p>
-        <p>I'm a final-year Robotics and Mechatronics Engineering student at Monash University, on the AI stream, graduating in 2026 with a High Distinction average. I'm also Co-Science Lead on Monash Nova Rover, where I help design and build the science payloads we take to international rover competitions.</p>
-        <p>I've always just liked building things, and that never really stopped as I grew up, so engineering felt like a natural place to land. What I enjoy most is the hands-on side and the problem solving, especially when a project comes with unusual or awkward constraints that don't have an obvious answer and you have to think your way to something creative.</p>
-        <p>Most of my work has to hold up in the real world rather than just on paper: dusty desert competitions, tight deadlines, and limited budgets. I'm comfortable working across a lot of different engineering areas, from fabrication, CNC machining and CAD through to coding, firmware and electricals, which means I can take on a whole system from start to finish rather than just one part of it.</p>
+        <p>I'm a final-year Robotics and Mechatronics Engineering student at Monash University, in the AI stream, graduating in 2027 with a High Distinction average. I'm also Science Lead at Monash Nova Rover, where I coordinate, design and manufacture the science payloads we take to international rover competitions.</p>
+        <p>I've always liked building things, and that never really stopped as I grew up. I enjoyed studying Systems Engineering at high school, and pursuing Engineering at Monash felt like a natural progression. What I enjoy most is the hands-on side and the problem solving, especially when a project comes with unusual or awkward constraints that don't have an obvious answer and you have to think your way to something creative.</p>
+        <p>Most of my work has to hold up in the real world rather than just on paper: Utah desert competitions, tight deadlines, harsh lunar regolith. I'm comfortable working across a lot of different engineering areas, from fabrication, CNC machining and CAD through to coding, firmware and electricals, which means I can take on a whole system from start to finish rather than just one part of it. I enjoy working as part of a larger team where you can come together to create something special, and I enjoy being a leader. I find it very fulfilling to pass on my knowledge and find people's special talents to help them contribute the best way they can in a team.</p>
         <div class="edu-list" id="edu-list"></div>
       </div>
       <div class="about-right">
@@ -146,6 +146,7 @@
 <script src="data/resume.js?v=6"></script>
 <script src="data/flow-icons.js?v=1"></script>
 <script src="data/flowcharts.js?v=1"></script>
+<script src="data/desmos-states.js?v=1"></script>
 <script>
 
 // ── Skills — edit labels and pct values (0–100) ──────────
@@ -198,6 +199,20 @@ function showPage(pageId) {
   if (pageId !== 'detail' && pageId !== 'flow') previousPage = pageId;
   if (pageId === 'home') animateBars();
   if (pageId === 'admin') adminInit();
+}
+
+// Lazily load the Desmos API only when a project actually needs it. The
+// callback is always deferred so the target page is visible (and sized)
+// before the calculator is created.
+function ensureDesmos(cb) {
+  if (window.Desmos) { setTimeout(cb, 0); return; }
+  if (window._desmosCbs) { window._desmosCbs.push(cb); return; }
+  window._desmosCbs = [cb];
+  const s = document.createElement('script');
+  s.src = 'https://www.desmos.com/api/v1.11/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6';
+  s.onload  = () => { const cbs = window._desmosCbs || []; window._desmosCbs = null; cbs.forEach(fn => fn()); };
+  s.onerror = () => { window._desmosCbs = null; console.error('Failed to load the Desmos API'); };
+  document.head.appendChild(s);
 }
 
 function showDetail(id) {
@@ -269,16 +284,38 @@ function showDetail(id) {
     mediaEl.style.display = 'none';
   }
 
-  // Desmos interactive graphs — full-width panel so sliders/variables are usable
+  // Desmos interactive graphs — full-width panel. If we have an exported graph
+  // state we render it through the Desmos API so the expression list + sliders
+  // are usable inline; otherwise fall back to a graph-only iframe.
   const desmosEl = document.getElementById('d-desmos');
   const desmosEmbeds = (p.media || []).filter(m => m.type === 'embed' && /desmos\.com/.test(m.src));
+  if (window._desmosCalcs) { window._desmosCalcs.forEach(c => { try { c.destroy(); } catch (e) {} }); }
+  window._desmosCalcs = [];
   if (desmosEmbeds.length) {
-    desmosEl.innerHTML = desmosEmbeds.map(m => {
-      let src = m.src;
-      if (!/[?&]embed/.test(src)) src += (src.includes('?') ? '&' : '?') + 'embed';
-      return `<div class="d-desmos-wrap"><iframe src="${src}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
-    }).join('');
+    desmosEl.innerHTML = '';
     desmosEl.style.display = 'block';
+    const state = (window.DESMOS_STATES || {})[p.id];
+    desmosEmbeds.forEach(m => {
+      const wrap = document.createElement('div');
+      wrap.className = 'd-desmos-wrap';
+      desmosEl.appendChild(wrap);
+      if (state) {
+        ensureDesmos(() => {
+          const calc = Desmos.GraphingCalculator(wrap, {
+            expressionsCollapsed: false,
+            settingsMenu: false,
+            border: false,
+            lockViewport: false
+          });
+          try { calc.setState(JSON.parse(state)); } catch (e) { console.error('Desmos state failed', e); }
+          window._desmosCalcs.push(calc);
+        });
+      } else {
+        let src = m.src;
+        if (!/[?&]embed/.test(src)) src += (src.includes('?') ? '&' : '?') + 'embed';
+        wrap.innerHTML = `<iframe src="${src}" frameborder="0" allowfullscreen loading="lazy"></iframe>`;
+      }
+    });
   } else {
     desmosEl.innerHTML = '';
     desmosEl.style.display = 'none';
@@ -307,7 +344,7 @@ function showDetail(id) {
     flowEl.innerHTML = `
       <div class="d-flow-cta">
         <div class="d-flow-cta-text">
-          <p class="section-label" style="margin:0 0 .4rem">Interactive</p>
+          <p class="section-label" style="margin:0 0 .5rem;padding:0">Interactive</p>
           <h5>${fc.ctaTitle}</h5>
           <p>${fc.ctaSub}</p>
         </div>

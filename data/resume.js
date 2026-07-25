@@ -5,7 +5,7 @@ window.RESUME = {
     "email": "luke.tan04@gmail.com",
     "phone": "0408 714 149",
     "location": "Melbourne, Australia",
-    "linkedin": "linkedin.com/in/luketan"
+    "linkedin": "linkedin.com/in/luketan2"
   },
   "summary": "I am an ambitious mechatronics engineering student at Monash University with a strong passion for robotics, space exploration, and developing cutting-edge ideas. Through my experience as Science Lead at Monash Nova Rover, I have built strong technical skills in CAD, prototyping, system integration, and designing mechanical systems as part of complex engineering projects.\n\nI have also gained valuable experience in documentation, leading effective meetings, running project design reviews, and collaborating with teams across different disciplines. I thrive on learning quickly, working collaboratively, and tackling challenging design problems.",
   "education": [

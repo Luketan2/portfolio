@@ -8,7 +8,6 @@ window.PROJECTS = [
     summary: "Engineering Co-Lead on the science payload that scored 100/100 in the URC 2026 science task, placing Monash Nova Rover 2nd overall from 116 teams across 18 countries.",
     tags: [
       "Engineering Co-Lead",
-      "Life detection",
       "Custom spectrometer",
       "Utah, USA",
       "NOVA"
@@ -81,8 +80,8 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>Competing against 116 teams from 18 countries at the Mars Desert Research Station in Utah, Monash Nova Rover placed 2nd overall and achieved a perfect score of 100/100 in the science task. I was Engineering Co-Lead on the science payload alongside James Pettifer, who led the chemistry and science side — my focus was the engineering: the mechanical systems, payload architecture, embedded integration, and reliability.</p>
-      <p>The task is Martian life detection. Our payload drills below 10 cm using a dual-auger regolith extraction system, building on the 2025 Sabertooth design with upgraded augers, chute, sheaths, and caches for larger, cleaner samples. Each auger targets an independent site to prevent cross-contamination. The judges called our samples "some of the most impressive they had seen."</p>
+      <p>Competing against 116 teams from 18 countries at the Mars Desert Research Station in Utah, Monash Nova Rover placed 2nd overall and achieved a perfect score of 100/100 in the science task. I was Co-leading the payload alongside James Pettifer. James focused more on the chemical and analysis side of the payload, while my role focused more on the engineering and reliability of the payload.</p>
+      <p>The task is Martian life detection. Our payload drills below 10 cm using a dual-auger regolith extraction system, building on the 2025 Sabertooth design with upgraded augers, chute, sheaths, and caches for larger, cleaner samples. Each auger targets an independent site to prevent cross-contamination. The judges called our samples "the most impressive they had seen." Once samples have been extracted, they are pumped into the rover body using a PBS buffer solution, where the analysis is performed.</p>
       <h5>Analysis systems</h5>
       <ul>
         <li><strong>Dual-ring visible spectrometer</strong> — a novel design with 35 cuvettes across two rotating rings, required because 4 reagents run in triplicate demand more cuvette space than a single ring allows in the rover's tight envelope. Ran Molisch's (carbohydrates), NADH/NADPH fluorescence (metabolic activity), Nile Red (lipids), and Ninhydrin (amino acids)</li>
@@ -94,7 +93,7 @@ window.PROJECTS = [
         <li><strong>BME sensor</strong> — ambient temperature, humidity, and pressure</li>
       </ul>
       <h5>Engineering the reliability</h5>
-      <p>The result came down to the work the team put in throughout the year. Strong engineering practices, rigorous testing, and clear communication across subsystems all mattered. Every system was tested individually and then together as a full payload. Each part was designed to be as reliable as possible, from choosing the best materials and manufacturing methods for each component through to building in redundancy and tolerance for imperfections, so the system still functions correctly in real-world environments.</p>
+      <p>The result really came down to the work the whole team put in across the year. We tested every system on its own first, then again as a full payload, and designed each part to be as reliable as we could make it, choosing the right material and manufacturing method for the job and building in redundancy where needed. As the payload runs sequentially, with each stage feeding the next, a fault anywhere could stall everything after it. A lot of the design went into absorbing those small imperfections, giving each step enough margin that a minor issue in one part wouldn't cause a critical point of failure. Overall this resulted in a reliable payload that performed not only on the day, but throughout testing in the lead-up to competition.</p>
     `
   },
   {
@@ -110,7 +109,7 @@ window.PROJECTS = [
       "Custom NIR probe",
       "Machine learning",
       "Kiln & condenser",
-      "Nova Rover"
+      "NOVA"
     ],
     stats: [
       {
@@ -241,10 +240,11 @@ window.PROJECTS = [
     title: "URC 2025 Science Payload",
     summary: "Dual-auger regolith sampling platform. Scored 88/100 at URC 2025 in Utah.",
     tags: [
-      "Regolith sampling",
       "88/100",
       "Project Lead",
-      "NOVA"
+      "NOVA",
+      "Utah, USA",
+      "Life Detection"
     ],
     stats: [
       {
@@ -852,7 +852,10 @@ window.PROJECTS = [
       "Welding",
       "Woodwork",
       "Steel",
-      "DIY"
+      "DIY",
+      "MIG",
+      "TIG",
+      "Grinding"
     ],
     stats: [],
     thumb: "images/fabrication/rocket-stove.jpeg",
@@ -924,7 +927,8 @@ window.PROJECTS = [
     tags: [
       "Fabrication",
       "Thermal Engineering",
-      "CAD"
+      "CAD",
+      "Rapid prototyping"
     ],
     stats: [
       {
@@ -1208,15 +1212,19 @@ window.PROJECTS = [
     year: "2023",
     eyebrow: "2023 · Desmos Art",
     title: "Printmaking Art Final",
-    summary: "An interactive art piece drawn entirely from mathematical equations in Desmos. Fully playable below — pan, zoom, and open the expression list to see the maths behind the image.",
+    summary: "An abstract mountain range drawn entirely from mathematical equations in Desmos, printed in black ink on a 1×1 m canvas. Fully interactive — play with the variables to reshape it.",
     tags: [
       "Desmos",
       "Mathematical art",
       "Interactive"
     ],
     stats: [],
-    thumb: "",
+    thumb: "images/printmaking-art-final/mountain-ring.png",
     media: [
+      {
+        type: "image",
+        src: "images/printmaking-art-final/mountain-ring.png"
+      },
       {
         type: "embed",
         src: "https://www.desmos.com/calculator/c02061d507?embed",
@@ -1224,7 +1232,8 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>An art piece created in Desmos, built entirely from mathematical equations and inequalities rather than drawn by hand. The embedded calculator on this page is fully interactive — pan around, zoom in and out, and open the expression list to see exactly how each part of the image is defined.</p>
+      <p>An art piece created in Desmos, built entirely from mathematical equations and inequalities rather than drawn by hand. It depicts an abstract mountain range, and the final work was printed in black ink on a 1&nbsp;&times;&nbsp;1&nbsp;m canvas.</p>
+      <p>The embedded calculator on this page is fully interactive — pan around, zoom in and out, and open the expression list to see exactly how each part of the image is defined. The <strong>&ldquo;Play with these variables&rdquo;</strong> folder lets you reshape the piece live.</p>
     `
   }
 ];
