@@ -354,6 +354,10 @@ window.PROJECTS = [
       {
         type: "embed",
         src: "https://youtube.com/shorts/a0kPTfXAhls?feature=share"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/A_oV9zTfwPI"
       }
     ],
     body: `<p>A family posted on Facebook looking for someone to build a prosthetic for their rescue dog Jilly, who was missing a front leg. Without support she was at risk of long-term arthritis and spinal problems. I reached out and gratefully took it on!</p>
@@ -1202,13 +1206,25 @@ window.PROJECTS = [
     featured: false,
     inProgress: false,
     year: "2023",
-    eyebrow: "2023 · ",
-    title: "Printmaking Art final",
-    summary: "Content coming soon.",
-    tags: [],
+    eyebrow: "2023 · Desmos Art",
+    title: "Printmaking Art Final",
+    summary: "An interactive art piece drawn entirely from mathematical equations in Desmos. Fully playable below — pan, zoom, and open the expression list to see the maths behind the image.",
+    tags: [
+      "Desmos",
+      "Mathematical art",
+      "Interactive"
+    ],
     stats: [],
     thumb: "",
-    media: [],
-    body: "<p>Content coming soon.</p>"
+    media: [
+      {
+        type: "embed",
+        src: "https://www.desmos.com/calculator/c02061d507?embed",
+        span: "full"
+      }
+    ],
+    body: `
+      <p>An art piece created in Desmos, built entirely from mathematical equations and inequalities rather than drawn by hand. The embedded calculator on this page is fully interactive — pan around, zoom in and out, and open the expression list to see exactly how each part of the image is defined.</p>
+    `
   }
 ];

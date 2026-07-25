@@ -27,7 +27,6 @@
   </div>
   <div class="nav-links">
     <a data-page="home" class="active">Home</a>
-    <a data-page="projects">Projects</a>
     <a data-page="cv">CV</a>
     <a data-page="about">About</a>
   </div>
@@ -44,7 +43,7 @@
       <h1>Luke Tan</h1>
       <p class="tagline">Final-year Robotics & Mechatronics Engineer at Monash University.</p>
       <div class="cta-row">
-        <button class="btn-primary" data-page="projects">View projects</button>
+        <button class="btn-primary" onclick="document.getElementById('projects-top').scrollIntoView({behavior:'smooth'})">View projects</button>
         <button class="btn-secondary" data-page="about">About me</button>
       </div>
     </div>
@@ -54,20 +53,7 @@
   </section>
 
   <hr class="divider" />
-  <p class="section-label">Featured projects</p>
-  <div class="featured-grid" id="featured-grid"></div>
-  <div style="text-align:center; padding:0 var(--pad) 2.5rem;">
-    <button class="btn-secondary" data-page="projects">View all projects &#8594;</button>
-  </div>
-
-  <hr class="divider" />
-  <p class="section-label">Image gallery</p>
-  <div class="proj-collage" id="proj-collage"></div>
-</main>
-
-<!-- ─── PROJECTS ──────────────────────────────────────── -->
-<main id="page-projects" class="page">
-  <p class="section-label" style="padding-top:2rem">Engineering</p>
+  <p class="section-label" id="projects-top">Engineering</p>
   <div class="proj-grid" id="proj-grid-eng"></div>
   <p class="section-label" id="arts-label" style="padding-top:2.5rem">Arts + Making</p>
   <div class="proj-grid" id="proj-grid-arts"></div>
@@ -97,6 +83,7 @@
       <div id="d-media" class="media-gallery" style="display:none"></div>
     </div>
   </div>
+  <div id="d-desmos" style="display:none"></div>
 </main>
 
 <!-- ─── CV ────────────────────────────────────────────── -->
@@ -200,7 +187,7 @@ window.ABOUT = {
 // above, before this script, so the router can render them on first load.
 
 // ── Router ──────────────────────────────────────────────
-let previousPage = 'projects';
+let previousPage = 'home';
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -249,6 +236,8 @@ function showDetail(id) {
         return `<div class="media-item" style="${spanStyle}" onclick="openLightbox(${idx})"><img src="${m.src}" alt="" loading="lazy" /></div>`;
       }
       if (m.type === 'embed') {
+        // Desmos graphs are pulled out into a full-width interactive panel below
+        if (/desmos\.com/.test(m.src)) return '';
         // Normalise all YouTube URL formats → youtube.com/embed/ID
         let embedSrc = m.src;
         const ytShort  = embedSrc.match(/youtu\.be\/([^?&]+)/);
@@ -273,11 +262,26 @@ function showDetail(id) {
       }
       return '';
     }).join('');
-    mediaEl.style.display = 'grid';
+    mediaEl.style.display = mediaEl.innerHTML.trim() ? 'grid' : 'none';
   } else {
     window._lbImages = [];
     mediaEl.innerHTML = '';
     mediaEl.style.display = 'none';
+  }
+
+  // Desmos interactive graphs — full-width panel so sliders/variables are usable
+  const desmosEl = document.getElementById('d-desmos');
+  const desmosEmbeds = (p.media || []).filter(m => m.type === 'embed' && /desmos\.com/.test(m.src));
+  if (desmosEmbeds.length) {
+    desmosEl.innerHTML = desmosEmbeds.map(m => {
+      let src = m.src;
+      if (!/[?&]embed/.test(src)) src += (src.includes('?') ? '&' : '?') + 'embed';
+      return `<div class="d-desmos-wrap"><iframe src="${src}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+    }).join('');
+    desmosEl.style.display = 'block';
+  } else {
+    desmosEl.innerHTML = '';
+    desmosEl.style.display = 'none';
   }
 
   // Stats
@@ -362,20 +366,6 @@ function inProgressBadge(p) {
   return p.inProgress ? `<span class="badge-wip">In Progress</span>` : '';
 }
 
-function renderFeatured() {
-  const featured = window.PROJECTS.filter(p => p.featured && !p.hidden).slice(0, 6);
-  document.getElementById('featured-grid').innerHTML = featured.map(p => `
-    <div class="proj-card" onclick="showDetail('${p.id}')">
-      ${p.thumb ? `<div class="pc-thumb"><img src="${p.thumb}" alt="${p.title}" loading="lazy" />${inProgressBadge(p)}</div>` : inProgressBadge(p)}
-      <div class="pc-content">
-        <p class="pc-year">${p.year}</p>
-        <h4>${p.title}</h4>
-        <div class="pc-tags">${p.tags.slice(0,2).map(t => `<span class="ptag">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
 function renderAllProjects() {
   function cardHtml(p) {
     return `<div class="proj-card" onclick="showDetail('${p.id}')">
@@ -395,46 +385,6 @@ function renderAllProjects() {
   const artsLabel = document.getElementById('arts-label');
   if (artsLabel) artsLabel.style.display = arts.length ? '' : 'none';
   document.getElementById('proj-grid-arts').style.display = arts.length ? '' : 'none';
-}
-
-function renderCollage() {
-  // Map every project image src -> its project, so curated entries can be linked.
-  const lookup = {};
-  window.PROJECTS.forEach(p => {
-    if (p.thumb) lookup[p.thumb] = { id: p.id, title: p.title };
-    (p.media || []).forEach(m => {
-      if (m.type === 'image') lookup[m.src] = lookup[m.src] || { id: p.id, title: p.title };
-    });
-  });
-
-  // Curated images (set in admin → Image Gallery) come first, in chosen order.
-  const curatedSrcs = (window.SITE && window.SITE.galleryImages) || [];
-  const curatedSet = new Set(curatedSrcs);
-  const curated = curatedSrcs
-    .filter(src => lookup[src])
-    .map(src => ({ src, id: lookup[src].id, title: lookup[src].title }));
-
-  // Everything not curated fills in after, shuffled.
-  const rest = [];
-  window.PROJECTS.forEach(p => {
-    if (p.hidden) return;
-    if (p.thumb && !curatedSet.has(p.thumb)) rest.push({ src: p.thumb, id: p.id, title: p.title });
-    (p.media || []).forEach(m => {
-      if (m.type === 'image' && m.src !== p.thumb && !curatedSet.has(m.src))
-        rest.push({ src: m.src, id: p.id, title: p.title });
-    });
-  });
-  for (let i = rest.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]];
-  }
-
-  const imgs = curated.concat(rest);
-  document.getElementById('proj-collage').innerHTML = imgs.map(img => `
-    <div class="collage-item" onclick="showDetail('${img.id}')" title="${img.title}">
-      <img src="${img.src}" alt="${img.title}" loading="lazy" />
-    </div>
-  `).join('');
 }
 
 function renderAbout() {
@@ -621,14 +571,14 @@ function animateBars() {
 document.addEventListener('click', e => {
   const pageTarget = e.target.closest('[data-page]');
   if (pageTarget) { showPage(pageTarget.dataset.page); return; }
-  if (e.target.id === 'back-btn') { showPage('projects'); window.location.hash = 'projects'; }
+  if (e.target.id === 'back-btn') { showPage('home'); window.location.hash = 'home'; }
 });
 
 // ── Hash routing ─────────────────────────────────────────
 function handleHash() {
   const hash = window.location.hash.slice(1);
   if (!hash || hash === 'home') { showPage('home'); return; }
-  if (hash === 'projects')      { showPage('projects'); return; }
+  if (hash === 'projects')      { showPage('home'); return; }
   if (hash === 'cv')            { showPage('cv'); return; }
   if (hash === 'about')         { showPage('about'); return; }
   if (hash.startsWith('project/')) { showDetail(hash.replace('project/', '')); return; }
@@ -639,9 +589,7 @@ function handleHash() {
 window.addEventListener('hashchange', handleHash);
 
 // ── Init ─────────────────────────────────────────────────
-renderFeatured();
 renderAllProjects();
-renderCollage();
 renderAbout();
 renderCV();
 handleHash();
@@ -785,7 +733,7 @@ function showFlow(id) {
 function closeFlow() {
   const id = window._flow && window._flow.id;
   if (id) showDetail(id);
-  else { showPage('projects'); window.location.hash = 'projects'; }
+  else { showPage('home'); window.location.hash = 'home'; }
 }
 
 // Render a stage's media (images → lightbox, videos → player) — mirrors the

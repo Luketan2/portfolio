@@ -13,7 +13,7 @@ window.RESUME = {
       "institution": "Monash University",
       "degree": "Mechatronics Engineering — Accelerated Masters pathway",
       "period": "Feb 2023 – Current",
-      "detail": "WAM: 80.655 (GPA: 3.632) · HD average"
+      "detail": "WAM: 81.146 (GPA: 3.640) · HD average"
     },
     {
       "institution": "Ballarat Grammar",
