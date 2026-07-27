@@ -797,7 +797,8 @@ a { color: inherit; }
   .featured-grid { grid-template-columns: 1fr; }
   .proj-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
   .stats-row { gap: 8px; }
-  .stat-box { min-width: 80px; }
+  .stat-box { flex: 1 1 calc(50% - 4px); min-width: 0; }
+  .stat-v { overflow-wrap: anywhere; }
   .cv-doc { padding: .75rem; margin: 1rem; gap: .75rem; }
   .cv-page { grid-template-columns: 1fr; min-height: 0; }
   .cv2-sidebar { padding: 1.5rem 1.25rem; }
@@ -824,8 +825,13 @@ a { color: inherit; }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 0.7rem var(--pad); font-size: 15px; }
 
-  /* Show only the first two tags on project cards */
+  /* Show only the first two tags on project cards, and keep long tags in-box */
   .pc-tags .ptag:nth-child(n+3) { display: none; }
+  .proj-card, .pc-content, .pc-tags { min-width: 0; }
+  .ptag, .dtag { overflow-wrap: anywhere; }
+
+  /* Drop the round hero portrait on phones */
+  .hero-photo-wrap { display: none !important; }
 }
 
 /* ── Lightbox ─────────────────────────────────────── */

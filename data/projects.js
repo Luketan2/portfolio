@@ -1192,6 +1192,7 @@ window.PROJECTS = [
   {
     id: "thawed-art-final",
     category: "arts",
+    hidden: true,
     featured: false,
     inProgress: false,
     year: "2023",
