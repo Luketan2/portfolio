@@ -796,7 +796,6 @@ a { color: inherit; }
 @media (max-width: 600px) {
   .featured-grid { grid-template-columns: 1fr; }
   .proj-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-  .nav-links { gap: 1rem; }
   .stats-row { gap: 8px; }
   .stat-box { min-width: 80px; }
   .cv-doc { padding: .75rem; margin: 1rem; gap: .75rem; }
@@ -804,6 +803,29 @@ a { color: inherit; }
   .cv2-sidebar { padding: 1.5rem 1.25rem; }
   .cv2-photo { width: 64px; height: 64px; }
   .fc-thumb { height: 140px; }
+
+  /* Collapse the nav links into the ☰ menu button on phones */
+  .nav-contact-small { display: none; }
+  .nav-menu { display: block; margin-left: auto; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    margin-left: 0;
+    padding: 0.25rem 0 0.5rem;
+    background: rgba(250,250,249,0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray2);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 0.7rem var(--pad); font-size: 15px; }
+
+  /* Show only the first two tags on project cards */
+  .pc-tags .ptag:nth-child(n+3) { display: none; }
 }
 
 /* ── Lightbox ─────────────────────────────────────── */

@@ -606,9 +606,22 @@ function animateBars() {
 
 // ── Event delegation ────────────────────────────────────
 document.addEventListener('click', e => {
+  const navLinks = document.querySelector('.nav-links');
   const pageTarget = e.target.closest('[data-page]');
-  if (pageTarget) { showPage(pageTarget.dataset.page); return; }
-  if (e.target.id === 'back-btn') { showPage('home'); window.location.hash = 'home'; }
+  if (pageTarget) { showPage(pageTarget.dataset.page); if (navLinks) navLinks.classList.remove('open'); return; }
+  if (e.target.id === 'back-btn') { showPage('home'); window.location.hash = 'home'; return; }
+  // Tap outside the nav closes the open mobile menu
+  if (navLinks && navLinks.classList.contains('open') && !e.target.closest('#nav')) {
+    navLinks.classList.remove('open');
+  }
+});
+
+// ── Mobile menu toggle (☰) ───────────────────────────────
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks) navLinks.classList.toggle('open');
 });
 
 // ── Hash routing ─────────────────────────────────────────
