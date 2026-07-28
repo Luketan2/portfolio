@@ -218,80 +218,18 @@ window.PROJECTS = [
       }
     ],
     body: `
-      <p>The ARCh 2026 science task is Space Resources: simulating in-situ resource utilisation on the lunar surface. The payload had a few jobs to do: measure the water content of the frozen icy samples so we could decide which of two sites to drill, extract water from that frozen regolith, and quantify ilmenite content for resource assessment. I work across the science-engineering side of the team, so on this payload I had a hand in just about everything.</p>
-      <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. Even with the issues on the day, we still managed to be one of only three teams in the whole competition to collect water samples.</p>
+      <p>The Australian Rover Challenge (ARCh) is an international university rover competition held in Adelaide, where teams design and build a rover to carry out a simulated mission on the lunar surface. The payload was responsible for three key tasks. It measured the water content of the frozen icy samples so we could choose which of two sites to drill, then extracted water from that frozen regolith, and finally quantified the ilmenite content for resource assessment. I work across the science-engineering side of the team, so on this payload I had a hand in just about everything.</p>
+      <p>An electrical fault in the rover disabled us partway through the task. We scored 3rd place in the science task entirely within the first five minutes of operation, before the rover went down. Even with the issues on the day, we were still one of only three teams in the whole competition to collect water samples.</p>
       <h5>Water extraction system</h5>
       <p>A sheathed auger drills frozen regolith simulant and conveys material into a custom <strong>3D-printed aluminium kiln</strong>, its internal geometry optimised for vapour flow and for injecting heat directly into the sample. Heating drives water vapour into a water-cooled condenser thermally coupled to the aluminium drilling frame, which acts as a passive heat-rejection structure. Earlier designs used a Peltier condenser, replaced after testing identified it as the bottleneck under higher thermal and vapour loads. The redesigned system achieved <strong>86% water recovery from a 100g sample at 20% water content</strong>. In testing leading up to competition, the system was consistently collecting more than double the water recovered by the previous year's record.</p>
       <h5>Analysis systems</h5>
       <ul>
         <li><strong>Custom NIR probe</strong> — dual-LED near-infrared sensor measuring water content of frozen regolith non-invasively; validated to 2% precision under controlled conditions across 0–30% water content range</li>
         <li><strong>ML microscope</strong> — digital microscope with light-isolation shroud; trained algorithms predict ilmenite concentration within 2% of true value from depth images; brush system designed to improve sample homogeneity for the camera</li>
-        <li><strong>Analysis Arm</strong> — houses both sensors; the aluminium CHS frame was swapped for a carbon fibre tube after load testing revealed deformation, giving a lighter and stronger assembly. The hollow tube also let us route the cables internally, and a tool-change mechanism lets the arm move quickly between each instrument over a sample</li>
+        <li><strong>Analysis Arm</strong> — houses both sensors; the aluminium CHS frame was swapped for a carbon fibre tube to save weight and to route the cables through its centre for cleaner cable management. A tool-change mechanism lets the arm move quickly between each instrument over a sample</li>
       </ul>
       <h5>Manufacturing</h5>
       <p>This project also pushed me on the manufacturing side. It was the first time we had 3D printed parts out of aluminium, and while the CNC work was handled by others, I got hands-on with the manual mill and lathe and taught myself to TIG weld aluminium for the earlier prototypes.</p>
-    `
-  },
-  {
-    id: "sabertooth",
-    featured: true,
-    year: "2025",
-    eyebrow: "2025 · Nova Rover · University Rover Challenge",
-    title: "URC 2025 Science Payload",
-    summary: "Dual-auger regolith sampling platform. Scored 88/100 at URC 2025 in Utah.",
-    tags: [
-      "88/100",
-      "Project Lead",
-      "NOVA",
-      "Utah, USA",
-      "Life Detection"
-    ],
-    stats: [
-      {
-        v: "88/100",
-        l: "Science task score"
-      },
-      {
-        v: "7th ",
-        l: "World ranking "
-      },
-      {
-        v: "2025",
-        l: "Year"
-      }
-    ],
-    thumb: "images/sabertooth/auger-closeup.png",
-    media: [
-      {
-        type: "image",
-        src: "images/sabertooth/drilling.png"
-      },
-      {
-        type: "image",
-        src: "images/sabertooth/auger-closeup.png"
-      },
-      {
-        type: "image",
-        src: "images/sabertooth/slope.png"
-      },
-      {
-        type: "image",
-        src: "images/sabertooth/team-utah.png"
-      }
-    ],
-    body: `
-      <p>As Payload Lead for the Nova Rover Science sub-team, I led the design, construction, and integration of Sabertooth — Nova Rover's 2025 URC life-detection science system.</p>
-      <p>Sabertooth is a sheathed dual-auger platform designed to extract regolith samples from depths beyond 10 cm while avoiding cross-site contamination. Each auger collects a sample at an independent site; once drilled, regolith is funnelled into a cache, mixed with buffer fluid, and pumped into the rover for onboard spectroscopic analysis targeting biosignatures.</p>
-      <p>The defining challenge of this payload was time. Late, unforeseen changes meant the rover had to be shipped to the US earlier than planned, which left us to design, build, and integrate the entire payload in roughly <strong>two weeks</strong>. Despite that compressed timeline it worked at competition — and just as importantly, it gave us a proven frame to build on for the following year's system.</p>
-      <h5>Systems I built under time pressure</h5>
-      <ul>
-        <li>Payload actuation and auger actuation</li>
-        <li>Auger concentricity alignment system</li>
-        <li>Auger depth sensing</li>
-        <li>Moisture probe deployment</li>
-        <li>All cable management</li>
-        <li>HydraProbe sensor integration for in-situ moisture readings</li>
-      </ul>
     `
   },
   {
@@ -466,8 +404,8 @@ window.PROJECTS = [
       </ul>
 
       <h5>Prototyping and iterations</h5>
-      <p>The final bike wasn't the starting point. I started with a prototyping rig to validate the PID controller and reaction flywheel concept. It could resist being pushed and balance on changing angles, which proved out the control approach before I committed to a full build.</p>
-      <p>From there I built the first motorbike iteration, the white one in the images, which was designed to prioritise balancing performance above everything else. Once I was confident in how it balanced, the final design became a balancing act of its own, weighing up aesthetics, a believable scale-model user experience, and keeping that balance performance.</p>
+      <p>I first built a prototyping rig to test the PID controller and reaction flywheel. It could stay upright when pushed and balance on changing angles, confirming the control approach before a full build.</p>
+      <p>The first motorbike, the white one in the images, prioritised balancing performance. The final version kept that performance while refining the design and giving it a believable scale-model feel.</p>
 
       <h5>Awards</h5>
       <ul>
@@ -559,6 +497,68 @@ window.PROJECTS = [
 
       <h5>Results so far</h5>
       <p>Preliminary testing of dry LHS-1 at a bulk density of 1.7 g/cm³, which sits within the real lunar range, shows a clean linear Mohr-Coulomb response with low scatter between repeats, and the values line up well with published studies. That validates the rig and the method. From here the work extends across the full density range of LHS-1, then into vacuum, and finally into the ice-bearing samples to measure how ice content and morphology shift friction and cohesion.</p>`
+  },
+  {
+    id: "sabertooth",
+    featured: true,
+    year: "2025",
+    eyebrow: "2025 · Nova Rover · University Rover Challenge",
+    title: "URC 2025 Science Payload",
+    summary: "Dual-auger regolith sampling platform. Scored 88/100 at URC 2025 in Utah.",
+    tags: [
+      "88/100",
+      "Project Lead",
+      "NOVA",
+      "Utah, USA",
+      "Life Detection"
+    ],
+    stats: [
+      {
+        v: "88/100",
+        l: "Science task score"
+      },
+      {
+        v: "7th ",
+        l: "World ranking "
+      },
+      {
+        v: "2025",
+        l: "Year"
+      }
+    ],
+    thumb: "images/sabertooth/auger-closeup.png",
+    media: [
+      {
+        type: "image",
+        src: "images/sabertooth/drilling.png"
+      },
+      {
+        type: "image",
+        src: "images/sabertooth/auger-closeup.png"
+      },
+      {
+        type: "image",
+        src: "images/sabertooth/slope.png"
+      },
+      {
+        type: "image",
+        src: "images/sabertooth/team-utah.png"
+      }
+    ],
+    body: `
+      <p>As Payload Lead for the Nova Rover Science sub-team, I led the design, construction, and integration of Sabertooth — Nova Rover's 2025 URC life-detection science system.</p>
+      <p>Sabertooth is a sheathed dual-auger platform designed to extract regolith samples from depths beyond 10 cm while avoiding cross-site contamination. Each auger collects a sample at an independent site; once drilled, regolith is funnelled into a cache, mixed with buffer fluid, and pumped into the rover for onboard spectroscopic analysis targeting biosignatures.</p>
+      <p>The defining challenge of this payload was time. Late, unforeseen changes meant the rover had to be shipped to the US earlier than planned, which left us to design, build, and integrate the entire payload in roughly <strong>two weeks</strong>. Despite that compressed timeline it worked at competition — and just as importantly, it gave us a proven frame to build on for the following year's system.</p>
+      <h5>Systems I built under time pressure</h5>
+      <ul>
+        <li>Payload actuation and auger actuation</li>
+        <li>Auger concentricity alignment system</li>
+        <li>Auger depth sensing</li>
+        <li>Moisture probe deployment</li>
+        <li>All cable management</li>
+        <li>HydraProbe sensor integration for in-situ moisture readings</li>
+      </ul>
+    `
   },
   {
     id: "arc-folding-mast",
