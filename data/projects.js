@@ -499,6 +499,62 @@ window.PROJECTS = [
       <p>Preliminary testing of dry LHS-1 at a bulk density of 1.7 g/cm³, which sits within the real lunar range, shows a clean linear Mohr-Coulomb response with low scatter between repeats, and the values line up well with published studies. That validates the rig and the method. From here the work extends across the full density range of LHS-1, then into vacuum, and finally into the ice-bearing samples to measure how ice content and morphology shift friction and cohesion.</p>`
   },
   {
+    id: "mini-banksia",
+    imageFolder: "mini-banksia",
+    featured: false,
+    inProgress: true,
+    year: "2026",
+    eyebrow: "2026 · Nova Rover · Outreach",
+    title: "Nova Rover — Mini Banksia",
+    summary: "A fully functional scale model of Nova Rover's Banksia, redesigned from the ground up to be entirely 3D printed, easy to build with simple tools, and simple enough for anyone to drive. Built in six weeks for school outreach.",
+    tags: [
+      "3D printing",
+      "ESP32",
+      "Holonomic drive",
+      "Outreach",
+      "Nova Rover"
+    ],
+    stats: [
+      {
+        v: "6 weeks",
+        l: "Build time"
+      },
+      {
+        v: "8 hrs",
+        l: "Battery life"
+      }
+    ],
+    thumb: "images/mini-banksia/Screenshot 2026-09-11 081706.png",
+    media: [
+      {
+        type: "image",
+        src: "images/mini-banksia/Screenshot 2026-09-11 081731.png"
+      },
+      {
+        type: "embed",
+        src: "https://youtu.be/uer7qoB-ILY"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/Z-N5uj96gbI?feature=share",
+        span: 2
+      }
+    ],
+    body: `
+      <p>Mini Banksia is a scale model of Nova Rover's Banksia rover. It's fully functional, but rather than shrinking down the original, I redesigned it completely, taking inspiration from Banksia. Its main job is outreach for Nova, so it's taken out to schools to get students excited about robotics and space.</p>
+      <p>That purpose shaped the design goals. It had to be entirely 3D printed and buildable with simple tools, and extremely easy to use so that anyone can pick it up and drive it. I built it over six weeks alongside full-time uni study and other commitments.</p>
+      <h5>Mobility</h5>
+      <p>Like its full-size inspiration, Mini Banksia has a fully functioning rocker-bogie suspension, so the wheels stay in contact with the ground over uneven terrain. The legs are aluminium and the wheels are printed in TPU.</p>
+      <p>Each wheel pivots on a serial servo, and a two-channel slip ring at every pivot carries power through to the wheel so it can rotate continuously without winding up its cables. This lets the rover run full holonomic drive.</p>
+      <h5>Electronics</h5>
+      <ul>
+        <li><strong>Power</strong>: an 18V Makita power tool battery, giving around eight hours of run time</li>
+        <li><strong>Control</strong>: an ESP32 inside the body runs the rover and connects over Wi-Fi to a web API, so it can be driven straight from a phone, or with a connected gamepad for more precise driving</li>
+        <li><strong>Power electronics</strong>: buck converters and motor drivers, all housed in the body</li>
+      </ul>
+    `
+  },
+  {
     id: "sabertooth",
     featured: true,
     year: "2025",
