@@ -542,14 +542,16 @@ window.PROJECTS = [
     ],
     body: `
       <p>Mini Banksia is a scale model of Nova Rover's Banksia rover. It's fully functional, but rather than shrinking down the original, I redesigned it completely, taking inspiration from Banksia. Its main job is outreach for Nova, so it's taken out to schools to get students excited about robotics and space.</p>
-      <p>That purpose shaped the design goals. It had to be entirely 3D printed and buildable with simple tools, and extremely easy to use so that anyone can pick it up and drive it. I built it over six weeks alongside full-time uni study and other commitments.</p>
+      <p>That purpose shaped the design goals. It was designed to be fully 3D printed and buildable with simple tools, but still genuinely strong and usable rather than a fragile display piece, and extremely easy to operate so that anyone can pick it up and drive it. I built it over six weeks alongside full-time uni study and other commitments.</p>
       <h5>Mobility</h5>
       <p>Like its full-size inspiration, Mini Banksia has a fully functioning rocker-bogie suspension, so the wheels stay in contact with the ground over uneven terrain. The legs are aluminium and the wheels are printed in TPU.</p>
-      <p>Each wheel pivots on a serial servo, and a two-channel slip ring at every pivot carries power through to the wheel so it can rotate continuously without winding up its cables. This lets the rover run full holonomic drive.</p>
+      <p>Each wheel pivot is actuated by a serial servo, which gives encoder feedback so the wheels hold their correct positions at all times. A two-channel slip ring at every pivot carries power through to the wheel so it can rotate continuously without winding up its cables, allowing full holonomic drive.</p>
+      <h5>Driving it</h5>
+      <p>Driving it is as simple as turning it on, connecting to the Wi-Fi network the rover generates, and opening the web app to control it. If you'd rather use a gamepad, just connect it to your phone over Bluetooth. It also has a fully working E-stop.</p>
       <h5>Electronics</h5>
       <ul>
         <li><strong>Power</strong>: an 18V Makita power tool battery, giving around eight hours of run time</li>
-        <li><strong>Control</strong>: an ESP32 inside the body runs the rover and connects over Wi-Fi to a web API, so it can be driven straight from a phone, or with a connected gamepad for more precise driving</li>
+        <li><strong>Control</strong>: an ESP32 inside the body runs the rover, generates its Wi-Fi network, and serves the web app</li>
         <li><strong>Power electronics</strong>: buck converters and motor drivers, all housed in the body</li>
       </ul>
     `
