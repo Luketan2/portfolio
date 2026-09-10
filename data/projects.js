@@ -1072,6 +1072,42 @@ window.PROJECTS = [
     `
   },
   {
+    id: "dyson-makita",
+    imageFolder: "dyson-makita",
+    featured: false,
+    year: "2026",
+    eyebrow: "2026 · Personal Project",
+    title: "Makita-Powered Dyson Vacuum",
+    summary: "Our Dyson's battery died, so instead of replacing it I made a 3D printed adapter to run it on Makita batteries. Now it can vacuum the whole house on one charge.",
+    tags: [
+      "3D printing",
+      "CAD",
+      "Repair",
+      "Personal project"
+    ],
+    stats: [],
+    thumb: "images/dyson-makita/453b4682-abd0-4e96-acea-02ff3a7fe181.jpg",
+    media: [
+      {
+        type: "image",
+        src: "images/dyson-makita/98a2f1e2-a19f-4aad-8ecf-60e9f468d67a.jpg"
+      },
+      {
+        type: "image",
+        src: "images/dyson-makita/83fc6ad2-387a-47cf-9848-4866293756aa.jpg"
+      },
+      {
+        type: "embed",
+        src: "https://youtube.com/shorts/j2OAXnAhKYE?feature=share"
+      }
+    ],
+    body: `
+      <p>Our Dyson's battery died, so instead of buying a replacement I decided to make an adapter so it could run on Makita batteries. It's a custom 3D printed adapter that takes the place of the original battery pack, and a standard Makita battery slides straight on.</p>
+      <p>It's ended up being nicer to vacuum with and a lot more functional than the original. It's more powerful, and on a full battery it can now do the whole house in one go. If a battery does run flat, it's hot-swappable, so you just slide on a fresh one and keep going instead of having to stop halfway through the house.</p>
+      <p>One unexpected hurdle was the trigger. On a Dyson, the trigger talks directly to the Dyson battery to switch the vacuum on, so once the original battery was gone the trigger no longer did anything. A new switch was needed to take its place, which is why there's a large toggle switch mounted on the side. As a bonus, it's really nice not having to hold the trigger down while vacuuming for long stretches.</p>
+    `
+  },
+  {
     id: "floundering-light",
     imageFolder: "Floundering_light",
     hidden: true,
